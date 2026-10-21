@@ -1,0 +1,71 @@
+# Eigenes Compose-Projekt. Die Laborumgebung in 01_Startumgebung bleibt
+# unveraendert und wird getrennt gestartet.
+#
+# Entscheidend ist, was hier NICHT steht: kein /var/run/docker.sock im Container.
+# Die einzige Datenquelle ist das Verzeichnis des Host-Collectors, read-only.
+name: hf-ops-dashboard
+
+services:
+  dashboard:
+    build: ./dashboard
+    # 8080 (Ollama) und 3000 (Open WebUI) bleiben frei, 8081 gehoert dem Labor-web.
+    #
+    # Die Bind-Adresse ist konfigurierbar, die Vorgabe bleibt nur lokal erreichbar.
+    # Zugriff von einem anderen Rechner (z. B. Kali), bewusst und dokumentiert:
+    #   DASHBOARD_BIND=192.168.56.10 sudo -E docker compose up -d   # nur Host-only-Netz
+    #   DASHBOARD_BIND=0.0.0.0       sudo -E docker compose up -d   # alle Schnittstellen
+    # Eine Portaenderung verlangt Containerneuerstellung (up -d), ein restart
+    # uebernimmt geaenderte Compose-Variablen nicht.
+    ports: ["${DASHBOARD_BIND:-127.0.0.1}:8090:8000"]
+    environment:
+      SNAPSHOT_PATH: /data/collector/snapshot.json
+      # Muss zu HFC_MAX_AGE des Collectors passen. Der Snapshot bringt den Wert
+      # selbst mit; dieser hier gilt nur, wenn die Datei fehlt.
+      MAX_AGE_SECONDS: "20"
+      REFRESH_SECONDS: "5"
+      # Phase D: Das Dashboard spricht nicht direkt mit Ollama. 127.0.0.1 waere
+      # hier der Container selbst. Es fragt das Host-Relay auf dem Gateway
+      # dieses Netzes, das an das lokal gebundene Ollama weiterreicht.
+      # Fuer den Ausfalltest (Phase E, Versuch 2) nur diese Adresse umbiegen:
+      #   AI_RELAY_URL=http://127.0.0.1:9 sudo -E docker compose up -d
+      AI_RELAY_URL: ${AI_RELAY_URL:-http://172.31.240.1:8899}
+      AI_MODEL: ${AI_MODEL:-coder-schnell}
+      AI_TIMEOUT: "90"
+      AI_NUM_PREDICT: "320"
+      AI_LOG_LINES: "6"
+    volumes:
+      # VERZEICHNIS mounten, nicht die Datei: der Collector ersetzt die Datei
+      # atomar per rename. Ein Bind-Mount auf die Datei zeigt danach dauerhaft
+      # auf den alten Inode, das Dashboard saehe eingefrorene Daten.
+      - /var/lib/hf-ops-collector/state:/data/collector:ro
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    user: "10001:10001"
+    tmpfs: ["/tmp:size=8m,mode=1777"]
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options: {max-size: "2m", max-file: "2"}
+    healthcheck:
+      # Python-Images enthalten kein curl, deshalb Probe mit der Standardbibliothek.
+      # Geprueft wird nur, ob das Dashboard selbst antwortet. Ein unhealthy worker
+      # im Labor darf die Anzeige nicht umwerfen.
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+# Festes Subnetz, damit die Gateway-Adresse vorhersagbar ist. Das AI-Relay auf
+# dem Host lauscht genau auf dieser Adresse und ist dadurch nur aus diesem Netz
+# erreichbar, nicht vom LAN. Wird das Subnetz hier geaendert, muss AIR_BIND_HOST
+# in /etc/hf-ops-ai-relay/relay.env mitgeaendert werden.
+networks:
+  default:
+    name: hf-ops-dashboard
+    ipam:
+      config:
+        - subnet: 172.31.240.0/24
+          gateway: 172.31.240.1

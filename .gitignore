@@ -1,0 +1,31 @@
+# Laufzeit- und Transportartefakte
+*.tar.gz
+mon.b64.*
+Teil*_von_*.sh
+*_auf_VM_kopieren.sh
+
+# Lokale Abweichungen von der Vorgabe, gehoeren nicht ins Repo
+.env
+*.env
+!*.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Betriebssystem und Editor
+.DS_Store
+.idea/
+.vscode/
+*~
+~$*
+
+# Niemals in die Abgabe: Secrets, Schluessel, Modellgewichte, Caches
+*.key
+*.pem
+id_rsa*
+id_ed25519*
+secrets*
+*.gguf
+*.safetensors
+.cache/

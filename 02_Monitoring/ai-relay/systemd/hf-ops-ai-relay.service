@@ -1,0 +1,45 @@
+[Unit]
+Description=HF Ops AI-Relay (enger Zugang vom Dashboard-Netz zu lokalem Ollama)
+Documentation=file:/opt/hf-ops-ai-relay/README.md
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/hf-ops-ai-relay/relay.env
+ExecStart=/usr/bin/python3 /opt/hf-ops-ai-relay/hf_ai_relay.py
+Restart=always
+RestartSec=3
+
+# Anders als der Collector braucht das Relay KEINE Hostrechte: kein Docker,
+# kein Dateizugriff, kein eigener Benutzer im System. DynamicUser legt fuer die
+# Laufzeit einen Wegwerfbenutzer an.
+DynamicUser=yes
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectClock=true
+ProtectHostname=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+RestrictNamespaces=true
+LockPersonality=true
+RemoveIPC=true
+# Nur IP-Sockets, keine Unix-Sockets: der Docker-Socket ist damit auch technisch
+# ausser Reichweite.
+RestrictAddressFamilies=AF_INET AF_INET6
+MemoryMax=128M
+TasksMax=32
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=hf-ops-ai-relay
+
+[Install]
+WantedBy=multi-user.target

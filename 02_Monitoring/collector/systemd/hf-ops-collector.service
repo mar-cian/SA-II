@@ -1,0 +1,48 @@
+[Unit]
+Description=HF Ops Host-Collector (liest Docker-Zustaende, schreibt JSON-Snapshot)
+Documentation=file:/opt/hf-ops-collector/README.md
+After=docker.service
+Wants=docker.service
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/hf-ops-collector/collector.env
+ExecStart=/usr/bin/python3 /opt/hf-ops-collector/hf_collector.py --loop
+Restart=always
+RestartSec=3
+TimeoutStopSec=15
+
+# Der Collector braucht Zugriff auf den Docker-Socket und laeuft deshalb als root.
+# Das ist die Vertrauensgrenze dieser Variante: Hostrechte bleiben auf dem Host,
+# das Dashboard im Container bekommt nur die fertige JSON-Datei read-only.
+User=root
+Group=root
+
+# Haertung: der Prozess darf nur sein eigenes Zustandsverzeichnis beschreiben.
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/hf-ops-collector
+ProtectHome=true
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectClock=true
+ProtectHostname=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+RestrictNamespaces=true
+LockPersonality=true
+RemoveIPC=true
+# Docker-CLI spricht ueber den Unix-Socket, Netzwerk-Sockets sind nicht noetig.
+RestrictAddressFamilies=AF_UNIX AF_NETLINK
+MemoryMax=192M
+TasksMax=64
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=hf-ops-collector
+
+[Install]
+WantedBy=multi-user.target

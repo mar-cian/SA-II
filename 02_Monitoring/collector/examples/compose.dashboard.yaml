@@ -1,0 +1,28 @@
+# Hinweis: Die tatsaechlich verwendete Compose-Datei ist ../../compose.yaml.
+# Diese Datei haelt nur die verworfene Alternative fest, damit die Begruendung
+# im Security-Vergleich belegbar bleibt. Nicht starten.
+#
+# ---------------------------------------------------------------------------
+# Verworfene Variante A: Docker-Socket direkt in den Dashboard-Container
+# ---------------------------------------------------------------------------
+#
+# services:
+#   dashboard:
+#     build: ./dashboard
+#     volumes:
+#       - /var/run/docker.sock:/var/run/docker.sock:ro
+#
+# Warum das abgelehnt wurde:
+#
+# :ro begrenzt nur den Zugriff auf die Socket-DATEI, nicht die Docker-API
+# dahinter. Die API kennt kein Leserecht: wer sie erreicht, kann Container
+# starten, beliebige Hostpfade einhaengen und damit Root auf dem Host erlangen.
+# read_only, cap_drop: [ALL], no-new-privileges und die unprivilegierte UID im
+# Dashboard waeren damit praktisch wirkungslos, weil der Weg nach draussen nicht
+# durch den Container fuehrt, sondern durch den Daemon.
+#
+# Auch rein lesende Routen sind heikel: docker inspect zeigt Environment
+# Variables aller Container im Klartext, docker logs zeigt deren Ausgaben.
+#
+# Gewaehlt wurde stattdessen der Host-Collector mit Datei (Variante B).
+# Datenfluss und Vertrauensgrenzen siehe ../README.md, Abschnitt 2.
