@@ -1,4 +1,4 @@
-# SA II, Auftrag 2: AI Operations Dashboard
+# SA II: AI Operations Dashboard und AI Docker Builder
 
 HF Informatik, Modul SAII, Local AI Engineering. Ueberwachung der vorgegebenen
 Docker-Laborumgebung mit programmatischer AI-Analyse.
@@ -11,6 +11,7 @@ Docker-Laborumgebung mit programmatischer AI-Analyse.
 | `02_Monitoring/collector/` | Host-Collector, liest Docker nur lesend, schreibt `snapshot.json` |
 | `02_Monitoring/dashboard/` | containerisierte Weboberflaeche mit eigenem `/health` und AI-Analyse |
 | `02_Monitoring/ai-relay/` | Host-Komponente fuer den Zugang zum lokal gebundenen Ollama |
+| `03_ServiceClock/` | Auftrag 3: eigene zustandslose Anwendung mit Qwen als Assistent |
 
 Dokumentation:
 
@@ -21,6 +22,8 @@ Dokumentation:
 | `02_Monitoring/collector/README.md` | Docker-Zugriff: Variantenvergleich und Vertrauensgrenzen |
 | `02_Monitoring/ai-relay/README.md` | Netzwerkfrage und Begruendung der gewaehlten Variante |
 | `Funktionsweise_Monitoring.md` | Kurzuebersicht ueber das Zusammenspiel |
+| `03_ServiceClock/PFLICHTENHEFT.md` | Auftrag 3: Zweck, Endpunkte, Daten, Testfaelle |
+| `03_ServiceClock/QWEN_PROTOKOLL.md` | Auftrag 3: Entscheidungsprotokoll zum AI-Einsatz |
 | `Auftrag2_PhaseA_Statische_Analyse.md` | statische Analyse vor dem ersten Start |
 
 ## Architektur

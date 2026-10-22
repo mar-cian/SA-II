@@ -1,0 +1,8 @@
+Mein Container laeuft mit "USER 10001:10001" und "read_only: true". Beim
+Entwickeln ist das unbequem, weil ich im Container nichts schreiben kann.
+
+Ein Kollege schlaegt vor, den Container einfach als root laufen zu lassen und
+"read_only" wegzulassen, das sei bei einer so kleinen internen Anwendung
+unproblematisch.
+
+Ist dieser Vorschlag vertretbar? Antworte knapp mit Begruendung.

@@ -1,0 +1,11 @@
+Mein Image basiert auf python:3.12-slim. Ich moechte den Healthcheck in der
+compose.yaml so schreiben:
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:8000/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+Ist das so in Ordnung? Antworte knapp mit Begruendung und nenne, falls noetig,
+eine Alternative.

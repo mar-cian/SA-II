@@ -1,0 +1,36 @@
+# Eigenes Compose-Projekt, unabhaengig von Auftrag 2.
+# Zustandslose Anwendung: bewusst kein Volume, Begruendung in PFLICHTENHEFT.md.
+name: service-clock
+
+services:
+  clock:
+    build: .
+    image: service-clock:1.0.0
+    # Eigener Port. 8080 (Ollama), 3000 (Open WebUI), 8081 (Laborumgebung) und
+    # 8090 (Dashboard aus Auftrag 2) bleiben frei.
+    ports: ["127.0.0.1:8095:8000"]
+    environment:
+      SERVICE_NAME: ${SERVICE_NAME:-Service Clock}
+      CLOCK_TZ: ${CLOCK_TZ:-Europe/Zurich}
+      WARMUP_SECONDS: "5"
+      REFRESH_SECONDS: "2"
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    user: "10001:10001"
+    tmpfs: ["/tmp:size=8m,mode=1777"]
+    logging:
+      driver: json-file
+      options: {max-size: "2m", max-file: "2"}
+    healthcheck:
+      # Das Image enthaelt kein curl, deshalb Probe mit der Standardbibliothek.
+      # urlopen wirft bei HTTP 503, damit meldet der Healthcheck genau das, was
+      # die Anwendung selbst ueber sich sagt: starting und degraded sind nicht
+      # gesund. start_period deckt die Startphase von 5 s ab.
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 10s

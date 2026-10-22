@@ -1,0 +1,18 @@
+Ich baue eine kleine, zustandslose Webanwendung in Python, nur mit der
+Standardbibliothek, die in einem Docker-Container laeuft.
+
+Zweck: Sie zeigt ihren eigenen Betriebszustand an, also einen konfigurierten
+Namen, einen Status, die aktuelle Zeit in einer konfigurierten Zeitzone, die
+Laufzeit seit Prozessstart und die Anzahl bedienter Anfragen.
+
+Anforderungen:
+- "/" liefert HTML mit Name, Status und einer dynamischen Information.
+- "/health" liefert maschinenlesbares JSON und einen passenden HTTP-Status.
+- Ein unbekannter Endpunkt liefert einen Fehlerstatus.
+- Konfiguration ueber Environment Variables.
+- Konfigurierte Namen muessen sicher in HTML ausgegeben werden.
+
+Frage: Welche Endpunkte und welche Environment Variables wuerdest du vorsehen?
+Wann soll /health welchen HTTP-Status liefern? Nenne Fallstricke, die bei so
+einer Anwendung typischerweise uebersehen werden. Antworte knapp und
+strukturiert.
