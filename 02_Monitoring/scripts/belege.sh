@@ -408,6 +408,61 @@ cmd_test5() {
   note "Soll: fehlend und gestoppt sind zwei verschiedene Zustaende, nie 'alles gesund'."
 }
 
+cmd_neustart() {
+  setdir "11_reproduzierbarer_start"
+  say "Reproduzierbarer Start der eigenen Komponenten"
+  note "Die Laborumgebung wird NICHT angefasst, nur Collector, Relay und Dashboard."
+  note "Das dauert einige Minuten, weil das Image neu gebaut wird."
+
+  cap zustand_vorher.json "Zustand vor dem Neustart" -- bash -c \
+    "curl -fsS --max-time 10 '${DASHBOARD}/api/state' | python3 -m json.tool"
+  printf '%s\n' "$(ts)" > "${DIR}/zeitpunkt_start.txt"
+
+  cap abbau.log "Dashboard abbauen, Container und Netz entfernen" -- bash -c \
+    "cd '${MON}' && sudo docker compose down"
+  cap luecke.log "Beweis, dass waehrend des Abbaus nichts antwortet" -- bash -c \
+    "curl -sS -o /dev/null -w 'Dashboard waehrend des Abbaus: HTTP %{http_code}\n' \
+       --max-time 5 '${DASHBOARD}/health'; \
+     echo '(000 bedeutet: keine Verbindung, der Dienst ist wirklich weg)'"
+
+  cap hostdienste_neustart.log "Collector und Relay neu starten" -- bash -c \
+    "sudo systemctl restart hf-ops-collector hf-ops-ai-relay; sleep 3; \
+     systemctl is-active hf-ops-collector hf-ops-ai-relay"
+
+  cap aufbau.log "Dashboard aus dem Quellstand neu bauen und starten" -- bash -c \
+    "cd '${MON}' && sudo docker compose up -d --build"
+  note "30 s warten, bis Healthcheck und Erfassung greifen"
+  sleep 30
+
+  cap ps_nachher.log "Containerzustand nach dem Neustart" -- bash -c \
+    "cd '${MON}' && sudo docker compose ps"
+  cap dashboard_health_nachher.json "Dashboard antwortet wieder" -- bash -c \
+    "curl -fsS --max-time 10 '${DASHBOARD}/health' | python3 -m json.tool"
+  cap check_snapshot_nachher.log "Daten sind nach dem Neustart wieder frisch" -- bash -c \
+    "'${MON}/collector/scripts/check-snapshot.sh'"
+  cap zustand_nachher.json "Zustand nach dem Neustart" -- bash -c \
+    "curl -fsS --max-time 10 '${DASHBOARD}/api/state' | python3 -m json.tool"
+  cap ai_nachher.json "AI ist nach dem Neustart wieder erreichbar" -- bash -c \
+    "curl -fsS --max-time 10 '${DASHBOARD}/api/ai' | python3 -m json.tool"
+  cap ai_analyse_nachher.json "Und eine Analyse laeuft wieder durch" -- bash -c \
+    "curl -s --max-time 180 -X POST '${DASHBOARD}/api/analyze' | python3 -m json.tool"
+  printf '%s\n' "$(ts)" > "${DIR}/zeitpunkt_fertig.txt"
+
+  {
+    printf '# Reproduzierbarer Start\n# Zeitpunkt (UTC): %s\n# ---\n' "$(ts)"
+    printf 'Start  : %s\n' "$(cat "${DIR}/zeitpunkt_start.txt" 2>/dev/null)"
+    printf 'Fertig : %s\n' "$(cat "${DIR}/zeitpunkt_fertig.txt" 2>/dev/null)"
+    printf '\nAbgebaut und aus dem Quellstand neu gebaut wurden:\n'
+    printf '  - Dashboard-Container und sein Netz (docker compose down, dann up -d --build)\n'
+    printf '  - Host-Collector und AI-Relay (systemctl restart)\n'
+    printf '\nNicht angefasst: die vorgegebene Laborumgebung in 01_Startumgebung.\n'
+    printf '\nGrenze dieses Nachweises: belegt ist der Neustart aus dem vorhandenen\n'
+    printf 'Quellordner. Ein vollstaendiger Aufbau auf einem frischen System ist in\n'
+    printf 'DEPLOY.md mit Pruefpunkten beschrieben, aber hier nicht durchgespielt.\n'
+  } > "${DIR}/zusammenfassung.log"
+  note "ok    zusammenfassung.log"
+}
+
 cmd_index() {
   pruefe_umgebung
   say "Inhaltsverzeichnis schreiben"
@@ -467,6 +522,7 @@ Mit Eingriff, jeweils mit Wiederherstellung:
   test4-vorher   Hypothese pruefen, Zustand und Logs sichern
   test4-nachher  nach deinem Eingriff: Wirkung belegen
   test5          fehlender Container, Gegenprobe gestoppt
+  neustart       reproduzierbarer Start der eigenen Komponenten
 
 Sammelbefehle:
   alles-ohne-eingriff   rahmen, phase-a bis phase-d, test1
@@ -489,6 +545,7 @@ case "${1:-hilfe}" in
   test4-vorher)  pruefe_umgebung; cmd_test4_vorher;;
   test4-nachher) pruefe_umgebung; cmd_test4_nachher;;
   test5)         pruefe_umgebung; cmd_test5;;
+  neustart)      pruefe_umgebung; cmd_neustart;;
   alles-ohne-eingriff)
     pruefe_umgebung
     cmd_rahmen; cmd_phase_a; cmd_phase_b; cmd_phase_c; cmd_phase_d; cmd_phase_f; cmd_test1; cmd_index
