@@ -1,0 +1,12 @@
+# Zeitstempel der Analyse gegen Zeitstempel der Laborquellen
+# Zeitpunkt (UTC): 2026-10-22T15:53:16Z
+# Befehl: bash -c stat -c '%y  %n' '/home/vmadmin/workspace/AI-Docker-Lab'/Auftrag2_PhaseA_Statische_Analyse.md '/home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung'/Statische_Analyse.md        '/home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung'/compose.yaml '/home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung'/*/app.py 2>/dev/null
+# ---
+2026-10-21 16:53:09.253101524 +0200  /home/vmadmin/workspace/AI-Docker-Lab/Auftrag2_PhaseA_Statische_Analyse.md
+2026-10-21 16:53:09.251101555 +0200  /home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung/Statische_Analyse.md
+2026-09-17 14:36:51.000000000 +0200  /home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung/compose.yaml
+2026-09-17 14:36:51.000000000 +0200  /home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung/api/app.py
+2026-09-17 14:36:51.000000000 +0200  /home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung/web/app.py
+2026-09-17 14:36:51.000000000 +0200  /home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung/worker/app.py
+# ---
+# Exit-Code: 0

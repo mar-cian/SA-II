@@ -1,0 +1,6 @@
+# Health der Laborumgebung ueber den veroeffentlichten Port
+# Zeitpunkt (UTC): 2026-10-22T15:53:23Z
+# Befehl: bash -c curl -fsS --max-time 5 http://127.0.0.1:8081/health
+# ---
+{"status": "healthy", "service": "web"}# ---
+# Exit-Code: 0

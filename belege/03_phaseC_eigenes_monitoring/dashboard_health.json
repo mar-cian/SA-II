@@ -1,0 +1,17 @@
+# Eigener Health des Dashboards
+# Zeitpunkt (UTC): 2026-10-22T15:53:31Z
+# Befehl: bash -c curl -fsS --max-time 10 'http://127.0.0.1:8090/health' | python3 -m json.tool
+# ---
+{
+    "status": "healthy",
+    "service": "dashboard",
+    "version": "1.1.0",
+    "uptime_seconds": 89975.1,
+    "data_status": "fresh",
+    "data_age_seconds": 4.2,
+    "max_age_seconds": 20,
+    "snapshot_path": "/data/collector/snapshot.json",
+    "note": "Health beschreibt nur das Dashboard. Der Zustand der Laborcontainer steht unter /api/state, die AI-Erreichbarkeit unter /api/ai. Beide werden hier bewusst nicht geprueft: weder ein unhealthy worker noch eine nicht erreichbare AI duerfen die Anzeige unhealthy machen."
+}
+# ---
+# Exit-Code: 0

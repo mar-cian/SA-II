@@ -1,0 +1,117 @@
+# Aufgeloeste Konfiguration der Laborumgebung
+# Zeitpunkt (UTC): 2026-10-22T15:53:23Z
+# Befehl: bash -c cd '/home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung' && sudo docker compose config
+# ---
+name: hf-ops-lab
+services:
+  api:
+    build:
+      context: /home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung/api
+      dockerfile: Dockerfile
+    cap_drop:
+      - ALL
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)
+      timeout: 3s
+      interval: 5s
+      retries: 3
+      start_period: 5s
+    logging:
+      driver: json-file
+      options:
+        max-file: "2"
+        max-size: 2m
+    networks:
+      default: null
+    read_only: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:size=8m,mode=1777
+  web:
+    build:
+      context: /home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung/web
+      dockerfile: Dockerfile
+    cap_drop:
+      - ALL
+    depends_on:
+      api:
+        condition: service_healthy
+        required: true
+    environment:
+      API_URL: http://api:8000
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)
+      timeout: 3s
+      interval: 5s
+      retries: 3
+      start_period: 5s
+    logging:
+      driver: json-file
+      options:
+        max-file: "2"
+        max-size: 2m
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        host_ip: 127.0.0.1
+        target: 8000
+        published: "8081"
+        protocol: tcp
+    read_only: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:size=8m,mode=1777
+  worker:
+    build:
+      context: /home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung/worker
+      dockerfile: Dockerfile
+    cap_drop:
+      - ALL
+    depends_on:
+      api:
+        condition: service_healthy
+        required: true
+    environment:
+      API_URL: http://api:8000
+      JOB_PATH: /jobz
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)
+      timeout: 3s
+      interval: 5s
+      retries: 3
+      start_period: 5s
+    logging:
+      driver: json-file
+      options:
+        max-file: "2"
+        max-size: 2m
+    networks:
+      default: null
+    read_only: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:size=8m,mode=1777
+networks:
+  default:
+    name: hf-ops-lab_default
+# ---
+# Exit-Code: 0

@@ -1,0 +1,26 @@
+# AI-Analyse auf diesen Daten
+# Zeitpunkt (UTC): 2026-10-22T15:57:50Z
+# Befehl: bash -c curl -s --max-time 180 -X POST 'http://127.0.0.1:8090/api/analyze' | python3 -m json.tool
+# ---
+{
+    "ok": true,
+    "model": "coder-schnell",
+    "duration_ms": 69747.0,
+    "truncated": true,
+    "answered_at": "2026-10-22T15:58:59+00:00",
+    "based_on": {
+        "sequence": 10965,
+        "measured_at": "2026-10-22T15:57:48.808+00:00",
+        "age_seconds": 1.4
+    },
+    "prompt_chars": 3118,
+    "sections": {
+        "beobachtung": "Die Docker-Testumgebung f\u00fcr \"hf-ops-lab\" wurde am 22.10.2026 um 15:57:48.808 UTC protokolliert. Die Datenalter betr\u00e4gt 1.4 Sekunden, was innerhalb der Grenze von 20 Sekunden liegt.",
+        "evidenz": "- Der API-Service ist in einem gesunden Zustand und l\u00e4uft. Er hat keine Fehlerserien und wurde nicht neu gestartet.\n- Der Web-Service ist ebenfalls in einem gesunden Zustand und l\u00e4uft. Er hat keine Fehlerserien und wurde nicht neu gestartet.\n- Der Worker-Service ist in einem ungesunden Zustand. Er hat 11361 Fehlerserien und wurde nicht neu gestartet. Er hat keine Ports ver\u00f6ffentlicht und gibt Fehlermeldungen aus, die darauf hindeuten, dass er nicht auf die URL `/jobz` zugreifen kann.",
+        "ursache": "Die ungesunde Zustand des Worker-Service ist wahrscheinlich durch einen Fehler in der Konfiguration oder dem Code des Workers verursacht. Es k\u00f6nnte sein, dass der Worker nicht auf die URL `/jobz` zugreifen kann oder dass es einen Fehler beim Abrufen von Jobs gibt.",
+        "schritt": "Um den ungesunden Zustand des Worker-Service zu beheben, sollte die folgenden Schritte durchgef\u00fchrt werden:\n1."
+    },
+    "raw": "BEOBACHTUNG:\nDie Docker-Testumgebung f\u00fcr \"hf-ops-lab\" wurde am 22.10.2026 um 15:57:48.808 UTC protokolliert. Die Datenalter betr\u00e4gt 1.4 Sekunden, was innerhalb der Grenze von 20 Sekunden liegt.\n\nEVIDENZ:\n- Der API-Service ist in einem gesunden Zustand und l\u00e4uft. Er hat keine Fehlerserien und wurde nicht neu gestartet.\n- Der Web-Service ist ebenfalls in einem gesunden Zustand und l\u00e4uft. Er hat keine Fehlerserien und wurde nicht neu gestartet.\n- Der Worker-Service ist in einem ungesunden Zustand. Er hat 11361 Fehlerserien und wurde nicht neu gestartet. Er hat keine Ports ver\u00f6ffentlicht und gibt Fehlermeldungen aus, die darauf hindeuten, dass er nicht auf die URL `/jobz` zugreifen kann.\n\nVERMUTETE URSACHE:\nDie ungesunde Zustand des Worker-Service ist wahrscheinlich durch einen Fehler in der Konfiguration oder dem Code des Workers verursacht. Es k\u00f6nnte sein, dass der Worker nicht auf die URL `/jobz` zugreifen kann oder dass es einen Fehler beim Abrufen von Jobs gibt.\n\nNAECHSTER SCHRITT:\nUm den ungesunden Zustand des Worker-Service zu beheben, sollte die folgenden Schritte durchgef\u00fchrt werden:\n1."
+}
+# ---
+# Exit-Code: 0

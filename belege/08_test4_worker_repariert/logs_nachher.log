@@ -1,0 +1,26 @@
+# Neue Logzeilen
+# Zeitpunkt (UTC): 2026-10-22T16:02:00Z
+# Befehl: bash -c cd '/home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung' && sudo docker compose logs --timestamps --tail 30 worker
+# ---
+worker-1  | 2026-10-22T16:01:22.518193221Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
+worker-1  | 2026-10-22T16:01:25.518501500Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
+worker-1  | 2026-10-22T16:01:27.520214717Z 127.0.0.1 - - [22/Oct/2026 16:01:27] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T16:01:28.518838130Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
+worker-1  | 2026-10-22T16:01:31.519134216Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
+worker-1  | 2026-10-22T16:01:32.768679042Z 127.0.0.1 - - [22/Oct/2026 16:01:32] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T16:01:34.519253428Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
+worker-1  | 2026-10-22T16:01:37.519671541Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
+worker-1  | 2026-10-22T16:01:38.017450494Z 127.0.0.1 - - [22/Oct/2026 16:01:38] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T16:01:40.519844786Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
+worker-1  | 2026-10-22T16:01:43.267305231Z 127.0.0.1 - - [22/Oct/2026 16:01:43] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T16:01:43.520365038Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
+worker-1  | 2026-10-22T16:01:46.520627512Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
+worker-1  | 2026-10-22T16:01:48.520647232Z 127.0.0.1 - - [22/Oct/2026 16:01:48] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T16:01:49.521028093Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
+worker-1  | 2026-10-22T16:01:52.521354072Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
+worker-1  | 2026-10-22T16:01:53.768284888Z 127.0.0.1 - - [22/Oct/2026 16:01:53] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T16:01:55.521458597Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
+worker-1  | 2026-10-22T16:01:58.521757432Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
+worker-1  | 2026-10-22T16:01:59.018227879Z 127.0.0.1 - - [22/Oct/2026 16:01:59] "GET /health HTTP/1.1" 503 -
+# ---
+# Exit-Code: 0

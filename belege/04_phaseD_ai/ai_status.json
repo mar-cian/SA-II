@@ -1,0 +1,41 @@
+# AI-Erreichbarkeit laut Dashboard
+# Zeitpunkt (UTC): 2026-10-22T15:54:51Z
+# Befehl: bash -c curl -fsS --max-time 10 'http://127.0.0.1:8090/api/ai' | python3 -m json.tool
+# ---
+{
+    "status": "available",
+    "reason": null,
+    "message": "Relay und Modell 'coder-schnell' bereit.",
+    "relay_url": "http://172.31.240.1:8899",
+    "model": "coder-schnell",
+    "models_available": [
+        "coder-genau:latest",
+        "qwen2.5-coder:7b",
+        "coder-schnell:latest",
+        "qwen2.5-coder:3b"
+    ],
+    "checked_at": "2026-10-22T15:54:51+00:00",
+    "last_analysis": {
+        "ok": true,
+        "model": "coder-schnell",
+        "duration_ms": 68625.1,
+        "truncated": false,
+        "answered_at": "2026-10-21T14:56:13+00:00",
+        "based_on": {
+            "sequence": 7342,
+            "measured_at": "2026-10-21T14:55:03.415+00:00",
+            "age_seconds": 1.4
+        },
+        "prompt_chars": 3117,
+        "sections": {
+            "beobachtung": "Die Docker-Testumgebung f\u00fcr den Projekt \"hf-ops-lab\" wurde am 21.10.2026 um 14:55:03.415 UTC erfasst. Die Datenalter betr\u00e4gt 1.4 Sekunden, was unter den Grenzen von 20 Sekunden liegt.",
+            "evidenz": "Die Services \"api\" und \"web\" sind in einem gesunden Zustand. Der Service \"worker\" ist jedoch in einem ungesunden Zustand, da er 7900 Fehlerserien aufgetreten hat, ohne sich zu beheben.",
+            "ursache": "Die Ursache f\u00fcr den ungesunden Zustand des Services \"worker\" k\u00f6nnte darin liegen, dass der Service nicht auf die Endpunkte der anderen Services zugreifen kann oder dass die Endpunkte nicht korrekt konfiguriert sind.",
+            "schritt": "Um den ungesunden Zustand des Services \"worker\" zu beheben, sollte die Konfiguration der Endpunkte \u00fcberpr\u00fcft werden und eventuell die Endpunkte korrigiert oder die Dienste so konfiguriert werden, dass sie sich gegenseitig erreichen k\u00f6nnen."
+        },
+        "raw": "BEOBACHTUNG:\nDie Docker-Testumgebung f\u00fcr den Projekt \"hf-ops-lab\" wurde am 21.10.2026 um 14:55:03.415 UTC erfasst. Die Datenalter betr\u00e4gt 1.4 Sekunden, was unter den Grenzen von 20 Sekunden liegt.\n\nEVIDENZ:\nDie Services \"api\" und \"web\" sind in einem gesunden Zustand. Der Service \"worker\" ist jedoch in einem ungesunden Zustand, da er 7900 Fehlerserien aufgetreten hat, ohne sich zu beheben.\n\nVERMUTETE URSACHE:\nDie Ursache f\u00fcr den ungesunden Zustand des Services \"worker\" k\u00f6nnte darin liegen, dass der Service nicht auf die Endpunkte der anderen Services zugreifen kann oder dass die Endpunkte nicht korrekt konfiguriert sind.\n\nNAECHSTER SCHRITT:\nUm den ungesunden Zustand des Services \"worker\" zu beheben, sollte die Konfiguration der Endpunkte \u00fcberpr\u00fcft werden und eventuell die Endpunkte korrigiert oder die Dienste so konfiguriert werden, dass sie sich gegenseitig erreichen k\u00f6nnen."
+    },
+    "last_error": null
+}
+# ---
+# Exit-Code: 0

@@ -1,0 +1,158 @@
+Fehlerfall-Protokoll: Datenerfassung gestoert
+Protokolldatei: /home/vmadmin/workspace/AI-Docker-Lab/belege/07_test3_erfassung_gestoert/nachweis_collector_ausfall_20261022T155909Z.log
+Snapshot:       /var/lib/hf-ops-collector/state/snapshot.json
+Dashboard:      http://127.0.0.1:8090/health
+
+[2026-10-22T15:59:09Z] === Soll-Zustand vor dem Eingriff: Snapshot frisch, Erfassung ok ===
+Datei          /var/lib/hf-ops-collector/state/snapshot.json
+Collector      hf-ops-host-collector 1.0.0 auf li264-vmLS1.smartlearn.lan (PID 84481, Sequenz 10978)
+Messzeitpunkt  2026-10-22T15:59:07.842+00:00
+Datenalter     1.9 s (Grenze 20 s) -> frisch
+Erfassung      ok | Docker erreichbar: True | Messdauer 89.2 ms
+
+SERVICE    ZUSTAND     HEALTH     STATUS     NEUSTARTS  BEGRUENDUNG
+api        running     healthy    healthy    0          Prozess laeuft, Healthcheck meldet healthy.
+web        running     healthy    healthy    0          Prozess laeuft, Healthcheck meldet healthy.
+worker     running     unhealthy  unhealthy  0          Prozess laeuft, Healthcheck meldet unhealthy. Fehlerserie: 11375.
+
+Letzter Fehler worker (16 im Fenster)
+  2026-10-22T15:59:05.311813543Z [stdout] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+
+Ergebnis: Snapshot frisch, Datenerfassung ok.
+[2026-10-22T15:59:09Z] check-snapshot Exit-Code: 0
+[2026-10-22T15:59:09Z] Dashboard /health: {
+  "status": "healthy",
+  "service": "dashboard",
+  "version": "1.1.0",
+  "uptime_seconds": 90313.7,
+  "data_status": "fresh",
+  "data_age_seconds": 1.9,
+  "max_age_seconds": 20,
+  "snapshot_path": "/data/collector/snapshot.json",
+  "note": "Health beschreibt nur das Dashboard. Der Zustand der Laborcontainer steht unter /api/state, die AI-Erreichbarkeit unter /api/ai. Beide werden hier bewusst nicht geprueft: weder ein unhealthy worker noch eine nicht erreichbare AI duerfen die Anzeige unhealthy machen."
+}
+
+[2026-10-22T15:59:09Z] === Eingriff: Collector beenden (systemctl stop hf-ops-collector) ===
+[2026-10-22T15:59:09Z] Dienststatus: inactive
+[2026-10-22T15:59:09Z] Erwartung: Snapshot bleibt unveraendert liegen, sein Alter waechst.
+
+[2026-10-22T15:59:09Z] === Beobachtung ueber 35s ===
+[2026-10-22T15:59:10Z] Alter des Snapshots: 2.2 s | Dashboard: {
+  "status": "healthy",
+  "service": "dashboard",
+  "version": "1.1.0",
+  "uptime_seconds": 90314.0,
+  "data_status": "fresh",
+  "data_age_seconds": 2.2,
+  "max_age_seconds": 20,
+  "snapshot_path": "/data/collector/snapshot.json",
+  "note": "Health beschreibt nur das Dashboard. Der Zustand der Laborcontainer steht unter /api/state, die AI-Erreichbarkeit unter /api/ai. Beide werden hier bewusst nicht geprueft: weder ein unhealthy worker noch eine nicht erreichbare AI duerfen die Anzeige unhealthy machen."
+}
+[2026-10-22T15:59:17Z] Alter des Snapshots: 9.2 s | Dashboard: {
+  "status": "healthy",
+  "service": "dashboard",
+  "version": "1.1.0",
+  "uptime_seconds": 90321.0,
+  "data_status": "fresh",
+  "data_age_seconds": 9.2,
+  "max_age_seconds": 20,
+  "snapshot_path": "/data/collector/snapshot.json",
+  "note": "Health beschreibt nur das Dashboard. Der Zustand der Laborcontainer steht unter /api/state, die AI-Erreichbarkeit unter /api/ai. Beide werden hier bewusst nicht geprueft: weder ein unhealthy worker noch eine nicht erreichbare AI duerfen die Anzeige unhealthy machen."
+}
+[2026-10-22T15:59:24Z] Alter des Snapshots: 16.2 s | Dashboard: {
+  "status": "healthy",
+  "service": "dashboard",
+  "version": "1.1.0",
+  "uptime_seconds": 90328.0,
+  "data_status": "fresh",
+  "data_age_seconds": 16.2,
+  "max_age_seconds": 20,
+  "snapshot_path": "/data/collector/snapshot.json",
+  "note": "Health beschreibt nur das Dashboard. Der Zustand der Laborcontainer steht unter /api/state, die AI-Erreichbarkeit unter /api/ai. Beide werden hier bewusst nicht geprueft: weder ein unhealthy worker noch eine nicht erreichbare AI duerfen die Anzeige unhealthy machen."
+}
+[2026-10-22T15:59:31Z] Alter des Snapshots: 23.3 s | Dashboard: {
+  "status": "healthy",
+  "service": "dashboard",
+  "version": "1.1.0",
+  "uptime_seconds": 90335.1,
+  "data_status": "stale",
+  "data_age_seconds": 23.3,
+  "max_age_seconds": 20,
+  "snapshot_path": "/data/collector/snapshot.json",
+  "note": "Health beschreibt nur das Dashboard. Der Zustand der Laborcontainer steht unter /api/state, die AI-Erreichbarkeit unter /api/ai. Beide werden hier bewusst nicht geprueft: weder ein unhealthy worker noch eine nicht erreichbare AI duerfen die Anzeige unhealthy machen."
+}
+[2026-10-22T15:59:38Z] Alter des Snapshots: 30.3 s | Dashboard: {
+  "status": "healthy",
+  "service": "dashboard",
+  "version": "1.1.0",
+  "uptime_seconds": 90342.1,
+  "data_status": "stale",
+  "data_age_seconds": 30.3,
+  "max_age_seconds": 20,
+  "snapshot_path": "/data/collector/snapshot.json",
+  "note": "Health beschreibt nur das Dashboard. Der Zustand der Laborcontainer steht unter /api/state, die AI-Erreichbarkeit unter /api/ai. Beide werden hier bewusst nicht geprueft: weder ein unhealthy worker noch eine nicht erreichbare AI duerfen die Anzeige unhealthy machen."
+}
+
+[2026-10-22T15:59:45Z] === Ist-Zustand im Ausfall: alte Daten duerfen nicht als gesund gelten ===
+Datei          /var/lib/hf-ops-collector/state/snapshot.json
+Collector      hf-ops-host-collector 1.0.0 auf li264-vmLS1.smartlearn.lan (PID 84481, Sequenz 10978)
+Messzeitpunkt  2026-10-22T15:59:07.842+00:00
+Datenalter     37.3 s (Grenze 20 s) -> VERALTET
+Erfassung      ok | Docker erreichbar: True | Messdauer 89.2 ms
+
+SERVICE    ZUSTAND     HEALTH     STATUS     NEUSTARTS  BEGRUENDUNG
+api        running     healthy    UNKNOWN (veraltet) 0          Prozess laeuft, Healthcheck meldet healthy.
+web        running     healthy    UNKNOWN (veraltet) 0          Prozess laeuft, Healthcheck meldet healthy.
+worker     running     unhealthy  UNKNOWN (veraltet) 0          Prozess laeuft, Healthcheck meldet unhealthy. Fehlerserie: 11375.
+
+Letzter Fehler worker (16 im Fenster)
+  2026-10-22T15:59:05.311813543Z [stdout] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+
+Ergebnis: Daten sind aelter als erlaubt. Als UNKNOWN werten, nicht als gesund.
+[2026-10-22T15:59:45Z] check-snapshot Exit-Code: 2 (erwartet: 2 = veraltet)
+[2026-10-22T15:59:45Z] BELEG ok: veraltete Daten werden als UNKNOWN gewertet.
+
+[2026-10-22T15:59:45Z] === Wiederherstellung: Collector starten (systemctl start hf-ops-collector) ===
+[2026-10-22T15:59:53Z] Dienststatus: active
+Datei          /var/lib/hf-ops-collector/state/snapshot.json
+Collector      hf-ops-host-collector 1.0.0 auf li264-vmLS1.smartlearn.lan (PID 1537101, Sequenz 2)
+Messzeitpunkt  2026-10-22T15:59:50.336+00:00
+Datenalter     2.9 s (Grenze 20 s) -> frisch
+Erfassung      ok | Docker erreichbar: True | Messdauer 96.8 ms
+
+SERVICE    ZUSTAND     HEALTH     STATUS     NEUSTARTS  BEGRUENDUNG
+api        running     healthy    healthy    0          Prozess laeuft, Healthcheck meldet healthy.
+web        running     healthy    healthy    0          Prozess laeuft, Healthcheck meldet healthy.
+worker     running     unhealthy  unhealthy  0          Prozess laeuft, Healthcheck meldet unhealthy. Fehlerserie: 11383.
+
+Letzter Fehler worker (16 im Fenster)
+  2026-10-22T15:59:50.340712257Z [stdout] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+
+Ergebnis: Snapshot frisch, Datenerfassung ok.
+[2026-10-22T15:59:53Z] check-snapshot Exit-Code: 0 (erwartet: 0 = frisch und ok)
+[2026-10-22T15:59:53Z] Dashboard /health: {
+  "status": "healthy",
+  "service": "dashboard",
+  "version": "1.1.0",
+  "uptime_seconds": 90357.2,
+  "data_status": "fresh",
+  "data_age_seconds": 2.9,
+  "max_age_seconds": 20,
+  "snapshot_path": "/data/collector/snapshot.json",
+  "note": "Health beschreibt nur das Dashboard. Der Zustand der Laborcontainer steht unter /api/state, die AI-Erreichbarkeit unter /api/ai. Beide werden hier bewusst nicht geprueft: weder ein unhealthy worker noch eine nicht erreichbare AI duerfen die Anzeige unhealthy machen."
+}
+
+[2026-10-22T15:59:53Z] === Abschluss ===
+[2026-10-22T15:59:53Z] Protokoll gespeichert unter /home/vmadmin/workspace/AI-Docker-Lab/belege/07_test3_erfassung_gestoert/nachweis_collector_ausfall_20261022T155909Z.log
+[2026-10-22T15:59:53Z] Letzte Dienstmeldungen:
+Oct 22 17:59:02 li264-vmLS1.smartlearn.lan hf-ops-collector[84481]: INFO seq=10977 2026-10-22T15:59:02.835+00:00 collector=ok docker=True healthy=2,unhealthy=1
+Oct 22 17:59:07 li264-vmLS1.smartlearn.lan hf-ops-collector[84481]: INFO seq=10978 2026-10-22T15:59:07.842+00:00 collector=ok docker=True healthy=2,unhealthy=1
+Oct 22 17:59:09 li264-vmLS1.smartlearn.lan hf-ops-collector[84481]: INFO Signal 15 empfangen, beende nach dem laufenden Durchgang
+Oct 22 17:59:09 li264-vmLS1.smartlearn.lan systemd[1]: Stopping hf-ops-collector.service - HF Ops Host-Collector (liest Docker-Zustaende, schreibt JSON-Snapshot)...
+Oct 22 17:59:09 li264-vmLS1.smartlearn.lan systemd[1]: hf-ops-collector.service: Deactivated successfully.
+Oct 22 17:59:09 li264-vmLS1.smartlearn.lan systemd[1]: Stopped hf-ops-collector.service - HF Ops Host-Collector (liest Docker-Zustaende, schreibt JSON-Snapshot).
+Oct 22 17:59:09 li264-vmLS1.smartlearn.lan systemd[1]: hf-ops-collector.service: Consumed 16min 39.918s CPU time over 15h 18min 41.317s wall clock time, 38.6M memory peak.
+Oct 22 17:59:45 li264-vmLS1.smartlearn.lan systemd[1]: Started hf-ops-collector.service - HF Ops Host-Collector (liest Docker-Zustaende, schreibt JSON-Snapshot).
+Oct 22 17:59:45 li264-vmLS1.smartlearn.lan hf-ops-collector[1537101]: INFO seq=1 2026-10-22T15:59:45.325+00:00 collector=ok docker=True healthy=2,unhealthy=1
+Oct 22 17:59:50 li264-vmLS1.smartlearn.lan hf-ops-collector[1537101]: INFO seq=2 2026-10-22T15:59:50.336+00:00 collector=ok docker=True healthy=2,unhealthy=1
+# Exit-Code des Skripts: 0

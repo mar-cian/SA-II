@@ -1,0 +1,41 @@
+# Zustand der eigenen Host-Dienste
+# Zeitpunkt (UTC): 2026-10-22T15:52:46Z
+# Befehl: bash -c systemctl status hf-ops-collector --no-pager -n 5; echo; systemctl status hf-ops-ai-relay --no-pager -n 5
+# ---
+● hf-ops-collector.service - HF Ops Host-Collector (liest Docker-Zustaende, schreibt JSON-Snapshot)
+     Loaded: loaded (/etc/systemd/system/hf-ops-collector.service; enabled; preset: enabled)
+     Active: active (running) since Tue 2026-10-20 20:41:45 CEST; 1 day 21h ago
+ Invocation: bd534cf5e2134c3aae28106076cc97da
+       Docs: file:/opt/hf-ops-collector/README.md
+   Main PID: 84481 (python3)
+      Tasks: 1 (limit: 64)
+     Memory: 12M (max: 192M, available: 179.9M, peak: 38.6M)
+        CPU: 16min 31.761s
+     CGroup: /system.slice/hf-ops-collector.service
+             └─84481 /usr/bin/python3 /opt/hf-ops-collector/hf_collector.py --loop
+
+Oct 22 17:52:21 li264-vmLS1.smartlearn.lan hf-ops-collector[84481]: INFO seq=10906 2026-10-22T15:52:21.827+00:00 collector=ok docker=True healthy=2,unhealthy=1
+Oct 22 17:52:26 li264-vmLS1.smartlearn.lan hf-ops-collector[84481]: INFO seq=10907 2026-10-22T15:52:26.832+00:00 collector=ok docker=True healthy=2,unhealthy=1
+Oct 22 17:52:31 li264-vmLS1.smartlearn.lan hf-ops-collector[84481]: INFO seq=10908 2026-10-22T15:52:31.839+00:00 collector=ok docker=True healthy=2,unhealthy=1
+Oct 22 17:52:36 li264-vmLS1.smartlearn.lan hf-ops-collector[84481]: INFO seq=10909 2026-10-22T15:52:36.843+00:00 collector=ok docker=True healthy=2,unhealthy=1
+Oct 22 17:52:41 li264-vmLS1.smartlearn.lan hf-ops-collector[84481]: INFO seq=10910 2026-10-22T15:52:41.846+00:00 collector=ok docker=True healthy=2,unhealthy=1
+
+● hf-ops-ai-relay.service - HF Ops AI-Relay (enger Zugang vom Dashboard-Netz zu lokalem Ollama)
+     Loaded: loaded (/etc/systemd/system/hf-ops-ai-relay.service; enabled; preset: enabled)
+     Active: active (running) since Wed 2026-10-21 16:54:15 CEST; 24h ago
+ Invocation: a80b12cfa3fd4cb4bdceed320b07aa2d
+       Docs: file:/opt/hf-ops-ai-relay/README.md
+   Main PID: 1053559 (python3)
+      Tasks: 1 (limit: 32)
+     Memory: 12.6M (max: 128M, available: 115.3M, peak: 13.3M)
+        CPU: 2.210s
+     CGroup: /system.slice/hf-ops-ai-relay.service
+             └─1053559 /usr/bin/python3 /opt/hf-ops-ai-relay/hf_ai_relay.py
+
+Oct 21 16:54:16 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-21T14:54:16+00:00 INFO erlaubte Modelle: coder-schnell, coder-genau | Vorgabe: coder-schnell
+Oct 21 16:54:18 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-21T14:54:18+00:00 WARN model_not_allowed Modell 'llama3' ist nicht freigegeben. | erlaubt: coder-schnell, coder-genau
+Oct 21 16:54:18 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-21T14:54:18+00:00 WARN model_not_allowed Modell 'llama3' ist nicht freigegeben. | erlaubt: coder-schnell, coder-genau
+Oct 21 16:55:04 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-21T14:55:04+00:00 INFO analyse model=coder-schnell prompt_bytes=3117 num_predict=320
+Oct 21 16:56:13 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-21T14:56:13+00:00 INFO fertig model=coder-schnell dauer=68625.1ms zeichen=887
+# ---
+# Exit-Code: 0

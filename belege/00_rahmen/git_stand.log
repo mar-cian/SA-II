@@ -1,0 +1,12 @@
+# Stand des Quellordners
+# Zeitpunkt (UTC): 2026-10-22T15:52:46Z
+# Befehl: bash -c cd '/home/vmadmin/workspace/AI-Docker-Lab' && git rev-parse --short HEAD && git status --short && git log --oneline -5
+# ---
+5f3bd0f
+?? belege/
+5f3bd0f Belege-Skript: Nachweise aller Phasen in einen Ordner belege/
+a3db1d3 Phase E: Testprotokoll-Formular und Befehle fuer die Belege
+3dbefd9 Auftrag 2: Host-Collector, Dashboard und AI-Relay
+a1933a9 Initial commit
+# ---
+# Exit-Code: 0

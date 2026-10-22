@@ -1,0 +1,10 @@
+# Containerzustand
+# Zeitpunkt (UTC): 2026-10-22T15:53:23Z
+# Befehl: bash -c cd '/home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung' && sudo docker compose ps -a
+# ---
+NAME                  IMAGE               COMMAND           SERVICE   CREATED        STATUS                    PORTS
+hf-ops-lab-api-1      hf-ops-lab-api      "python app.py"   api       47 hours ago   Up 47 hours (healthy)     8000/tcp
+hf-ops-lab-web-1      hf-ops-lab-web      "python app.py"   web       47 hours ago   Up 47 hours (healthy)     127.0.0.1:8081->8000/tcp
+hf-ops-lab-worker-1   hf-ops-lab-worker   "python app.py"   worker    47 hours ago   Up 47 hours (unhealthy)   8000/tcp
+# ---
+# Exit-Code: 0

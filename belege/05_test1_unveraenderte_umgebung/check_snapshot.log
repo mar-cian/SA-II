@@ -1,0 +1,102 @@
+# Eigene Erfassung
+# Zeitpunkt (UTC): 2026-10-22T15:57:50Z
+# Befehl: bash -c '/home/vmadmin/workspace/AI-Docker-Lab/02_Monitoring/collector/scripts/check-snapshot.sh' --logs
+# ---
+Datei          /var/lib/hf-ops-collector/state/snapshot.json
+Collector      hf-ops-host-collector 1.0.0 auf li264-vmLS1.smartlearn.lan (PID 84481, Sequenz 10965)
+Messzeitpunkt  2026-10-22T15:57:48.808+00:00
+Datenalter     1.3 s (Grenze 20 s) -> frisch
+Erfassung      ok | Docker erreichbar: True | Messdauer 85.5 ms
+
+SERVICE    ZUSTAND     HEALTH     STATUS     NEUSTARTS  BEGRUENDUNG
+api        running     healthy    healthy    0          Prozess laeuft, Healthcheck meldet healthy.
+web        running     healthy    healthy    0          Prozess laeuft, Healthcheck meldet healthy.
+worker     running     unhealthy  unhealthy  0          Prozess laeuft, Healthcheck meldet unhealthy. Fehlerserie: 11361.
+
+Letzter Fehler worker (16 im Fenster)
+  2026-10-22T15:57:47.322750971Z [stdout] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+
+--- Logs api (25 Zeilen) ---
+  2026-10-22T15:57:14.569362302Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:14] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:14.572558176Z [raw] 172.18.0.4 - - [22/Oct/2026 15:57:14] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:17.303068273Z [raw] 172.18.0.3 - - [22/Oct/2026 15:57:17] "GET /jobz HTTP/1.1" 404 -
+  2026-10-22T15:57:19.822106840Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:19] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:19.822522022Z [raw] 172.18.0.4 - - [22/Oct/2026 15:57:19] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:20.305427966Z [raw] 172.18.0.3 - - [22/Oct/2026 15:57:20] "GET /jobz HTTP/1.1" 404 -
+  2026-10-22T15:57:23.307587772Z [raw] 172.18.0.3 - - [22/Oct/2026 15:57:23] "GET /jobz HTTP/1.1" 404 -
+  2026-10-22T15:57:25.071942522Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:25] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:25.074787200Z [raw] 172.18.0.4 - - [22/Oct/2026 15:57:25] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:26.309374976Z [raw] 172.18.0.3 - - [22/Oct/2026 15:57:26] "GET /jobz HTTP/1.1" 404 -
+  2026-10-22T15:57:29.311257056Z [raw] 172.18.0.3 - - [22/Oct/2026 15:57:29] "GET /jobz HTTP/1.1" 404 -
+  2026-10-22T15:57:30.320417210Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:30] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:30.324947963Z [raw] 172.18.0.4 - - [22/Oct/2026 15:57:30] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:32.313356398Z [raw] 172.18.0.3 - - [22/Oct/2026 15:57:32] "GET /jobz HTTP/1.1" 404 -
+  2026-10-22T15:57:35.314693514Z [raw] 172.18.0.3 - - [22/Oct/2026 15:57:35] "GET /jobz HTTP/1.1" 404 -
+  2026-10-22T15:57:35.569671671Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:35] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:35.575330952Z [raw] 172.18.0.4 - - [22/Oct/2026 15:57:35] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:38.316915124Z [raw] 172.18.0.3 - - [22/Oct/2026 15:57:38] "GET /jobz HTTP/1.1" 404 -
+  2026-10-22T15:57:40.819604431Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:40] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:40.830679691Z [raw] 172.18.0.4 - - [22/Oct/2026 15:57:40] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:41.318508016Z [raw] 172.18.0.3 - - [22/Oct/2026 15:57:41] "GET /jobz HTTP/1.1" 404 -
+  2026-10-22T15:57:44.320286511Z [raw] 172.18.0.3 - - [22/Oct/2026 15:57:44] "GET /jobz HTTP/1.1" 404 -
+  2026-10-22T15:57:46.070440540Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:46] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:46.078368398Z [raw] 172.18.0.4 - - [22/Oct/2026 15:57:46] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:47.322735252Z [raw] 172.18.0.3 - - [22/Oct/2026 15:57:47] "GET /jobz HTTP/1.1" 404 -
+
+--- Logs web (25 Zeilen) ---
+  2026-10-22T15:55:37.571971394Z [raw] 127.0.0.1 - - [22/Oct/2026 15:55:37] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:55:43.428205447Z [raw] 127.0.0.1 - - [22/Oct/2026 15:55:43] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:55:48.721481531Z [raw] 127.0.0.1 - - [22/Oct/2026 15:55:48] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:55:54.382988626Z [raw] 127.0.0.1 - - [22/Oct/2026 15:55:54] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:55:59.944475758Z [raw] 127.0.0.1 - - [22/Oct/2026 15:55:59] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:56:05.525815728Z [raw] 127.0.0.1 - - [22/Oct/2026 15:56:05] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:56:11.413282138Z [raw] 127.0.0.1 - - [22/Oct/2026 15:56:11] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:56:16.782917028Z [raw] 127.0.0.1 - - [22/Oct/2026 15:56:16] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:56:22.036735305Z [raw] 127.0.0.1 - - [22/Oct/2026 15:56:22] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:56:27.304752147Z [raw] 127.0.0.1 - - [22/Oct/2026 15:56:27] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:56:32.555605408Z [raw] 127.0.0.1 - - [22/Oct/2026 15:56:32] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:56:37.805701542Z [raw] 127.0.0.1 - - [22/Oct/2026 15:56:37] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:56:43.059350072Z [raw] 127.0.0.1 - - [22/Oct/2026 15:56:43] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:56:48.308241436Z [raw] 127.0.0.1 - - [22/Oct/2026 15:56:48] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:56:53.559260275Z [raw] 127.0.0.1 - - [22/Oct/2026 15:56:53] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:56:58.811990697Z [raw] 127.0.0.1 - - [22/Oct/2026 15:56:58] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:04.071467828Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:04] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:09.321655131Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:09] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:14.572887909Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:14] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:19.822916986Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:19] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:25.074901813Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:25] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:30.325337357Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:30] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:35.576235003Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:35] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:40.830979598Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:40] "GET /health HTTP/1.1" 200 -
+  2026-10-22T15:57:46.078671201Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:46] "GET /health HTTP/1.1" 200 -
+
+--- Logs worker (25 Zeilen) ---
+  2026-10-22T15:57:02.294267535Z [error] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+  2026-10-22T15:57:05.295996477Z [error] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+  2026-10-22T15:57:06.538742884Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:06] "GET /health HTTP/1.1" 503 -
+  2026-10-22T15:57:08.297978258Z [error] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+  2026-10-22T15:57:11.300165939Z [error] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+  2026-10-22T15:57:11.783232472Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:11] "GET /health HTTP/1.1" 503 -
+  2026-10-22T15:57:14.301542603Z [error] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+  2026-10-22T15:57:17.029260040Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:17] "GET /health HTTP/1.1" 503 -
+  2026-10-22T15:57:17.303329198Z [error] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+  2026-10-22T15:57:20.305682810Z [error] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+  2026-10-22T15:57:22.275410515Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:22] "GET /health HTTP/1.1" 503 -
+  2026-10-22T15:57:23.307813412Z [error] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+  2026-10-22T15:57:26.309680374Z [error] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+  2026-10-22T15:57:27.522707968Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:27] "GET /health HTTP/1.1" 503 -
+  2026-10-22T15:57:29.311581610Z [error] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+  2026-10-22T15:57:32.313441506Z [error] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+  2026-10-22T15:57:32.769609762Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:32] "GET /health HTTP/1.1" 503 -
+  2026-10-22T15:57:35.314938049Z [error] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+  2026-10-22T15:57:38.016080347Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:38] "GET /health HTTP/1.1" 503 -
+  2026-10-22T15:57:38.317103905Z [error] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+  2026-10-22T15:57:41.318789469Z [error] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+  2026-10-22T15:57:43.261555638Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:43] "GET /health HTTP/1.1" 503 -
+  2026-10-22T15:57:44.320628376Z [error] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+  2026-10-22T15:57:47.322750971Z [error] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+  2026-10-22T15:57:48.508305020Z [raw] 127.0.0.1 - - [22/Oct/2026 15:57:48] "GET /health HTTP/1.1" 503 -
+
+Ergebnis: Snapshot frisch, Datenerfassung ok.
+# ---
+# Exit-Code: 0

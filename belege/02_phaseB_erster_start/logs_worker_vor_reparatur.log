@@ -1,0 +1,66 @@
+# Worker-Logs VOR jeder Reparatur, mit Zeitstempel
+# Zeitpunkt (UTC): 2026-10-22T15:53:23Z
+# Befehl: bash -c cd '/home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung' && sudo docker compose logs --timestamps --tail 60 worker
+# ---
+worker-1  | 2026-10-22T15:51:29.263587628Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:51:32.265205217Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:51:33.965560153Z 127.0.0.1 - - [22/Oct/2026 15:51:33] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:51:35.266987389Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:51:38.268696999Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:51:39.217745279Z 127.0.0.1 - - [22/Oct/2026 15:51:39] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:51:41.270375421Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:51:44.271978171Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:51:44.469907701Z 127.0.0.1 - - [22/Oct/2026 15:51:44] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:51:47.273683082Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:51:49.720643441Z 127.0.0.1 - - [22/Oct/2026 15:51:49] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:51:50.275343779Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:51:53.277040581Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:51:54.968842727Z 127.0.0.1 - - [22/Oct/2026 15:51:54] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:51:56.278680281Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:51:59.280451402Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:52:00.218041856Z 127.0.0.1 - - [22/Oct/2026 15:52:00] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:52:02.282120116Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:52:05.283610421Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:52:05.471466655Z 127.0.0.1 - - [22/Oct/2026 15:52:05] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:52:08.285268106Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:52:10.722758507Z 127.0.0.1 - - [22/Oct/2026 15:52:10] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:52:11.287014949Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:52:14.288853782Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:52:15.976186543Z 127.0.0.1 - - [22/Oct/2026 15:52:15] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:52:17.290243449Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:52:20.291922032Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:52:21.233755813Z 127.0.0.1 - - [22/Oct/2026 15:52:21] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:52:23.293634617Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:52:26.295034257Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:52:26.488892607Z 127.0.0.1 - - [22/Oct/2026 15:52:26] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:52:29.296877606Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:52:31.742047425Z 127.0.0.1 - - [22/Oct/2026 15:52:31] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:52:32.298744812Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:52:35.300489191Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:52:36.992320822Z 127.0.0.1 - - [22/Oct/2026 15:52:36] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:52:38.302125144Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:52:41.303640463Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:52:42.244697152Z 127.0.0.1 - - [22/Oct/2026 15:52:42] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:52:44.305318882Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:52:47.307466260Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:52:47.494397583Z 127.0.0.1 - - [22/Oct/2026 15:52:47] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:52:50.309130108Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:52:52.742974926Z 127.0.0.1 - - [22/Oct/2026 15:52:52] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:52:53.310826638Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:52:56.312565124Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:52:57.997985074Z 127.0.0.1 - - [22/Oct/2026 15:52:57] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:52:59.314176622Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:53:02.315801125Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:53:03.250743081Z 127.0.0.1 - - [22/Oct/2026 15:53:03] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:53:05.317530271Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:53:08.319088886Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:53:08.501225848Z 127.0.0.1 - - [22/Oct/2026 15:53:08] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:53:11.321000496Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:53:13.754444741Z 127.0.0.1 - - [22/Oct/2026 15:53:13] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:53:14.322669392Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:53:17.324225190Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:53:19.006617389Z 127.0.0.1 - - [22/Oct/2026 15:53:19] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T15:53:20.325748818Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+worker-1  | 2026-10-22T15:53:23.327309805Z ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+# ---
+# Exit-Code: 0

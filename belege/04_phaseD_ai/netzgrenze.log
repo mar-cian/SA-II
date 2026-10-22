@@ -1,0 +1,18 @@
+# Nachweis: Relay nur aus dem Dashboard-Netz erreichbar
+# Zeitpunkt (UTC): 2026-10-22T15:54:51Z
+# Befehl: bash -c echo '--- Lauschadressen ---'; ss -ltn | grep -E '8899|8080|8090' || echo 'nichts gefunden';      echo '--- Subnetz des Dashboard-Netzes ---';      sudo docker network inspect hf-ops-dashboard --format '{{json .IPAM.Config}}' 2>/dev/null | python3 -m json.tool
+# ---
+--- Lauschadressen ---
+LISTEN 0      4096        127.0.0.1:8090       0.0.0.0:*   
+LISTEN 0      4096        127.0.0.1:8080       0.0.0.0:*   
+LISTEN 0      5        172.31.240.1:8899       0.0.0.0:*   
+--- Subnetz des Dashboard-Netzes ---
+[
+    {
+        "Subnet": "172.31.240.0/24",
+        "IPRange": "",
+        "Gateway": "172.31.240.1"
+    }
+]
+# ---
+# Exit-Code: 0

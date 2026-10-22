@@ -1,0 +1,7 @@
+# Nicht freigegebenes Modell wird abgelehnt
+# Zeitpunkt (UTC): 2026-10-22T15:54:51Z
+# Befehl: bash -c curl -s -o /dev/null -w 'HTTP %{http_code}, erwartet 403\n' --max-time 10        -H 'Content-Type: application/json'        -d '{"model":"llama3","prompt":"test"}' 'http://172.31.240.1:8899/v1/analyze'
+# ---
+HTTP 403, erwartet 403
+# ---
+# Exit-Code: 0

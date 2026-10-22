@@ -1,0 +1,7 @@
+# Git-Historie der Analysedatei, falls vorhanden
+# Zeitpunkt (UTC): 2026-10-22T15:53:16Z
+# Befehl: bash -c cd '/home/vmadmin/workspace/AI-Docker-Lab' && git log --follow --format='%ad  %h  %s' --date=iso -- Auftrag2_PhaseA_Statische_Analyse.md
+# ---
+2026-10-21 16:37:58 +0200  3dbefd9  Auftrag 2: Host-Collector, Dashboard und AI-Relay
+# ---
+# Exit-Code: 0

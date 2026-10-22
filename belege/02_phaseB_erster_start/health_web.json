@@ -1,0 +1,42 @@
+# Healthcheck-Ausgabe web
+# Zeitpunkt (UTC): 2026-10-22T15:53:23Z
+# Befehl: bash -c cd '/home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung' && sudo docker inspect --format '{{json .State.Health}}'          "$(sudo docker compose ps -q web)" | python3 -m json.tool
+# ---
+{
+    "Status": "healthy",
+    "FailingStreak": 0,
+    "Log": [
+        {
+            "Start": "2026-10-22T17:52:58.941072031+02:00",
+            "End": "2026-10-22T17:52:59.193204525+02:00",
+            "ExitCode": 0,
+            "Output": ""
+        },
+        {
+            "Start": "2026-10-22T17:53:04.194207355+02:00",
+            "End": "2026-10-22T17:53:04.446831537+02:00",
+            "ExitCode": 0,
+            "Output": ""
+        },
+        {
+            "Start": "2026-10-22T17:53:09.44756538+02:00",
+            "End": "2026-10-22T17:53:09.713196023+02:00",
+            "ExitCode": 0,
+            "Output": ""
+        },
+        {
+            "Start": "2026-10-22T17:53:14.713884261+02:00",
+            "End": "2026-10-22T17:53:14.966779774+02:00",
+            "ExitCode": 0,
+            "Output": ""
+        },
+        {
+            "Start": "2026-10-22T17:53:19.968503007+02:00",
+            "End": "2026-10-22T17:53:20.219963222+02:00",
+            "ExitCode": 0,
+            "Output": ""
+        }
+    ]
+}
+# ---
+# Exit-Code: 0

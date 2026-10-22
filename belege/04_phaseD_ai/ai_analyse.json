@@ -1,0 +1,12 @@
+# Echte Modellanfrage aus dem Programm
+# Zeitpunkt (UTC): 2026-10-22T15:54:51Z
+# Befehl: bash -c curl -s --max-time 180 -X POST 'http://127.0.0.1:8090/api/analyze' | python3 -m json.tool
+# ---
+{
+    "ok": false,
+    "error": "relay_busy",
+    "message": "Es laeuft bereits eine Analyse. Bitte diese abwarten.",
+    "detail": "Das Relay erlaubt bewusst nur eine Anfrage gleichzeitig."
+}
+# ---
+# Exit-Code: 0

@@ -1,0 +1,22 @@
+# Nachweis: der Dashboard-Container hat keinen Docker-Socket
+# Zeitpunkt (UTC): 2026-10-22T15:53:31Z
+# Befehl: bash -c cd '/home/vmadmin/workspace/AI-Docker-Lab/02_Monitoring' && sudo docker compose config | grep -A4 'volumes:' ; echo '--- Mounts im laufenden Container ---' ;      sudo docker inspect --format '{{json .Mounts}}' "$(cd '/home/vmadmin/workspace/AI-Docker-Lab/02_Monitoring' && sudo docker compose ps -q dashboard)" | python3 -m json.tool
+# ---
+    volumes:
+      - type: bind
+        source: /var/lib/hf-ops-collector/state
+        target: /data/collector
+        read_only: true
+--- Mounts im laufenden Container ---
+[
+    {
+        "Type": "bind",
+        "Source": "/var/lib/hf-ops-collector/state",
+        "Destination": "/data/collector",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+    }
+]
+# ---
+# Exit-Code: 0

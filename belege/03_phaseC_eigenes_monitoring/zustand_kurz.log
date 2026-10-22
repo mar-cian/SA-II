@@ -1,0 +1,10 @@
+# Lesbare Kurzfassung des Zustands
+# Zeitpunkt (UTC): 2026-10-22T15:53:31Z
+# Befehl: zustand_kurz
+# ---
+datenlage: fresh | alter: 4.2 s | messzeitpunkt: 2026-10-22T15:53:26.948+00:00
+  api      status=healthy    prozess=running   health=healthy   Prozess laeuft, Healthcheck meldet healthy.
+  web      status=healthy    prozess=running   health=healthy   Prozess laeuft, Healthcheck meldet healthy.
+  worker   status=unhealthy  prozess=running   health=unhealthy Prozess laeuft, Healthcheck meldet unhealthy. Fehlerserie: 1
+# ---
+# Exit-Code: 0

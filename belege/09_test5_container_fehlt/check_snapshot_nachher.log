@@ -1,0 +1,21 @@
+# Zustand nach der Wiederherstellung
+# Zeitpunkt (UTC): 2026-10-22T16:04:51Z
+# Befehl: bash -c '/home/vmadmin/workspace/AI-Docker-Lab/02_Monitoring/collector/scripts/check-snapshot.sh'
+# ---
+Datei          /var/lib/hf-ops-collector/state/snapshot.json
+Collector      hf-ops-host-collector 1.0.0 auf li264-vmLS1.smartlearn.lan (PID 1537101, Sequenz 56)
+Messzeitpunkt  2026-10-22T16:04:49.570+00:00
+Datenalter     2.2 s (Grenze 20 s) -> frisch
+Erfassung      ok | Docker erreichbar: True | Messdauer 84.1 ms
+
+SERVICE    ZUSTAND     HEALTH     STATUS     NEUSTARTS  BEGRUENDUNG
+api        running     healthy    healthy    0          Prozess laeuft, Healthcheck meldet healthy.
+web        running     healthy    healthy    0          Prozess laeuft, Healthcheck meldet healthy.
+worker     running     unhealthy  unhealthy  0          Prozess laeuft, Healthcheck meldet unhealthy. Fehlerserie: 4.
+
+Letzter Fehler worker (16 im Fenster)
+  2026-10-22T16:04:48.040077579Z [stdout] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+
+Ergebnis: Snapshot frisch, Datenerfassung ok.
+# ---
+# Exit-Code: 0

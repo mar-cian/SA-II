@@ -1,0 +1,21 @@
+# Erfassung bei gestopptem Container
+# Zeitpunkt (UTC): 2026-10-22T16:04:25Z
+# Befehl: bash -c '/home/vmadmin/workspace/AI-Docker-Lab/02_Monitoring/collector/scripts/check-snapshot.sh'
+# ---
+Datei          /var/lib/hf-ops-collector/state/snapshot.json
+Collector      hf-ops-host-collector 1.0.0 auf li264-vmLS1.smartlearn.lan (PID 1537101, Sequenz 51)
+Messzeitpunkt  2026-10-22T16:04:24.479+00:00
+Datenalter     1.4 s (Grenze 20 s) -> frisch
+Erfassung      ok | Docker erreichbar: True | Messdauer 85.6 ms
+
+SERVICE    ZUSTAND     HEALTH     STATUS     NEUSTARTS  BEGRUENDUNG
+api        running     healthy    healthy    0          Prozess laeuft, Healthcheck meldet healthy.
+web        running     healthy    healthy    0          Prozess laeuft, Healthcheck meldet healthy.
+worker     exited      unhealthy  unhealthy  0          Container beendet mit Exit-Code 137.
+
+Letzter Fehler worker (10 im Fenster)
+  2026-10-22T16:04:12.905700222Z [stdout] ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found
+
+Ergebnis: Snapshot frisch, Datenerfassung ok.
+# ---
+# Exit-Code: 0

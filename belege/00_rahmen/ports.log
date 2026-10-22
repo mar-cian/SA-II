@@ -1,0 +1,17 @@
+# Belegte lokale Ports
+# Zeitpunkt (UTC): 2026-10-22T15:52:46Z
+# Befehl: bash -c ss -ltnp 2>/dev/null || ss -ltn
+# ---
+State  Recv-Q Send-Q  Local Address:Port  Peer Address:PortProcess
+LISTEN 0      2048   192.168.110.61:3000       0.0.0.0:*          
+LISTEN 0      4096        127.0.0.1:8090       0.0.0.0:*          
+LISTEN 0      4096        127.0.0.1:8081       0.0.0.0:*          
+LISTEN 0      4096        127.0.0.1:8080       0.0.0.0:*          
+LISTEN 0      4096          0.0.0.0:22         0.0.0.0:*          
+LISTEN 0      4096       127.0.0.54:53         0.0.0.0:*          
+LISTEN 0      4096    127.0.0.53%lo:53         0.0.0.0:*          
+LISTEN 0      5        172.31.240.1:8899       0.0.0.0:*          
+LISTEN 0      4096        127.0.0.1:35099      0.0.0.0:*          
+LISTEN 0      4096             [::]:22            [::]:*          
+# ---
+# Exit-Code: 0
