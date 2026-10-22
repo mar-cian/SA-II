@@ -204,6 +204,84 @@ cmd_phase_d() {
   note "Die Analyse im Protokoll selbst bewerten: was ist belegt, was ist Vermutung, was falsch."
 }
 
+cmd_phase_f() {
+  setdir "10_phaseF_security"
+  say "Phase F: Belege fuer die Security-Fragen"
+
+  cap f1_docker_zugriff.log "Wer kann den Docker-Daemon ansprechen" -- bash -c \
+    "echo '--- Socket ---'; ls -l /var/run/docker.sock; \
+     echo '--- Gruppe docker ---'; getent group docker || echo 'keine Gruppe docker'; \
+     echo '--- eigener Benutzer ---'; id; \
+     echo '--- Benutzer der Host-Dienste ---'; \
+     systemctl show hf-ops-collector -p User -p DynamicUser 2>/dev/null; \
+     systemctl show hf-ops-ai-relay  -p User -p DynamicUser 2>/dev/null"
+
+  cap f2_socket_akzeptiert_schreibend.log \
+      "Die Docker-API kennt kein Leserecht: POST wird angenommen (Anfrage bewusst unvollstaendig, es entsteht nichts)" -- bash -c \
+    "echo '--- lesend ---'; \
+     sudo curl -s -o /dev/null -w 'GET  /_ping                        -> HTTP %{http_code}\n' \
+       --unix-socket /var/run/docker.sock http://localhost/_ping; \
+     echo '--- schreibend, ohne Rumpf, erzeugt keinen Container ---'; \
+     sudo curl -s -o /dev/null -w 'POST /containers/create ohne Rumpf -> HTTP %{http_code}\n' \
+       --unix-socket /var/run/docker.sock -X POST http://localhost/v1.43/containers/create; \
+     echo 'Ein 4xx/5xx der API ist die Antwort auf einen fehlerhaften Rumpf,'; \
+     echo 'nicht eine Ablehnung der Methode. Die Route ist erreichbar.'"
+
+  cap f3_lesend_verraet_daten.log "Auch lesende Routen geben Environment im Klartext heraus" -- bash -c \
+    "cd '${LAB}' && for s in api web worker; do \
+       echo \"== \$s ==\"; \
+       sudo docker inspect --format '{{json .Config.Env}}' \"\$(sudo docker compose ps -q \$s)\" \
+         | python3 -m json.tool; \
+     done"
+
+  cap f4_dashboard_ohne_socket.log "Der Dashboard-Container hat keinen Zugang zur Docker-API" -- bash -c \
+    "cd '${MON}'; echo '--- Mounts ---'; \
+     sudo docker inspect --format '{{json .Mounts}}' \"\$(sudo docker compose ps -q dashboard)\" \
+       | python3 -m json.tool; \
+     echo '--- Benutzer und Rechte im Container ---'; \
+     sudo docker inspect --format 'User={{.Config.User}} ReadonlyRootfs={{.HostConfig.ReadonlyRootfs}} CapDrop={{.HostConfig.CapDrop}} SecurityOpt={{.HostConfig.SecurityOpt}}' \
+       \"\$(sudo docker compose ps -q dashboard)\""
+
+  cap f5_haertung_collector.log "Was der Collector darf und was nicht" -- bash -c \
+    "systemctl cat hf-ops-collector 2>/dev/null | grep -vE '^\s*#|^\s*$'; \
+     echo '--- Bewertung durch systemd ---'; \
+     systemd-analyze security hf-ops-collector 2>/dev/null | tail -3"
+
+  cap f5_haertung_relay.log "Was das AI-Relay darf und was nicht" -- bash -c \
+    "systemctl cat hf-ops-ai-relay 2>/dev/null | grep -vE '^\s*#|^\s*$'; \
+     echo '--- Bewertung durch systemd ---'; \
+     systemd-analyze security hf-ops-ai-relay 2>/dev/null | tail -3"
+
+  cap f6_hostnetz_waere_erreichbar.log \
+      "Was ein Container mit Host-Netzwerk zusaetzlich erreichen wuerde" -- bash -c \
+    "echo 'Alle lokal gebundenen Dienste des Hosts:'; \
+     PATH=\"\$PATH:/usr/sbin:/sbin\"; \
+     sudo ss -ltnp 2>/dev/null || ss -ltn 2>/dev/null || netstat -ltnp 2>/dev/null || \
+       echo 'weder ss noch netstat vorhanden'"
+
+  cap f7_bindungen.log "Wohin die eigenen Dienste gebunden sind" -- bash -c \
+    "echo '--- Dashboard ---'; cd '${MON}' && sudo docker compose port dashboard 8000; \
+     echo '--- Laborumgebung ---'; cd '${LAB}' && sudo docker compose port web 8000; \
+     echo '--- alle Lauscher auf den beteiligten Ports ---'; \
+     ss -ltn | grep -E '8080|8081|8090|8899|3000' || echo 'keine'"
+
+  cap f8_keine_geheimnisse_in_logs.log \
+      "Das Relay protokolliert Groesse und Dauer, keine Promptinhalte" -- bash -c \
+    "journalctl -u hf-ops-ai-relay -n 40 --no-pager 2>/dev/null | tail -20"
+
+  cap f9_modelltext_wird_escaped.log \
+      "Modelltext wird als Text ausgegeben, nicht als HTML ausgefuehrt" -- bash -c \
+    "curl -fsS --max-time 10 '${DASHBOARD}/' > /tmp/seite.html 2>/dev/null; \
+     echo -n 'Roher script-Tag in der Seite: '; \
+     grep -c '<script>alert' /tmp/seite.html 2>/dev/null || echo 0; \
+     echo -n 'Escaped ausgegeben (&lt;): '; grep -c '&lt;' /tmp/seite.html 2>/dev/null || echo 0; \
+     echo '--- gesetzte Schutz-Kopfzeilen ---'; \
+     curl -sSI --max-time 10 '${DASHBOARD}/' | grep -iE 'content-security-policy|x-content-type|referrer'; \
+     rm -f /tmp/seite.html"
+
+  note "Die Antworten selbst gehoeren in Phase_F_Security.md, in deine Worte."
+}
+
 cmd_test1() {
   setdir "05_test1_unveraenderte_umgebung"
   say "Test 1: unveraenderte Umgebung, AI analysiert echte Daten"
@@ -380,6 +458,7 @@ Ohne Eingriff in die Umgebung:
   phase-b        unveraenderte Umgebung, Logs VOR jeder Reparatur
   phase-c        eigenes Monitoring auf echten Daten
   phase-d        AI-Status, echte Modellanfrage, Netzgrenze, Allowlist
+  phase-f        Belege fuer die sechs Security-Fragen
   test1          unveraenderte Umgebung mit AI-Analyse
 
 Mit Eingriff, jeweils mit Wiederherstellung:
@@ -403,6 +482,7 @@ case "${1:-hilfe}" in
   phase-b)       pruefe_umgebung; cmd_phase_b;;
   phase-c)       pruefe_umgebung; cmd_phase_c;;
   phase-d)       pruefe_umgebung; cmd_phase_d;;
+  phase-f)       pruefe_umgebung; cmd_phase_f;;
   test1)         pruefe_umgebung; cmd_test1;;
   test2)         pruefe_umgebung; cmd_test2;;
   test3)         pruefe_umgebung; cmd_test3;;
@@ -411,7 +491,7 @@ case "${1:-hilfe}" in
   test5)         pruefe_umgebung; cmd_test5;;
   alles-ohne-eingriff)
     pruefe_umgebung
-    cmd_rahmen; cmd_phase_a; cmd_phase_b; cmd_phase_c; cmd_phase_d; cmd_test1; cmd_index
+    cmd_rahmen; cmd_phase_a; cmd_phase_b; cmd_phase_c; cmd_phase_d; cmd_phase_f; cmd_test1; cmd_index
     ;;
   index)         cmd_index;;
   hilfe|-h|--help) cmd_hilfe;;

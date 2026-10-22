@@ -20,7 +20,7 @@ und datiert werden:
 | C, eigenes Monitoring | Anzeige auf echten Daten, kein Docker-Socket im Container | `belege.sh phase-c` |
 | D, AI | echte Modellanfrage aus dem Programm, Netzgrenze, Allowlist | `belege.sh phase-d` |
 | E, Fehlerfaelle | fuenf Versuche mit Soll, Ist, Beleg, Wiederherstellung | `belege.sh test1` bis `test5` |
-| F, Security | schriftliche Antworten, kein Befehl | von Hand, siehe unten |
+| F, Security | Befunde zu den sechs Fragen, Antworten von Hand | `belege.sh phase-f` plus `Phase_F_Security.md` |
 
 ## Ordnerstruktur
 
@@ -243,16 +243,8 @@ beobachten und notieren musst.
   AI-Karte, am besten je einen im Normalzustand und waehrend eines Fehlerfalls.
 - **Die PDF vom ersten Start.** Die liegt auf dem Mac, lege sie unter
   `belege/02_phaseB_erster_start/` ab.
-- **Phase F, Security.** Das sind schriftliche Antworten auf sechs Fragen: wer
-  den Docker-Daemon ansprechen kann und welche Hostrechte daraus entstehen,
-  warum ein `:ro`-Mount des Sockets dessen API nicht read-only macht, welche
-  API-Routen und HTTP-Methoden ein Proxy zulassen oder sperren muesste und warum
-  auch lesende Abfragen sensible Daten verraten, welche Rechte ein Host-Collector
-  behaelt und was die Trennung schuetzt und was nicht, welche Nachteile
-  Host-Netzwerk hat, und wie du externe Freigaben, Geheimnisse in Logs,
-  HTML-Ausfuehrung von Modelltext und automatische Modellaktionen verhinderst.
-  Material dazu steht in `02_Monitoring/collector/README.md` Abschnitt 2 und in
-  `02_Monitoring/ai-relay/README.md`. Die Antworten gehoeren in deine eigenen
-  Worte.
+- **Die Antworten zu Phase F.** Die Befunde sammelt `belege.sh phase-f`, die
+  sechs Fragen und das Material dazu stehen in `Phase_F_Security.md`. Die
+  Antworten gehoeren in deine eigenen Worte, du verteidigst sie in der Abnahme.
 - **Die Bewertung der Modellantwort.** Ob die AI richtig lag, entscheidest du,
   nicht das Skript.
