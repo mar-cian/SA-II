@@ -9,7 +9,40 @@ ein, was Qwen tatsaechlich geantwortet hat. Sind alle Vorschlaege passend,
 pruefe bewusst eine fragwuerdige Alternative und dokumentiere, wie Qwen damit
 umgeht. Dafuer liegen unten fertige Prompts bereit.
 
-## So fragst du und belegst es gleichzeitig
+## Weg A: ueber Open WebUI, Beleg von Hand
+
+Fuer Auftrag 3 ist das zulaessig. Qwen ist hier Engineering-Assistent, ein
+programmatischer Aufruf im laufenden Produkt wird ausdruecklich nicht verlangt.
+Das Verbot von manuellem Kopieren betraf Phase D von Auftrag 2.
+
+```bash
+cd ~/workspace/AI-Docker-Lab/03_ServiceClock
+chmod +x scripts/*.sh
+cat prompts/03_healthcheck_curl.txt      # Text zum Kopieren
+```
+
+Prompt in Open WebUI einfuegen, Modell `coder-schnell` waehlen, senden. Antwort
+mit der Kopierschaltflaeche uebernehmen und ablegen:
+
+```bash
+./scripts/beleg-qwen.sh healthcheck prompts/03_healthcheck_curl.txt
+# Antwort einfuegen, dann Strg-D in einer leeren Zeile
+```
+
+Das schreibt Prompt und Antwort mit Zeitstempel, Modell und Quellvermerk nach
+`belege/qwen/`. Im Protokoll festhalten, dass die Anfragen ueber Open WebUI
+liefen; das ist ehrlich und zulaessig.
+
+Fuer den Review die Dateien mitgeben:
+
+```bash
+./scripts/review-prompt.sh       > /tmp/review_config.txt
+./scripts/review-prompt.sh logik > /tmp/review_code.txt
+cat /tmp/review_config.txt       # Inhalt in Open WebUI einfuegen
+./scripts/beleg-qwen.sh review_config /tmp/review_config.txt
+```
+
+## Weg B: ueber die API, Beleg automatisch
 
 ```bash
 cd ~/workspace/AI-Docker-Lab/03_ServiceClock
