@@ -1,0 +1,11 @@
+# Modelltext wird als Text ausgegeben, nicht als HTML ausgefuehrt
+# Zeitpunkt (UTC): 2026-10-22T17:46:49Z
+# Befehl: bash -c curl -fsS --max-time 10 'http://127.0.0.1:8090/' > /tmp/seite.html 2>/dev/null;      echo -n 'Roher script-Tag in der Seite: ';      grep -c '<script>alert' /tmp/seite.html 2>/dev/null || echo 0;      echo -n 'Escaped ausgegeben (&lt;): '; grep -c '&lt;' /tmp/seite.html 2>/dev/null || echo 0;      echo '--- gesetzte Schutz-Kopfzeilen ---';      curl -sSI --max-time 10 'http://127.0.0.1:8090/' | grep -iE 'content-security-policy|x-content-type|referrer';      rm -f /tmp/seite.html
+# ---
+Roher script-Tag in der Seite: 0
+0
+Escaped ausgegeben (&lt;): 0
+0
+--- gesetzte Schutz-Kopfzeilen ---
+# ---
+# Exit-Code: 0

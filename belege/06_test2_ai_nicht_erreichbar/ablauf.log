@@ -1,0 +1,50 @@
+Fehlerfall-Protokoll: AI nicht erreichbar
+Protokolldatei: /home/vmadmin/workspace/AI-Docker-Lab/belege/06_test2_ai_nicht_erreichbar/nachweis_ai_ausfall_20261022T174614Z.log
+Dashboard:      http://127.0.0.1:8090
+Toter Port:     9
+
+[2026-10-22T17:46:14Z] === Soll-Zustand vor dem Eingriff ===
+[2026-10-22T17:46:14Z] AI:         status=available ziel=http://172.31.240.1:8899 grund=Relay und Modell 'coder-schnell' bereit.
+[2026-10-22T17:46:15Z] Monitoring: datenlage=fresh services: api=healthy, web=healthy, worker=healthy
+
+[2026-10-22T17:46:15Z] === Eingriff: Zieladresse des Dashboards auf unbenutzten Port 9 ===
+[2026-10-22T17:46:15Z] Ollama und Relay bleiben unveraendert, nur AI_RELAY_URL wird gesetzt.
+ Container hf-ops-dashboard-dashboard-1  Recreate
+ Container hf-ops-dashboard-dashboard-1  Recreated
+ Container hf-ops-dashboard-dashboard-1  Starting
+ Container hf-ops-dashboard-dashboard-1  Started
+
+[2026-10-22T17:46:31Z] === Ist-Zustand im Ausfall ===
+[2026-10-22T17:46:31Z] AI:         status=unavailable ziel=http://127.0.0.1:9 grund=AI-Relay unter http://127.0.0.1:9 nicht erreichbar. Auf dem Host pruefen: systemctl status hf-ops-ai-relay
+[2026-10-22T17:46:31Z] Monitoring: datenlage=fresh services: api=healthy, web=healthy, worker=healthy
+[2026-10-22T17:46:31Z] Erwartung: AI status=unavailable mit Begruendung, Monitoring unveraendert nutzbar.
+[2026-10-22T17:46:31Z] BELEG ok: AI wird eindeutig als unavailable gefuehrt.
+[2026-10-22T17:46:31Z] BELEG ok: Dashboard-Health weiterhin erreichbar, AI-Ausfall wirft es nicht um.
+
+[2026-10-22T17:46:31Z] === Analyse im Ausfall anfordern (muss sauber scheitern, nicht haengen) ===
+HTTP 502 in 0.001411s
+  error  : relay_unreachable
+  message: AI-Relay unter http://127.0.0.1:9 nicht erreichbar. Auf dem Host pruefen: systemctl status hf-ops-ai-relay
+
+[2026-10-22T17:46:31Z] === Wiederherstellung: korrekte Adresse ===
+ Container hf-ops-dashboard-dashboard-1  Recreate
+ Container hf-ops-dashboard-dashboard-1  Recreated
+ Container hf-ops-dashboard-dashboard-1  Starting
+ Container hf-ops-dashboard-dashboard-1  Started
+[2026-10-22T17:46:48Z] AI:         status=available ziel=http://172.31.240.1:8899 grund=Relay und Modell 'coder-schnell' bereit.
+[2026-10-22T17:46:48Z] Monitoring: datenlage=fresh services: api=healthy, web=healthy, worker=healthy
+
+[2026-10-22T17:46:48Z] === Abschluss ===
+[2026-10-22T17:46:48Z] Protokoll gespeichert unter /home/vmadmin/workspace/AI-Docker-Lab/belege/06_test2_ai_nicht_erreichbar/nachweis_ai_ausfall_20261022T174614Z.log
+[2026-10-22T17:46:48Z] Relay-Logs der letzten Minuten:
+Oct 22 17:59:53 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T15:59:53+00:00 INFO analyse model=coder-schnell prompt_bytes=3116 num_predict=320
+Oct 22 18:01:03 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T16:01:03+00:00 INFO fertig model=coder-schnell dauer=70358.7ms zeichen=1103
+Oct 22 18:02:00 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T16:02:00+00:00 INFO analyse model=coder-schnell prompt_bytes=3376 num_predict=320
+Oct 22 18:03:15 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T16:03:15+00:00 INFO fertig model=coder-schnell dauer=74699.3ms zeichen=958
+Oct 22 19:11:06 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T17:11:06+00:00 INFO analyse model=coder-schnell prompt_bytes=3116 num_predict=320
+Oct 22 19:12:25 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T17:12:25+00:00 INFO fertig model=coder-schnell dauer=78457.6ms zeichen=1016
+Oct 22 19:18:05 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T17:18:05+00:00 INFO analyse model=coder-schnell prompt_bytes=2987 num_predict=320
+Oct 22 19:19:17 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T17:19:17+00:00 INFO fertig model=coder-schnell dauer=72179.4ms zeichen=1175
+Oct 22 19:38:12 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T17:38:12+00:00 INFO analyse model=coder-schnell prompt_bytes=2988 num_predict=320
+Oct 22 19:39:25 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T17:39:25+00:00 INFO fertig model=coder-schnell dauer=72733.2ms zeichen=794
+# Exit-Code des Skripts: 0

@@ -1,0 +1,9 @@
+# Beweis, dass waehrend des Abbaus nichts antwortet
+# Zeitpunkt (UTC): 2026-10-22T17:46:59Z
+# Befehl: bash -c curl -sS -o /dev/null -w 'Dashboard waehrend des Abbaus: HTTP %{http_code}\n'        --max-time 5 'http://127.0.0.1:8090/health';      echo '(000 bedeutet: keine Verbindung, der Dienst ist wirklich weg)'
+# ---
+curl: (7) Failed to connect to 127.0.0.1 port 8090 after 0 ms: Could not connect to server
+Dashboard waehrend des Abbaus: HTTP 000
+(000 bedeutet: keine Verbindung, der Dienst ist wirklich weg)
+# ---
+# Exit-Code: 0

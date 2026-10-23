@@ -1,0 +1,27 @@
+# Konfiguration ist syntaktisch gueltig und wirklich aktiv
+# Zeitpunkt (UTC): 2026-10-23T09:37:00Z
+# Befehl: bash -c sudo nginx -t; echo; systemctl is-active nginx; echo;      echo '--- Auszug aus der aktiven Konfiguration (nginx -T) ---';      sudo nginx -T 2>/dev/null | grep -A14 'hf-lab-expose'
+# ---
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+
+active
+
+--- Auszug aus der aktiven Konfiguration (nginx -T) ---
+# configuration file /etc/nginx/conf.d/hf-lab-expose.conf:
+# Managed by expose-lab.sh
+server {
+    listen 192.168.110.61:8081;
+    server_name _;
+    allow 192.168.110.70;
+    allow 192.168.110.61;
+    deny all;
+    location / {
+        proxy_pass http://127.0.0.1:8081;
+        proxy_set_header Host $host;
+        proxy_set_header X-Lab-Request $http_x_lab_request;
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 110s;
+    }
+# ---
+# Exit-Code: 0

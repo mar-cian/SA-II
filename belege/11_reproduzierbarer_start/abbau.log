@@ -1,0 +1,12 @@
+# Dashboard abbauen, Container und Netz entfernen
+# Zeitpunkt (UTC): 2026-10-22T17:46:49Z
+# Befehl: bash -c cd '/home/vmadmin/workspace/AI-Docker-Lab/02_Monitoring' && sudo docker compose down
+# ---
+ Container hf-ops-dashboard-dashboard-1  Stopping
+ Container hf-ops-dashboard-dashboard-1  Stopped
+ Container hf-ops-dashboard-dashboard-1  Removing
+ Container hf-ops-dashboard-dashboard-1  Removed
+ Network hf-ops-dashboard  Removing
+ Network hf-ops-dashboard  Removed
+# ---
+# Exit-Code: 0

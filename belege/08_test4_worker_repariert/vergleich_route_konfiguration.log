@@ -1,5 +1,5 @@
 # Route im Code gegen Wert in der Konfiguration
-# Zeitpunkt (UTC): 2026-10-22T16:00:52Z
+# Zeitpunkt (UTC): 2026-10-22T17:15:39Z
 # Befehl: bash -c grep -n 'jobs\|jobz\|JOB_PATH' '/home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung/api/app.py' '/home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung/worker/app.py' '/home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung/compose.yaml'
 # ---
 /home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung/api/app.py:9:        elif self.path == '/jobs':

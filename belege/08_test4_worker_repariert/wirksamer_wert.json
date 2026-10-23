@@ -1,10 +1,10 @@
 # Tatsaechlich wirksamer Wert im laufenden Container
-# Zeitpunkt (UTC): 2026-10-22T16:00:52Z
+# Zeitpunkt (UTC): 2026-10-22T17:15:39Z
 # Befehl: bash -c cd '/home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung' && sudo docker inspect --format '{{json .Config.Env}}'        "$(sudo docker compose ps -q worker)" | python3 -m json.tool
 # ---
 [
-    "JOB_PATH=/jobz",
     "API_URL=http://api:8000",
+    "JOB_PATH=/jobz",
     "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
     "LANG=C.UTF-8",
     "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",

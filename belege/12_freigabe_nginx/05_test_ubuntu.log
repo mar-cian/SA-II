@@ -1,0 +1,38 @@
+# Zugriff vom Ubuntu, erst lokal, dann ueber die LAN-Adresse
+# Zeitpunkt (UTC): 2026-10-23T09:37:00Z
+# Befehl: bash -c for p in 8081 8082 8083; do
+       curl -sS -o /dev/null -w "127.0.0.1:$p  HTTP %{http_code}\n" --max-time 10 "http://127.0.0.1:$p/"
+       curl -sS -o /dev/null -w "192.168.110.61:$p  HTTP %{http_code}\n" --max-time 10 "http://192.168.110.61:$p/"
+     done
+     echo
+     echo 'Inhaltliche Gegenprobe ueber die LAN-Adresse:'
+     curl -sS --max-time 10 "http://192.168.110.61:8083/api/info"; echo
+     curl -sS --max-time 10 "http://192.168.110.61:8082/api/state" | head -c 200; echo
+# ---
+127.0.0.1:8081  HTTP 200
+192.168.110.61:8081  HTTP 200
+127.0.0.1:8082  HTTP 200
+192.168.110.61:8082  HTTP 200
+127.0.0.1:8083  HTTP 200
+192.168.110.61:8083  HTTP 200
+
+Inhaltliche Gegenprobe ueber die LAN-Adresse:
+{
+  "error": "route not found",
+  "path": "/api/info",
+  "valid_routes": [
+    "/",
+    "/health",
+    "/api/clock"
+  ]
+}
+{
+  "data_status": "fresh",
+  "data_message": null,
+  "age_seconds": 2.4,
+  "max_age_seconds": 20,
+  "measured_at": "2026-10-23T09:36:58.570+00:00",
+  "collector": {
+    "name": "hf-ops-host-collector
+# ---
+# Exit-Code: 0

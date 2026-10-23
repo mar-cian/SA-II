@@ -1,0 +1,48 @@
+# Was der Collector darf und was nicht
+# Zeitpunkt (UTC): 2026-10-22T17:46:49Z
+# Befehl: bash -c systemctl cat hf-ops-collector 2>/dev/null | grep -vE '^\s*#|^\s*$';      echo '--- Bewertung durch systemd ---';      systemd-analyze security hf-ops-collector 2>/dev/null | tail -3
+# ---
+[Unit]
+Description=HF Ops Host-Collector (liest Docker-Zustaende, schreibt JSON-Snapshot)
+Documentation=file:/opt/hf-ops-collector/README.md
+After=docker.service
+Wants=docker.service
+[Service]
+Type=simple
+EnvironmentFile=-/etc/hf-ops-collector/collector.env
+ExecStart=/usr/bin/python3 /opt/hf-ops-collector/hf_collector.py --loop
+Restart=always
+RestartSec=3
+TimeoutStopSec=15
+User=root
+Group=root
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/hf-ops-collector
+ProtectHome=true
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectClock=true
+ProtectHostname=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+RestrictNamespaces=true
+LockPersonality=true
+RemoveIPC=true
+RestrictAddressFamilies=AF_UNIX AF_NETLINK
+MemoryMax=192M
+TasksMax=64
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=hf-ops-collector
+[Install]
+WantedBy=multi-user.target
+--- Bewertung durch systemd ---
+✗ UMask=                                                      Files created by service are world-readable by default                       0.1
+
+→ Overall exposure level for hf-ops-collector.service: 5.7 MEDIUM 😐
+# ---
+# Exit-Code: 0

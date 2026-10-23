@@ -1,0 +1,8 @@
+# Collector und Relay neu starten
+# Zeitpunkt (UTC): 2026-10-22T17:46:59Z
+# Befehl: bash -c sudo systemctl restart hf-ops-collector hf-ops-ai-relay; sleep 3;      systemctl is-active hf-ops-collector hf-ops-ai-relay
+# ---
+active
+active
+# ---
+# Exit-Code: 0

@@ -1,0 +1,18 @@
+# Daten sind nach dem Neustart wieder frisch
+# Zeitpunkt (UTC): 2026-10-22T17:47:34Z
+# Befehl: bash -c '/home/vmadmin/workspace/AI-Docker-Lab/02_Monitoring/collector/scripts/check-snapshot.sh'
+# ---
+Datei          /var/lib/hf-ops-collector/state/snapshot.json
+Collector      hf-ops-host-collector 1.0.0 auf li264-vmLS1.smartlearn.lan (PID 1709396, Sequenz 7)
+Messzeitpunkt  2026-10-22T17:47:30.446+00:00
+Datenalter     4.4 s (Grenze 20 s) -> frisch
+Erfassung      ok | Docker erreichbar: True | Messdauer 91.7 ms
+
+SERVICE    ZUSTAND     HEALTH     STATUS     NEUSTARTS  BEGRUENDUNG
+api        running     healthy    healthy    0          Prozess laeuft, Healthcheck meldet healthy.
+web        running     healthy    healthy    0          Prozess laeuft, Healthcheck meldet healthy.
+worker     running     healthy    healthy    0          Prozess laeuft, Healthcheck meldet healthy.
+
+Ergebnis: Snapshot frisch, Datenerfassung ok.
+# ---
+# Exit-Code: 0

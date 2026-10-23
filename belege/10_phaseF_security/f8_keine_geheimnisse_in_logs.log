@@ -1,0 +1,26 @@
+# Das Relay protokolliert Groesse und Dauer, keine Promptinhalte
+# Zeitpunkt (UTC): 2026-10-22T17:46:49Z
+# Befehl: bash -c journalctl -u hf-ops-ai-relay -n 40 --no-pager 2>/dev/null | tail -20
+# ---
+Oct 22 17:53:38 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T15:53:38+00:00 WARN model_not_allowed Modell 'llama3' ist nicht freigegeben. | erlaubt: coder-schnell, coder-genau
+Oct 22 17:53:38 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T15:53:38+00:00 INFO analyse model=coder-schnell prompt_bytes=3119 num_predict=320
+Oct 22 17:54:51 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T15:54:51+00:00 WARN model_not_allowed Modell 'llama3' ist nicht freigegeben. | erlaubt: coder-schnell, coder-genau
+Oct 22 17:54:51 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T15:54:51+00:00 WARN relay_busy Es laeuft bereits eine Analyse. Bitte diese abwarten. | Das Relay erlaubt bewusst nur eine Anfrage gleichzeitig.
+Oct 22 17:54:51 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T15:54:51+00:00 WARN model_not_allowed Modell 'llama3' ist nicht freigegeben. | erlaubt: coder-schnell, coder-genau
+Oct 22 17:54:59 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T15:54:59+00:00 INFO fertig model=coder-schnell dauer=81281.0ms zeichen=939
+Oct 22 17:55:07 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T15:55:07+00:00 INFO analyse model=coder-schnell prompt_bytes=3118 num_predict=320
+Oct 22 17:56:21 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T15:56:21+00:00 INFO fertig model=coder-schnell dauer=73342.5ms zeichen=954
+Oct 22 17:57:50 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T15:57:50+00:00 INFO analyse model=coder-schnell prompt_bytes=3118 num_predict=320
+Oct 22 17:58:59 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T15:58:59+00:00 INFO fertig model=coder-schnell dauer=69747.0ms zeichen=1108
+Oct 22 17:59:53 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T15:59:53+00:00 INFO analyse model=coder-schnell prompt_bytes=3116 num_predict=320
+Oct 22 18:01:03 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T16:01:03+00:00 INFO fertig model=coder-schnell dauer=70358.7ms zeichen=1103
+Oct 22 18:02:00 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T16:02:00+00:00 INFO analyse model=coder-schnell prompt_bytes=3376 num_predict=320
+Oct 22 18:03:15 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T16:03:15+00:00 INFO fertig model=coder-schnell dauer=74699.3ms zeichen=958
+Oct 22 19:11:06 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T17:11:06+00:00 INFO analyse model=coder-schnell prompt_bytes=3116 num_predict=320
+Oct 22 19:12:25 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T17:12:25+00:00 INFO fertig model=coder-schnell dauer=78457.6ms zeichen=1016
+Oct 22 19:18:05 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T17:18:05+00:00 INFO analyse model=coder-schnell prompt_bytes=2987 num_predict=320
+Oct 22 19:19:17 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T17:19:17+00:00 INFO fertig model=coder-schnell dauer=72179.4ms zeichen=1175
+Oct 22 19:38:12 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T17:38:12+00:00 INFO analyse model=coder-schnell prompt_bytes=2988 num_predict=320
+Oct 22 19:39:25 li264-vmLS1.smartlearn.lan hf-ops-ai-relay[1053559]: 2026-10-22T17:39:25+00:00 INFO fertig model=coder-schnell dauer=72733.2ms zeichen=794
+# ---
+# Exit-Code: 0

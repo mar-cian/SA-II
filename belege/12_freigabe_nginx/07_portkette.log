@@ -1,0 +1,21 @@
+# Portkette und Begruendung
+# Zeitpunkt (UTC): 2026-10-23T09:37:01Z
+# ---
+Browser auf Kali (192.168.110.70)
+  --> Nginx  192.168.110.61:<port>        (listen auf der LAN-Adresse, allow/deny)
+  --> proxy_pass 127.0.0.1:<port>  (die Anwendung bleibt auf Loopback)
+  --> Container-Port 8000
+  --> app.py
+
+Freigegeben: 8081 8082 8083
+  8081 Oberflaeche der vorgegebenen Laborumgebung
+  8082 Dashboard aus Auftrag 2
+  8083 Service Clock aus Auftrag 3
+
+Nicht freigegeben und bewusst nicht: 8080 (Ollama), 3000 (Open WebUI),
+172.31.240.1:8899 (AI-Relay, nur aus dem Dashboard-Netz erreichbar).
+
+Warum die Anwendungen trotz Freigabe auf 127.0.0.1 gebunden bleiben:
+Nur Nginx ist im Netz erreichbar. Damit gilt die allow/deny-Liste fuer
+jeden Zugriff; eine Bindung der Container auf 0.0.0.0 waere an dieser
+Pruefung vorbei. Siehe 04_listener.log.

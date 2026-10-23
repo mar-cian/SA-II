@@ -1,0 +1,19 @@
+# Was ein Container mit Host-Netzwerk zusaetzlich erreichen wuerde
+# Zeitpunkt (UTC): 2026-10-22T17:46:49Z
+# Befehl: bash -c echo 'Alle lokal gebundenen Dienste des Hosts:';      PATH="$PATH:/usr/sbin:/sbin";      sudo ss -ltnp 2>/dev/null || ss -ltn 2>/dev/null || netstat -ltnp 2>/dev/null ||        echo 'weder ss noch netstat vorhanden'
+# ---
+Alle lokal gebundenen Dienste des Hosts:
+State  Recv-Q Send-Q  Local Address:Port  Peer Address:PortProcess                                                  
+LISTEN 0      2048   192.168.110.61:3000       0.0.0.0:*    users:(("python3",pid=21771,fd=43))                     
+LISTEN 0      4096        127.0.0.1:8090       0.0.0.0:*    users:(("docker-proxy",pid=1708317,fd=7))               
+LISTEN 0      4096        127.0.0.1:8081       0.0.0.0:*    users:(("docker-proxy",pid=25891,fd=7))                 
+LISTEN 0      4096        127.0.0.1:8080       0.0.0.0:*    users:(("ollama",pid=20359,fd=4))                       
+LISTEN 0      4096          0.0.0.0:22         0.0.0.0:*    users:(("sshd",pid=19773,fd=3),("systemd",pid=1,fd=264))
+LISTEN 0      4096       127.0.0.54:53         0.0.0.0:*    users:(("systemd-resolve",pid=612,fd=19))               
+LISTEN 0      512         127.0.0.1:41089      0.0.0.0:*    users:(("llama-server",pid=1694667,fd=3))               
+LISTEN 0      4096    127.0.0.53%lo:53         0.0.0.0:*    users:(("systemd-resolve",pid=612,fd=17))               
+LISTEN 0      5        172.31.240.1:8899       0.0.0.0:*    users:(("python3",pid=1053559,fd=3))                    
+LISTEN 0      4096        127.0.0.1:35099      0.0.0.0:*    users:(("containerd",pid=21023,fd=13))                  
+LISTEN 0      4096             [::]:22            [::]:*    users:(("sshd",pid=19773,fd=4),("systemd",pid=1,fd=266))
+# ---
+# Exit-Code: 0

@@ -1,0 +1,8 @@
+# Verwendete Angaben
+# Zeitpunkt (UTC): 2026-10-23T09:37:00Z
+# ---
+Ubuntu-IP : 192.168.110.61
+Kali-IP   : 192.168.110.70
+Ports     : 8081 8082 8083
+Skript    : /home/vmadmin/workspace/AI-Docker-Lab/expose-lab.sh (unveraendert aus dem Unterrichtspaket)
+Zieldatei : /etc/nginx/conf.d/hf-lab-expose.conf

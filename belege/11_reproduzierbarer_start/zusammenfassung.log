@@ -1,0 +1,15 @@
+# Reproduzierbarer Start
+# Zeitpunkt (UTC): 2026-10-22T17:48:51Z
+# ---
+Start  : 2026-10-22T17:46:49Z
+Fertig : 2026-10-22T17:48:51Z
+
+Abgebaut und aus dem Quellstand neu gebaut wurden:
+  - Dashboard-Container und sein Netz (docker compose down, dann up -d --build)
+  - Host-Collector und AI-Relay (systemctl restart)
+
+Nicht angefasst: die vorgegebene Laborumgebung in 01_Startumgebung.
+
+Grenze dieses Nachweises: belegt ist der Neustart aus dem vorhandenen
+Quellordner. Ein vollstaendiger Aufbau auf einem frischen System ist in
+DEPLOY.md mit Pruefpunkten beschrieben, aber hier nicht durchgespielt.

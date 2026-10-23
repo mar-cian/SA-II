@@ -1,0 +1,16 @@
+# Wohin die eigenen Dienste gebunden sind
+# Zeitpunkt (UTC): 2026-10-22T17:46:49Z
+# Befehl: bash -c echo '--- Dashboard ---'; cd '/home/vmadmin/workspace/AI-Docker-Lab/02_Monitoring' && sudo docker compose port dashboard 8000;      echo '--- Laborumgebung ---'; cd '/home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung' && sudo docker compose port web 8000;      echo '--- alle Lauscher auf den beteiligten Ports ---';      ss -ltn | grep -E '8080|8081|8090|8899|3000' || echo 'keine'
+# ---
+--- Dashboard ---
+127.0.0.1:8090
+--- Laborumgebung ---
+127.0.0.1:8081
+--- alle Lauscher auf den beteiligten Ports ---
+LISTEN 0      2048   192.168.110.61:3000       0.0.0.0:*   
+LISTEN 0      4096        127.0.0.1:8090       0.0.0.0:*   
+LISTEN 0      4096        127.0.0.1:8081       0.0.0.0:*   
+LISTEN 0      4096        127.0.0.1:8080       0.0.0.0:*   
+LISTEN 0      5        172.31.240.1:8899       0.0.0.0:*   
+# ---
+# Exit-Code: 0

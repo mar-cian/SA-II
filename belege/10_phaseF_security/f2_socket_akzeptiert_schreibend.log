@@ -1,0 +1,12 @@
+# Die Docker-API kennt kein Leserecht: POST wird angenommen (Anfrage bewusst unvollstaendig, es entsteht nichts)
+# Zeitpunkt (UTC): 2026-10-22T17:46:48Z
+# Befehl: bash -c echo '--- lesend ---';      sudo curl -s -o /dev/null -w 'GET  /_ping                        -> HTTP %{http_code}\n'        --unix-socket /var/run/docker.sock http://localhost/_ping;      echo '--- schreibend, ohne Rumpf, erzeugt keinen Container ---';      sudo curl -s -o /dev/null -w 'POST /containers/create ohne Rumpf -> HTTP %{http_code}\n'        --unix-socket /var/run/docker.sock -X POST http://localhost/v1.43/containers/create;      echo 'Ein 4xx/5xx der API ist die Antwort auf einen fehlerhaften Rumpf,';      echo 'nicht eine Ablehnung der Methode. Die Route ist erreichbar.'
+# ---
+--- lesend ---
+GET  /_ping                        -> HTTP 200
+--- schreibend, ohne Rumpf, erzeugt keinen Container ---
+POST /containers/create ohne Rumpf -> HTTP 400
+Ein 4xx/5xx der API ist die Antwort auf einen fehlerhaften Rumpf,
+nicht eine Ablehnung der Methode. Die Route ist erreichbar.
+# ---
+# Exit-Code: 0

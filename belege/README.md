@@ -3,7 +3,7 @@
 Erzeugt mit `02_Monitoring/scripts/belege.sh`. Jede Datei traegt im Kopf
 den Zeitpunkt, den ausgefuehrten Befehl und den Exit-Code.
 
-Stand: 2026-10-22T16:05:03Z
+Stand: 2026-10-23T09:38:07Z
 
 | Ordner | Erfasst am | Dateien |
 |---|---|---|
@@ -13,9 +13,13 @@ Stand: 2026-10-22T16:05:03Z
 | `03_phaseC_eigenes_monitoring` | 2026-10-22T15:53:31Z | 7 |
 | `04_phaseD_ai` | 2026-10-22T15:54:51Z | 6 |
 | `05_test1_unveraenderte_umgebung` | 2026-10-22T15:57:49Z | 5 |
+| `06_test2_ai_nicht_erreichbar` | 2026-10-22T17:46:14Z | 4 |
 | `07_test3_erfassung_gestoert` | 2026-10-22T15:59:09Z | 4 |
-| `08_test4_worker_repariert` | 2026-10-22T16:01:34Z | 13 |
+| `08_test4_worker_repariert` | 2026-10-22T17:17:39Z | 13 |
 | `09_test5_container_fehlt` | 2026-10-22T16:03:24Z | 9 |
+| `10_phaseF_security` | 2026-10-22T17:46:48Z | 10 |
+| `11_reproduzierbarer_start` | 2026-10-22T17:46:49Z | 14 |
+| `12_freigabe_nginx` | 2026-10-23T09:37:00Z | 9 |
 
 ## Dateien im Einzelnen
 
@@ -73,6 +77,13 @@ Stand: 2026-10-22T16:05:03Z
 - `dashboard_health.json` Dashboard-Health
 - `ps.log` Containerzustand
 
+### 06_test2_ai_nicht_erreichbar
+
+- `ablauf.log` Fehlerfall-Protokoll: AI nicht erreichbar
+- `ai_status_nachher.json` AI-Status nach der Wiederherstellung
+- `nachweis_ai_ausfall_20261022T173610Z.log` Fehlerfall-Protokoll: AI nicht erreichbar
+- `nachweis_ai_ausfall_20261022T174614Z.log` Fehlerfall-Protokoll: AI nicht erreichbar
+
 ### 07_test3_erfassung_gestoert
 
 - `ablauf.log` Fehlerfall-Protokoll: Datenerfassung gestoert
@@ -91,8 +102,8 @@ Stand: 2026-10-22T16:05:03Z
 - `wirksamer_wert.json` Tatsaechlich wirksamer Wert im laufenden Container
 - `wirksamer_wert_nachher.json` Wirksamer Wert nach der Containerneuerstellung
 - `zeitachse.log` Zeitachse
-- `zeitpunkt_nach_eingriff.txt` 2026-10-22T16:01:34Z
-- `zeitpunkt_vor_eingriff.txt` 2026-10-22T16:00:52Z
+- `zeitpunkt_nach_eingriff.txt` 2026-10-22T17:17:39Z
+- `zeitpunkt_vor_eingriff.txt` 2026-10-22T17:15:39Z
 - `zustand_nachher.json` Zustand nach dem Eingriff
 - `zustand_vorher.json` Zustand vor dem Eingriff
 
@@ -107,4 +118,46 @@ Stand: 2026-10-22T16:05:03Z
 - `zeitpunkt_eingriff.txt` 2026-10-22T16:03:24Z
 - `zustand_fehlend.json` Anzeige bei fehlendem Container
 - `zustand_gestoppt.json` Anzeige bei gestopptem Container
+
+### 10_phaseF_security
+
+- `f1_docker_zugriff.log` Wer kann den Docker-Daemon ansprechen
+- `f2_socket_akzeptiert_schreibend.log` Die Docker-API kennt kein Leserecht: POST wird angenommen (Anfrage bew
+- `f3_lesend_verraet_daten.log` Auch lesende Routen geben Environment im Klartext heraus
+- `f4_dashboard_ohne_socket.log` Der Dashboard-Container hat keinen Zugang zur Docker-API
+- `f5_haertung_collector.log` Was der Collector darf und was nicht
+- `f5_haertung_relay.log` Was das AI-Relay darf und was nicht
+- `f6_hostnetz_waere_erreichbar.log` Was ein Container mit Host-Netzwerk zusaetzlich erreichen wuerde
+- `f7_bindungen.log` Wohin die eigenen Dienste gebunden sind
+- `f8_keine_geheimnisse_in_logs.log` Das Relay protokolliert Groesse und Dauer, keine Promptinhalte
+- `f9_modelltext_wird_escaped.log` Modelltext wird als Text ausgegeben, nicht als HTML ausgefuehrt
+
+### 11_reproduzierbarer_start
+
+- `abbau.log` Dashboard abbauen, Container und Netz entfernen
+- `ai_analyse_nachher.json` Und eine Analyse laeuft wieder durch
+- `ai_nachher.json` AI ist nach dem Neustart wieder erreichbar
+- `aufbau.log` Dashboard aus dem Quellstand neu bauen und starten
+- `check_snapshot_nachher.log` Daten sind nach dem Neustart wieder frisch
+- `dashboard_health_nachher.json` Dashboard antwortet wieder
+- `hostdienste_neustart.log` Collector und Relay neu starten
+- `luecke.log` Beweis, dass waehrend des Abbaus nichts antwortet
+- `ps_nachher.log` Containerzustand nach dem Neustart
+- `zeitpunkt_fertig.txt` 2026-10-22T17:48:51Z
+- `zeitpunkt_start.txt` 2026-10-22T17:46:49Z
+- `zusammenfassung.log` Reproduzierbarer Start
+- `zustand_nachher.json` Zustand nach dem Neustart
+- `zustand_vorher.json` Zustand vor dem Neustart
+
+### 12_freigabe_nginx
+
+- `00_eingabe.log` Verwendete Angaben
+- `01_skript_lauf.log` Einrichtung mit expose-lab.sh, Ausgabe vollstaendig
+- `02_konfiguration.conf` Erzeugte Nginx-Konfiguration
+- `03_nginx_aktiv.log` Konfiguration ist syntaktisch gueltig und wirklich aktiv
+- `04_listener.log` Wer lauscht wo: Nginx im LAN, die Anwendungen nur lokal
+- `05_test_ubuntu.log` Zugriff vom Ubuntu, erst lokal, dann ueber die LAN-Adresse
+- `06_zugriffslog.log` Nginx-Zugriffsprotokoll zu den freigegebenen Ports
+- `07_portkette.log` Portkette und Begruendung
+- `08_offene_punkte.log` Was von Hand dazugehoert
 

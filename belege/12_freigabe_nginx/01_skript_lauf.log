@@ -1,0 +1,15 @@
+# Einrichtung mit expose-lab.sh, Ausgabe vollstaendig
+# Zeitpunkt (UTC): 2026-10-23T09:37:00Z
+# Befehl: sudo bash /home/vmadmin/workspace/AI-Docker-Lab/expose-lab.sh 192.168.110.61 192.168.110.70 8081 8082 8083
+# ---
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+Sicherung: /var/backups/hf-lab-expose/previous.5JKq7DF6
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+Erreichbar: http://192.168.110.61:8081/ (HTTP/1.1 200 OK)
+Erreichbar: http://192.168.110.61:8082/ (HTTP/1.1 200 OK)
+Erreichbar: http://192.168.110.61:8083/ (HTTP/1.1 200 OK)
+Nginx-Freigabe eingerichtet. Firewall und Zugriff von Kali separat prüfen.
+# ---
+# Exit-Code: 0

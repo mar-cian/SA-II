@@ -1,0 +1,34 @@
+# Was von Hand dazugehoert
+# Zeitpunkt (UTC): 2026-10-23T09:37:01Z
+# ---
+Dieser Ordner belegt alles, was auf dem Ubuntu messbar ist. Von Hand
+fehlen noch:
+
+1. Zugriff vom Kali. Auf dem Kali ausfuehren und die Datei hierher legen:
+
+   UBUNTU_IP=192.168.110.61
+   { date -u +%Y-%m-%dT%H:%M:%SZ
+     for p in 8081 8082 8083; do
+       curl -sS -o /dev/null -w "$UBUNTU_IP:$p HTTP %{http_code}\n" \
+         --connect-timeout 5 --max-time 10 "http://$UBUNTU_IP:$p/"
+     done
+     curl -sS --max-time 10 "http://$UBUNTU_IP:8083/api/info"
+   } | tee 08_test_kali.log
+
+   scp 08_test_kali.log <benutzer>@192.168.110.61:~/workspace/AI-Docker-Lab/belege/12_freigabe_nginx/
+
+2. Bildschirmaufnahme des Browsers auf dem Kali mit sichtbarer URL
+   http://192.168.110.61:8082 und http://192.168.110.61:8083, hier ablegen als
+   09_browser_kali_dashboard.png und 09_browser_kali_clock.png
+
+3. Negativtest: ./scripts/belege.sh freigabe-negativ (siehe dort)
+
+# Bekannte Abweichung, gehoert benannt statt verschwiegen
+Das Arbeitsblatt nennt als Negativtest eine POST-Anfrage ohne den Header
+X-Lab-Request mit erwartetem HTTP 403 und "missing lab header". Das gilt
+fuer das Referenz-Dashboard der Lehrperson, das /api/analyse anbietet und
+diesen Header verlangt. Dieses Dashboard hat /api/analyze und prueft den
+Header nicht; die Anfrage wird angenommen. Nginx gibt den Header per
+proxy_set_header weiter, er wird nur nicht ausgewertet. Begrenzt wird der
+Zugriff hier durch die allow/deny-Liste und die Loopback-Bindung, belegt
+in 02_konfiguration.conf, 04_listener.log und 10_negativtest.log.

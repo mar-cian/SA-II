@@ -1,0 +1,22 @@
+# AI-Status nach der Wiederherstellung
+# Zeitpunkt (UTC): 2026-10-22T17:46:48Z
+# Befehl: bash -c curl -fsS --max-time 10 'http://127.0.0.1:8090/api/ai' | python3 -m json.tool
+# ---
+{
+    "status": "available",
+    "reason": null,
+    "message": "Relay und Modell 'coder-schnell' bereit.",
+    "relay_url": "http://172.31.240.1:8899",
+    "model": "coder-schnell",
+    "models_available": [
+        "coder-genau:latest",
+        "qwen2.5-coder:7b",
+        "coder-schnell:latest",
+        "qwen2.5-coder:3b"
+    ],
+    "checked_at": "2026-10-22T17:46:46+00:00",
+    "last_analysis": null,
+    "last_error": null
+}
+# ---
+# Exit-Code: 0

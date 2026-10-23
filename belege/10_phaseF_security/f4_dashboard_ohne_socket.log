@@ -1,0 +1,19 @@
+# Der Dashboard-Container hat keinen Zugang zur Docker-API
+# Zeitpunkt (UTC): 2026-10-22T17:46:48Z
+# Befehl: bash -c cd '/home/vmadmin/workspace/AI-Docker-Lab/02_Monitoring'; echo '--- Mounts ---';      sudo docker inspect --format '{{json .Mounts}}' "$(sudo docker compose ps -q dashboard)"        | python3 -m json.tool;      echo '--- Benutzer und Rechte im Container ---';      sudo docker inspect --format 'User={{.Config.User}} ReadonlyRootfs={{.HostConfig.ReadonlyRootfs}} CapDrop={{.HostConfig.CapDrop}} SecurityOpt={{.HostConfig.SecurityOpt}}'        "$(sudo docker compose ps -q dashboard)"
+# ---
+--- Mounts ---
+[
+    {
+        "Type": "bind",
+        "Source": "/var/lib/hf-ops-collector/state",
+        "Destination": "/data/collector",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+    }
+]
+--- Benutzer und Rechte im Container ---
+User=10001:10001 ReadonlyRootfs=true CapDrop=[ALL] SecurityOpt=[no-new-privileges:true]
+# ---
+# Exit-Code: 0

@@ -1,0 +1,12 @@
+# Wer lauscht wo: Nginx im LAN, die Anwendungen nur lokal
+# Zeitpunkt (UTC): 2026-10-23T09:37:00Z
+# Befehl: bash -c sudo ss -ltnp 2>/dev/null | grep -E ':(8081|8082|8083)' || ss -ltn | grep -E ':(8081|8082|8083)'
+# ---
+LISTEN 0      4096        127.0.0.1:8081       0.0.0.0:*    users:(("docker-proxy",pid=25891,fd=7))                                                                                                                                                                                                                            
+LISTEN 0      4096        127.0.0.1:8083       0.0.0.0:*    users:(("docker-proxy",pid=2243336,fd=7))                                                                                                                                                                                                                          
+LISTEN 0      4096        127.0.0.1:8082       0.0.0.0:*    users:(("docker-proxy",pid=2030327,fd=7))                                                                                                                                                                                                                          
+LISTEN 0      511    192.168.110.61:8083       0.0.0.0:*    users:(("nginx",pid=2338755,fd=27),("nginx",pid=2338752,fd=27),("nginx",pid=2338751,fd=27),("nginx",pid=2338750,fd=27),("nginx",pid=2338747,fd=27),("nginx",pid=2338746,fd=27),("nginx",pid=2338743,fd=27),("nginx",pid=2338742,fd=27),("nginx",pid=2225926,fd=27))
+LISTEN 0      511    192.168.110.61:8082       0.0.0.0:*    users:(("nginx",pid=2338755,fd=26),("nginx",pid=2338752,fd=26),("nginx",pid=2338751,fd=26),("nginx",pid=2338750,fd=26),("nginx",pid=2338747,fd=26),("nginx",pid=2338746,fd=26),("nginx",pid=2338743,fd=26),("nginx",pid=2338742,fd=26),("nginx",pid=2225926,fd=26))
+LISTEN 0      511    192.168.110.61:8081       0.0.0.0:*    users:(("nginx",pid=2338755,fd=25),("nginx",pid=2338752,fd=25),("nginx",pid=2338751,fd=25),("nginx",pid=2338750,fd=25),("nginx",pid=2338747,fd=25),("nginx",pid=2338746,fd=25),("nginx",pid=2338743,fd=25),("nginx",pid=2338742,fd=25),("nginx",pid=2225926,fd=25))
+# ---
+# Exit-Code: 0

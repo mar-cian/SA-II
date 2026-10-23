@@ -1,0 +1,17 @@
+# Wer kann den Docker-Daemon ansprechen
+# Zeitpunkt (UTC): 2026-10-22T17:46:48Z
+# Befehl: bash -c echo '--- Socket ---'; ls -l /var/run/docker.sock;      echo '--- Gruppe docker ---'; getent group docker || echo 'keine Gruppe docker';      echo '--- eigener Benutzer ---'; id;      echo '--- Benutzer der Host-Dienste ---';      systemctl show hf-ops-collector -p User -p DynamicUser 2>/dev/null;      systemctl show hf-ops-ai-relay  -p User -p DynamicUser 2>/dev/null
+# ---
+--- Socket ---
+srw-rw---- 1 root docker 0 Oct 20 18:59 /var/run/docker.sock
+--- Gruppe docker ---
+docker:x:107:
+--- eigener Benutzer ---
+uid=1000(vmadmin) gid=1000(vmadmin) groups=1000(vmadmin),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),100(users),101(lxd),1001(sudo-nopasswd)
+--- Benutzer der Host-Dienste ---
+User=root
+DynamicUser=no
+User=hf-ops-ai-relay
+DynamicUser=yes
+# ---
+# Exit-Code: 0

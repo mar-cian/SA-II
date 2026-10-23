@@ -1,0 +1,8 @@
+# Containerzustand nach dem Neustart
+# Zeitpunkt (UTC): 2026-10-22T17:47:34Z
+# Befehl: bash -c cd '/home/vmadmin/workspace/AI-Docker-Lab/02_Monitoring' && sudo docker compose ps
+# ---
+NAME                           IMAGE                        COMMAND           SERVICE     CREATED          STATUS                    PORTS
+hf-ops-dashboard-dashboard-1   hf-ops-dashboard-dashboard   "python app.py"   dashboard   30 seconds ago   Up 30 seconds (healthy)   127.0.0.1:8090->8000/tcp
+# ---
+# Exit-Code: 0

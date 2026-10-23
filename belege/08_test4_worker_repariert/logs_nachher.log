@@ -1,26 +1,36 @@
 # Neue Logzeilen
-# Zeitpunkt (UTC): 2026-10-22T16:02:00Z
+# Zeitpunkt (UTC): 2026-10-22T17:18:04Z
 # Befehl: bash -c cd '/home/vmadmin/workspace/AI-Docker-Lab/01_Startumgebung' && sudo docker compose logs --timestamps --tail 30 worker
 # ---
-worker-1  | 2026-10-22T16:01:22.518193221Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
-worker-1  | 2026-10-22T16:01:25.518501500Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
-worker-1  | 2026-10-22T16:01:27.520214717Z 127.0.0.1 - - [22/Oct/2026 16:01:27] "GET /health HTTP/1.1" 503 -
-worker-1  | 2026-10-22T16:01:28.518838130Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
-worker-1  | 2026-10-22T16:01:31.519134216Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
-worker-1  | 2026-10-22T16:01:32.768679042Z 127.0.0.1 - - [22/Oct/2026 16:01:32] "GET /health HTTP/1.1" 503 -
-worker-1  | 2026-10-22T16:01:34.519253428Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
-worker-1  | 2026-10-22T16:01:37.519671541Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
-worker-1  | 2026-10-22T16:01:38.017450494Z 127.0.0.1 - - [22/Oct/2026 16:01:38] "GET /health HTTP/1.1" 503 -
-worker-1  | 2026-10-22T16:01:40.519844786Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
-worker-1  | 2026-10-22T16:01:43.267305231Z 127.0.0.1 - - [22/Oct/2026 16:01:43] "GET /health HTTP/1.1" 503 -
-worker-1  | 2026-10-22T16:01:43.520365038Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
-worker-1  | 2026-10-22T16:01:46.520627512Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
-worker-1  | 2026-10-22T16:01:48.520647232Z 127.0.0.1 - - [22/Oct/2026 16:01:48] "GET /health HTTP/1.1" 503 -
-worker-1  | 2026-10-22T16:01:49.521028093Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
-worker-1  | 2026-10-22T16:01:52.521354072Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
-worker-1  | 2026-10-22T16:01:53.768284888Z 127.0.0.1 - - [22/Oct/2026 16:01:53] "GET /health HTTP/1.1" 503 -
-worker-1  | 2026-10-22T16:01:55.521458597Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
-worker-1  | 2026-10-22T16:01:58.521757432Z ERROR job fetch failed path=PFAD_AUS_DEINEM_VERGLEICH: nonnumeric port: '8000PFAD_AUS_DEINEM_VERGLEICH'
-worker-1  | 2026-10-22T16:01:59.018227879Z 127.0.0.1 - - [22/Oct/2026 16:01:59] "GET /health HTTP/1.1" 503 -
+worker-1  | 2026-10-22T17:17:08.166387611Z 127.0.0.1 - - [22/Oct/2026 17:17:08] "GET /health HTTP/1.1" 200 -
+worker-1  | 2026-10-22T17:17:09.846971453Z INFO processed job=demo-001
+worker-1  | 2026-10-22T17:17:12.848555057Z INFO processed job=demo-001
+worker-1  | 2026-10-22T17:17:13.416956981Z 127.0.0.1 - - [22/Oct/2026 17:17:13] "GET /health HTTP/1.1" 200 -
+worker-1  | 2026-10-22T17:17:15.850327112Z INFO processed job=demo-001
+worker-1  | 2026-10-22T17:17:18.665322127Z 127.0.0.1 - - [22/Oct/2026 17:17:18] "GET /health HTTP/1.1" 200 -
+worker-1  | 2026-10-22T17:17:18.852034316Z INFO processed job=demo-001
+worker-1  | 2026-10-22T17:17:21.854109675Z INFO processed job=demo-001
+worker-1  | 2026-10-22T17:17:23.912592830Z 127.0.0.1 - - [22/Oct/2026 17:17:23] "GET /health HTTP/1.1" 200 -
+worker-1  | 2026-10-22T17:17:24.856129040Z INFO processed job=demo-001
+worker-1  | 2026-10-22T17:17:27.858233991Z INFO processed job=demo-001
+worker-1  | 2026-10-22T17:17:29.163424297Z 127.0.0.1 - - [22/Oct/2026 17:17:29] "GET /health HTTP/1.1" 200 -
+worker-1  | 2026-10-22T17:17:30.860496910Z INFO processed job=demo-001
+worker-1  | 2026-10-22T17:17:33.862059806Z INFO processed job=demo-001
+worker-1  | 2026-10-22T17:17:34.414092421Z 127.0.0.1 - - [22/Oct/2026 17:17:34] "GET /health HTTP/1.1" 200 -
+worker-1  | 2026-10-22T17:17:36.864013480Z INFO processed job=demo-001
+worker-1  | 2026-10-22T17:17:39.671200829Z 127.0.0.1 - - [22/Oct/2026 17:17:39] "GET /health HTTP/1.1" 200 -
+worker-1  | 2026-10-22T17:17:39.865781846Z INFO processed job=demo-001
+worker-1  | 2026-10-22T17:17:42.867494592Z INFO processed job=demo-001
+worker-1  | 2026-10-22T17:17:44.921453542Z 127.0.0.1 - - [22/Oct/2026 17:17:44] "GET /health HTTP/1.1" 200 -
+worker-1  | 2026-10-22T17:17:45.869483509Z INFO processed job=demo-001
+worker-1  | 2026-10-22T17:17:48.871467859Z INFO processed job=demo-001
+worker-1  | 2026-10-22T17:17:50.175593957Z 127.0.0.1 - - [22/Oct/2026 17:17:50] "GET /health HTTP/1.1" 200 -
+worker-1  | 2026-10-22T17:17:51.873045593Z INFO processed job=demo-001
+worker-1  | 2026-10-22T17:17:54.877605668Z INFO processed job=demo-001
+worker-1  | 2026-10-22T17:17:55.428358756Z 127.0.0.1 - - [22/Oct/2026 17:17:55] "GET /health HTTP/1.1" 200 -
+worker-1  | 2026-10-22T17:17:57.879393840Z INFO processed job=demo-001
+worker-1  | 2026-10-22T17:18:00.677880531Z 127.0.0.1 - - [22/Oct/2026 17:18:00] "GET /health HTTP/1.1" 200 -
+worker-1  | 2026-10-22T17:18:00.881324793Z INFO processed job=demo-001
+worker-1  | 2026-10-22T17:18:03.883278380Z INFO processed job=demo-001
 # ---
 # Exit-Code: 0

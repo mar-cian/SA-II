@@ -1,22 +1,22 @@
 # Zustand vor dem Eingriff
-# Zeitpunkt (UTC): 2026-10-22T16:00:52Z
+# Zeitpunkt (UTC): 2026-10-22T17:15:39Z
 # Befehl: bash -c curl -fsS --max-time 10 'http://127.0.0.1:8090/api/state' | python3 -m json.tool
 # ---
 {
     "data_status": "fresh",
     "data_message": null,
-    "age_seconds": 3.0,
+    "age_seconds": 3.6,
     "max_age_seconds": 20,
-    "measured_at": "2026-10-22T16:00:49.454+00:00",
+    "measured_at": "2026-10-22T17:15:35.900+00:00",
     "collector": {
         "name": "hf-ops-host-collector",
         "version": "1.0.0",
         "host": "li264-vmLS1.smartlearn.lan",
         "pid": 1537101,
-        "sequence": 12,
-        "measured_at": "2026-10-22T16:00:49.454+00:00",
-        "measured_at_epoch": 1792684849.455,
-        "duration_ms": 122.6,
+        "sequence": 901,
+        "measured_at": "2026-10-22T17:15:35.900+00:00",
+        "measured_at_epoch": 1792689335.901,
+        "duration_ms": 90.7,
         "interval_seconds": 5,
         "max_age_seconds": 20,
         "status": "ok",
@@ -61,7 +61,7 @@
                 "mode": "healthcheck",
                 "state": "healthy",
                 "failing_streak": 0,
-                "last_probe_at": "2026-10-22T18:00:46.236050773+02:00",
+                "last_probe_at": "2026-10-22T19:15:33.100345046+02:00",
                 "last_probe_exit_code": 0,
                 "last_probe_output": null,
                 "note": null
@@ -87,178 +87,178 @@
                 "source": "docker logs --timestamps --tail 25",
                 "lines": [
                     {
-                        "ts": "2026-10-22T16:00:12.198019367Z",
+                        "ts": "2026-10-22T17:15:01.567953388Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:12] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:01] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:14.865493124Z",
+                        "ts": "2026-10-22T17:15:03.484674731Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "172.18.0.3 - - [22/Oct/2026 16:00:14] \"GET /jobz HTTP/1.1\" 404 -",
+                        "message": "172.18.0.4 - - [22/Oct/2026 17:15:03] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:17.869627274Z",
+                        "ts": "2026-10-22T17:15:04.557181430Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "172.18.0.3 - - [22/Oct/2026 16:00:17] \"GET /jobz HTTP/1.1\" 404 -",
+                        "message": "172.18.0.3 - - [22/Oct/2026 17:15:04] \"GET /jobz HTTP/1.1\" 404 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:17.886473192Z",
+                        "ts": "2026-10-22T17:15:06.819122429Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "172.18.0.4 - - [22/Oct/2026 16:00:17] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:06] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:17.902363614Z",
+                        "ts": "2026-10-22T17:15:07.559046728Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:17] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "172.18.0.3 - - [22/Oct/2026 17:15:07] \"GET /jobz HTTP/1.1\" 404 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:20.871698797Z",
+                        "ts": "2026-10-22T17:15:08.735002177Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "172.18.0.3 - - [22/Oct/2026 16:00:20] \"GET /jobz HTTP/1.1\" 404 -",
+                        "message": "172.18.0.4 - - [22/Oct/2026 17:15:08] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:23.595490220Z",
+                        "ts": "2026-10-22T17:15:10.561025589Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:23] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "172.18.0.3 - - [22/Oct/2026 17:15:10] \"GET /jobz HTTP/1.1\" 404 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:23.651385616Z",
+                        "ts": "2026-10-22T17:15:12.076330958Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "172.18.0.4 - - [22/Oct/2026 16:00:23] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:12] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:24.258873047Z",
+                        "ts": "2026-10-22T17:15:13.563062963Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "172.18.0.3 - - [22/Oct/2026 16:00:24] \"GET /jobz HTTP/1.1\" 404 -",
+                        "message": "172.18.0.3 - - [22/Oct/2026 17:15:13] \"GET /jobz HTTP/1.1\" 404 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:27.261626664Z",
+                        "ts": "2026-10-22T17:15:13.988268007Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "172.18.0.3 - - [22/Oct/2026 16:00:27] \"GET /jobz HTTP/1.1\" 404 -",
+                        "message": "172.18.0.4 - - [22/Oct/2026 17:15:13] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:29.291878187Z",
+                        "ts": "2026-10-22T17:15:16.565020817Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:29] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "172.18.0.3 - - [22/Oct/2026 17:15:16] \"GET /jobz HTTP/1.1\" 404 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:29.346315721Z",
+                        "ts": "2026-10-22T17:15:17.331429245Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "172.18.0.4 - - [22/Oct/2026 16:00:29] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:17] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:30.458472794Z",
+                        "ts": "2026-10-22T17:15:19.242522905Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "172.18.0.3 - - [22/Oct/2026 16:00:30] \"GET /jobz HTTP/1.1\" 404 -",
+                        "message": "172.18.0.4 - - [22/Oct/2026 17:15:19] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:33.462908429Z",
+                        "ts": "2026-10-22T17:15:19.567132118Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "172.18.0.3 - - [22/Oct/2026 16:00:33] \"GET /jobz HTTP/1.1\" 404 -",
+                        "message": "172.18.0.3 - - [22/Oct/2026 17:15:19] \"GET /jobz HTTP/1.1\" 404 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:35.009764987Z",
+                        "ts": "2026-10-22T17:15:22.569069925Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:35] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "172.18.0.3 - - [22/Oct/2026 17:15:22] \"GET /jobz HTTP/1.1\" 404 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:35.027606596Z",
+                        "ts": "2026-10-22T17:15:22.581525822Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "172.18.0.4 - - [22/Oct/2026 16:00:35] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:22] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:36.465514509Z",
+                        "ts": "2026-10-22T17:15:24.494602310Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "172.18.0.3 - - [22/Oct/2026 16:00:36] \"GET /jobz HTTP/1.1\" 404 -",
+                        "message": "172.18.0.4 - - [22/Oct/2026 17:15:24] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:39.658655542Z",
+                        "ts": "2026-10-22T17:15:25.570745015Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "172.18.0.3 - - [22/Oct/2026 16:00:39] \"GET /jobz HTTP/1.1\" 404 -",
+                        "message": "172.18.0.3 - - [22/Oct/2026 17:15:25] \"GET /jobz HTTP/1.1\" 404 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:40.903590949Z",
+                        "ts": "2026-10-22T17:15:27.835630181Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:40] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:27] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:40.910337482Z",
+                        "ts": "2026-10-22T17:15:28.572880872Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "172.18.0.4 - - [22/Oct/2026 16:00:40] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "172.18.0.3 - - [22/Oct/2026 17:15:28] \"GET /jobz HTTP/1.1\" 404 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:42.662600497Z",
+                        "ts": "2026-10-22T17:15:29.746927501Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "172.18.0.3 - - [22/Oct/2026 16:00:42] \"GET /jobz HTTP/1.1\" 404 -",
+                        "message": "172.18.0.4 - - [22/Oct/2026 17:15:29] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:45.858182994Z",
+                        "ts": "2026-10-22T17:15:31.575051242Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "172.18.0.3 - - [22/Oct/2026 16:00:45] \"GET /jobz HTTP/1.1\" 404 -",
+                        "message": "172.18.0.3 - - [22/Oct/2026 17:15:31] \"GET /jobz HTTP/1.1\" 404 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:46.224528412Z",
+                        "ts": "2026-10-22T17:15:33.090298939Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:46] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:33] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:46.244602752Z",
+                        "ts": "2026-10-22T17:15:34.577014006Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "172.18.0.4 - - [22/Oct/2026 16:00:46] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "172.18.0.3 - - [22/Oct/2026 17:15:34] \"GET /jobz HTTP/1.1\" 404 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:48.860559932Z",
+                        "ts": "2026-10-22T17:15:35.000729386Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "172.18.0.3 - - [22/Oct/2026 16:00:48] \"GET /jobz HTTP/1.1\" 404 -",
+                        "message": "172.18.0.4 - - [22/Oct/2026 17:15:35] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     }
                 ],
@@ -278,7 +278,7 @@
                 "mode": "healthcheck",
                 "state": "healthy",
                 "failing_streak": 0,
-                "last_probe_at": "2026-10-22T18:00:46.25476269+02:00",
+                "last_probe_at": "2026-10-22T19:15:35.010900566+02:00",
                 "last_probe_exit_code": 0,
                 "last_probe_output": null,
                 "note": null
@@ -304,178 +304,178 @@
                 "source": "docker logs --timestamps --tail 25",
                 "lines": [
                     {
-                        "ts": "2026-10-22T15:58:35.325942067Z",
+                        "ts": "2026-10-22T17:13:28.940565853Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 15:58:35] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:13:28] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T15:58:40.949363581Z",
+                        "ts": "2026-10-22T17:13:34.188628850Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 15:58:40] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:13:34] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T15:58:46.576864509Z",
+                        "ts": "2026-10-22T17:13:39.437688028Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 15:58:46] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:13:39] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T15:58:52.169263038Z",
+                        "ts": "2026-10-22T17:13:44.690397292Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 15:58:52] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:13:44] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T15:58:57.897708679Z",
+                        "ts": "2026-10-22T17:13:49.940396879Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 15:58:57] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:13:49] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T15:59:03.164281573Z",
+                        "ts": "2026-10-22T17:13:55.189865489Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 15:59:03] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:13:55] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T15:59:08.465107907Z",
+                        "ts": "2026-10-22T17:14:00.442294412Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 15:59:08] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:14:00] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T15:59:13.724973353Z",
+                        "ts": "2026-10-22T17:14:05.694980012Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 15:59:13] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:14:05] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T15:59:18.981870290Z",
+                        "ts": "2026-10-22T17:14:10.952136103Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 15:59:18] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:14:10] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T15:59:24.240888917Z",
+                        "ts": "2026-10-22T17:14:16.203407063Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 15:59:24] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:14:16] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T15:59:29.494070090Z",
+                        "ts": "2026-10-22T17:14:21.461529871Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 15:59:29] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:14:21] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T15:59:34.799024646Z",
+                        "ts": "2026-10-22T17:14:26.713042170Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 15:59:34] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:14:26] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T15:59:40.054888447Z",
+                        "ts": "2026-10-22T17:14:31.962575310Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 15:59:40] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:14:31] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T15:59:45.320524245Z",
+                        "ts": "2026-10-22T17:14:37.212516609Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 15:59:45] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:14:37] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T15:59:50.588601272Z",
+                        "ts": "2026-10-22T17:14:42.468918057Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 15:59:50] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:14:42] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T15:59:55.904552764Z",
+                        "ts": "2026-10-22T17:14:47.721777530Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 15:59:55] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:14:47] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:01.464770807Z",
+                        "ts": "2026-10-22T17:14:52.976087882Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:01] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:14:52] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:06.809333500Z",
+                        "ts": "2026-10-22T17:14:58.230758163Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:06] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:14:58] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:12.184821982Z",
+                        "ts": "2026-10-22T17:15:03.484970190Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:12] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:03] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:17.886877814Z",
+                        "ts": "2026-10-22T17:15:08.735291165Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:17] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:08] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:23.651689791Z",
+                        "ts": "2026-10-22T17:15:13.988579957Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:23] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:13] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:29.346688073Z",
+                        "ts": "2026-10-22T17:15:19.242852809Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:29] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:19] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:35.027890925Z",
+                        "ts": "2026-10-22T17:15:24.495126244Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:35] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:24] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:40.910770897Z",
+                        "ts": "2026-10-22T17:15:29.747217880Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:40] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:29] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:46.244984191Z",
+                        "ts": "2026-10-22T17:15:35.001065131Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:46] \"GET /health HTTP/1.1\" 200 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:35] \"GET /health HTTP/1.1\" 200 -",
                         "truncated": false
                     }
                 ],
@@ -488,29 +488,29 @@
             "service": "worker",
             "status": "unhealthy",
             "status_label": "fehlerhaft",
-            "status_reason": "Prozess laeuft, Healthcheck meldet unhealthy. Fehlerserie: 11393.",
+            "status_reason": "Prozess laeuft, Healthcheck meldet unhealthy. Fehlerserie: 811.",
             "last_known_status": null,
             "process_state": "running",
             "health": {
                 "mode": "healthcheck",
                 "state": "unhealthy",
-                "failing_streak": 11393,
-                "last_probe_at": "2026-10-22T18:00:44.027432779+02:00",
+                "failing_streak": 811,
+                "last_probe_at": "2026-10-22T19:15:33.10983047+02:00",
                 "last_probe_exit_code": 1,
                 "last_probe_output": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/usr/local/lib/python3.12/urllib/request.py\", line 215, in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/urllib/request.py\", line 521, in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/ [gekuerzt]",
                 "note": null
             },
             "container": {
-                "id": "24a94f0c0d8f",
+                "id": "75cfe5a0b102",
                 "name": "hf-ops-lab-worker-1",
                 "image": "hf-ops-lab-worker",
-                "created_at": "2026-10-20T17:22:38.930781008Z",
-                "started_at": "2026-10-20T17:22:44.620301676Z",
-                "finished_at": null,
+                "created_at": "2026-10-22T16:03:44.91043443Z",
+                "started_at": "2026-10-22T16:04:26.660788223Z",
+                "finished_at": "2026-10-22T16:04:15.763073345Z",
                 "restart_count": 0,
                 "restart_policy": "unless-stopped",
                 "exit_code": 0,
-                "pid": 25814,
+                "pid": 1544628,
                 "user": "10001:10001",
                 "read_only_rootfs": true
             },
@@ -521,184 +521,184 @@
                 "source": "docker logs --timestamps --tail 25",
                 "lines": [
                     {
-                        "ts": "2026-10-22T15:59:59.345764045Z",
+                        "ts": "2026-10-22T17:14:49.547007739Z",
                         "stream": "stdout",
                         "level": "error",
                         "message": "ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:02.347738528Z",
-                        "stream": "stdout",
-                        "level": "error",
-                        "message": "ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found",
-                        "truncated": false
-                    },
-                    {
-                        "ts": "2026-10-22T16:00:04.176999877Z",
+                        "ts": "2026-10-22T17:14:51.064078999Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:04] \"GET /health HTTP/1.1\" 503 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:14:51] \"GET /health HTTP/1.1\" 503 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:05.466774122Z",
+                        "ts": "2026-10-22T17:14:52.549351122Z",
                         "stream": "stdout",
                         "level": "error",
                         "message": "ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:08.859735852Z",
+                        "ts": "2026-10-22T17:14:55.551257869Z",
                         "stream": "stdout",
                         "level": "error",
                         "message": "ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:09.852526779Z",
+                        "ts": "2026-10-22T17:14:56.318073454Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:09] \"GET /health HTTP/1.1\" 503 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:14:56] \"GET /health HTTP/1.1\" 503 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:11.861761244Z",
+                        "ts": "2026-10-22T17:14:58.553251612Z",
                         "stream": "stdout",
                         "level": "error",
                         "message": "ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:14.865833918Z",
+                        "ts": "2026-10-22T17:15:01.554966925Z",
                         "stream": "stdout",
                         "level": "error",
                         "message": "ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:15.554353095Z",
+                        "ts": "2026-10-22T17:15:01.575329231Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:15] \"GET /health HTTP/1.1\" 503 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:01] \"GET /health HTTP/1.1\" 503 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:17.869841622Z",
+                        "ts": "2026-10-22T17:15:04.557137448Z",
                         "stream": "stdout",
                         "level": "error",
                         "message": "ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:20.871757626Z",
-                        "stream": "stdout",
-                        "level": "error",
-                        "message": "ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found",
-                        "truncated": false
-                    },
-                    {
-                        "ts": "2026-10-22T16:00:21.503288999Z",
+                        "ts": "2026-10-22T17:15:06.826354514Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:21] \"GET /health HTTP/1.1\" 503 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:06] \"GET /health HTTP/1.1\" 503 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:24.259142218Z",
+                        "ts": "2026-10-22T17:15:07.559355863Z",
                         "stream": "stdout",
                         "level": "error",
                         "message": "ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:27.187838673Z",
+                        "ts": "2026-10-22T17:15:10.561249194Z",
+                        "stream": "stdout",
+                        "level": "error",
+                        "message": "ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found",
+                        "truncated": false
+                    },
+                    {
+                        "ts": "2026-10-22T17:15:12.084765569Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:27] \"GET /health HTTP/1.1\" 503 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:12] \"GET /health HTTP/1.1\" 503 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:27.261881277Z",
+                        "ts": "2026-10-22T17:15:13.563364694Z",
                         "stream": "stdout",
                         "level": "error",
                         "message": "ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:30.458499083Z",
+                        "ts": "2026-10-22T17:15:16.565282473Z",
                         "stream": "stdout",
                         "level": "error",
                         "message": "ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:32.914366691Z",
+                        "ts": "2026-10-22T17:15:17.346742885Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:32] \"GET /health HTTP/1.1\" 503 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:17] \"GET /health HTTP/1.1\" 503 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:33.462949385Z",
+                        "ts": "2026-10-22T17:15:19.567419562Z",
                         "stream": "stdout",
                         "level": "error",
                         "message": "ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:36.465881281Z",
+                        "ts": "2026-10-22T17:15:22.569252765Z",
                         "stream": "stdout",
                         "level": "error",
                         "message": "ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:38.416586663Z",
+                        "ts": "2026-10-22T17:15:22.596838240Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:38] \"GET /health HTTP/1.1\" 503 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:22] \"GET /health HTTP/1.1\" 503 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:39.659026381Z",
+                        "ts": "2026-10-22T17:15:25.571088513Z",
                         "stream": "stdout",
                         "level": "error",
                         "message": "ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:42.662904682Z",
-                        "stream": "stdout",
-                        "level": "error",
-                        "message": "ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found",
-                        "truncated": false
-                    },
-                    {
-                        "ts": "2026-10-22T16:00:44.015565487Z",
+                        "ts": "2026-10-22T17:15:27.846194762Z",
                         "stream": "stderr",
                         "level": "raw",
-                        "message": "127.0.0.1 - - [22/Oct/2026 16:00:44] \"GET /health HTTP/1.1\" 503 -",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:27] \"GET /health HTTP/1.1\" 503 -",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:45.858421277Z",
+                        "ts": "2026-10-22T17:15:28.573222066Z",
                         "stream": "stdout",
                         "level": "error",
                         "message": "ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found",
                         "truncated": false
                     },
                     {
-                        "ts": "2026-10-22T16:00:48.860810808Z",
+                        "ts": "2026-10-22T17:15:31.575237027Z",
+                        "stream": "stdout",
+                        "level": "error",
+                        "message": "ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found",
+                        "truncated": false
+                    },
+                    {
+                        "ts": "2026-10-22T17:15:33.097544439Z",
+                        "stream": "stderr",
+                        "level": "raw",
+                        "message": "127.0.0.1 - - [22/Oct/2026 17:15:33] \"GET /health HTTP/1.1\" 503 -",
+                        "truncated": false
+                    },
+                    {
+                        "ts": "2026-10-22T17:15:34.577325385Z",
                         "stream": "stdout",
                         "level": "error",
                         "message": "ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found",
                         "truncated": false
                     }
                 ],
-                "error_count": 17,
+                "error_count": 16,
                 "last_error": {
-                    "ts": "2026-10-22T16:00:48.860810808Z",
+                    "ts": "2026-10-22T17:15:34.577325385Z",
                     "stream": "stdout",
                     "level": "error",
                     "message": "ERROR job fetch failed path=/jobz: HTTP Error 404: Not Found",
@@ -710,7 +710,7 @@
     ],
     "errors": [],
     "unexpected_containers": [],
-    "checked_at": "2026-10-22T16:00:52+00:00"
+    "checked_at": "2026-10-22T17:15:39+00:00"
 }
 # ---
 # Exit-Code: 0
