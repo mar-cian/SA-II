@@ -62,6 +62,7 @@ Aufrufen, im Browser auf der VM: `http://127.0.0.1:8083`
 
 ```bash
 curl -fsS http://127.0.0.1:8083/health | python3 -m json.tool
+curl -fsS http://127.0.0.1:8083/api/info  | python3 -m json.tool
 curl -fsS http://127.0.0.1:8083/api/clock | python3 -m json.tool
 curl -s -o /dev/null -w 'unbekannte Route: HTTP %{http_code}\n' http://127.0.0.1:8083/gibtsnicht
 curl -s -o /dev/null -w 'POST: HTTP %{http_code}\n' -X POST http://127.0.0.1:8083/

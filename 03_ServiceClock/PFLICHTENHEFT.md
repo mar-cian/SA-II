@@ -20,7 +20,8 @@ Bewusst klein gehalten. Der Nachweis zaehlt, nicht der Funktionsumfang.
 |---|---|---|---|
 | GET | `/` | HTML: Name, Status, dynamische Information | 200, oder 503 bei degradiert |
 | GET | `/health` | JSON: Status, Begruendung, Laufzeit | 200 gesund, 503 startend oder degradiert |
-| GET | `/api/clock` | JSON: dieselben Daten maschinenlesbar | 200, oder 503 |
+| GET | `/api/info` | JSON: `application`, `status`, `time`, `uptime_seconds` | 200, oder 503 |
+| GET | `/api/clock` | identische Antwort unter den eigenen Feldnamen | 200, oder 503 |
 | GET | alles andere | JSON mit Fehler und gueltigen Routen | 404 |
 | andere Methoden | beliebig | JSON mit Fehler | 405 |
 
@@ -33,7 +34,7 @@ Alles nur im Arbeitsspeicher, nichts auf Platte:
 
 | Feld | Herkunft | Verhalten |
 |---|---|---|
-| `service_name` | Environment `SERVICE_NAME` | fest ueber die Laufzeit |
+| `service_name` | Environment `APP_NAME` oder `SERVICE_NAME` | fest ueber die Laufzeit |
 | `timezone` | Environment `CLOCK_TZ` | fest ueber die Laufzeit |
 | `now` | Systemuhr, in `CLOCK_TZ` umgerechnet | aendert sich sekuendlich |
 | `started_at` | Zeitpunkt des Prozessstarts | wird bei jedem Prozessstart neu gesetzt |
@@ -53,11 +54,16 @@ gewollt, weil diese Werte den aktuellen Prozess beschreiben und nicht die
 Anwendung. Unveraendert bleiben `service_name` und `timezone`, weil sie aus der
 Konfiguration kommen.
 
+`/api/info` fuehrt die Feldnamen aus dem Arbeitsblatt (`application`, `status`,
+`time`, `uptime_seconds`), damit ein Aufrufer sich auf diesen Vertrag stuetzen
+kann. `/api/clock` liefert dieselbe Antwort und bleibt erhalten.
+
 ## 4. Konfiguration
 
 | Variable | Vorgabe | Wirkung |
 |---|---|---|
-| `SERVICE_NAME` | `Service Clock` | Anzeigename, wird sicher in HTML ausgegeben |
+| `APP_NAME` | `HF Service Clock` | Anzeigename, wird sicher in HTML ausgegeben |
+| `SERVICE_NAME` | leer | ueberschreibt `APP_NAME`, falls gesetzt |
 | `CLOCK_TZ` | `Europe/Zurich` | Zeitzone der Anzeige |
 | `PORT` | `8000` | Port im Container |
 | `WARMUP_SECONDS` | `5` | Startphase, in der `/health` `starting` meldet |

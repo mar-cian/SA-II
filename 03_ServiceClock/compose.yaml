@@ -10,7 +10,9 @@ services:
     # 8082 (Dashboard aus Auftrag 2) bleiben frei.
     ports: ["127.0.0.1:8083:8000"]
     environment:
-      SERVICE_NAME: ${SERVICE_NAME:-Service Clock}
+      # APP_NAME ist der Name aus der Vorgabe, SERVICE_NAME ueberschreibt ihn.
+      APP_NAME: ${APP_NAME:-HF Service Clock}
+      SERVICE_NAME: ${SERVICE_NAME:-}
       CLOCK_TZ: ${CLOCK_TZ:-Europe/Zurich}
       WARMUP_SECONDS: "5"
       REFRESH_SECONDS: "2"

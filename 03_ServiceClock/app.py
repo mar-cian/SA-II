@@ -40,7 +40,10 @@ except ImportError:  # Python ohne zoneinfo
 APP_NAME = "Service Clock"
 APP_VERSION = "1.0.0"
 
-SERVICE_NAME = os.getenv("SERVICE_NAME", "Service Clock")
+# APP_NAME ist der Name aus der Vorgabe des Arbeitsblatts, SERVICE_NAME der
+# eigene. Beide werden akzeptiert, damit die Konfiguration aus beiden Quellen
+# wirkt; SERVICE_NAME hat Vorrang, wenn beide gesetzt sind.
+SERVICE_NAME = os.getenv("SERVICE_NAME") or os.getenv("APP_NAME") or "HF Service Clock"
 CLOCK_TZ = os.getenv("CLOCK_TZ", "Europe/Zurich")
 PORT = int(os.getenv("PORT", "8000"))
 WARMUP_SECONDS = int(os.getenv("WARMUP_SECONDS", "5"))
@@ -237,13 +240,20 @@ class Handler(BaseHTTPRequestHandler):
                 "requests_served": data["requests_served"],
                 "timezone": data["timezone"],
             })
-        elif path == "/api/clock":
-            self._json(data["http_status"], data)
+        elif path in ("/api/clock", "/api/info"):
+            # /api/info ist der Vertrag aus dem Arbeitsblatt: application,
+            # status, time, uptime_seconds. /api/clock liefert dasselbe unter
+            # den eigenen Feldnamen. Beide Routen antworten identisch, damit
+            # ein Aufrufer sich auf beide Schreibweisen stuetzen kann.
+            payload = dict(data)
+            payload["application"] = data["service"]
+            payload["time"] = data["now"]
+            self._json(data["http_status"], payload)
         else:
             self._json(404, {
                 "error": "route not found",
                 "path": path,
-                "valid_routes": ["/", "/health", "/api/clock"],
+                "valid_routes": ["/", "/health", "/api/info", "/api/clock"],
             })
 
     def _reject_method(self) -> None:
