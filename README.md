@@ -22,6 +22,7 @@ Dokumentation:
 | `02_Monitoring/collector/README.md` | Docker-Zugriff: Variantenvergleich und Vertrauensgrenzen |
 | `02_Monitoring/ai-relay/README.md` | Netzwerkfrage und Begruendung der gewaehlten Variante |
 | `Funktionsweise_Monitoring.md` | Kurzuebersicht ueber das Zusammenspiel |
+| `EXPOSE.md` | Nginx-Freigabe fuer den Zugriff von Kali, mit Tests |
 | `03_ServiceClock/PFLICHTENHEFT.md` | Auftrag 3: Zweck, Endpunkte, Daten, Testfaelle |
 | `03_ServiceClock/QWEN_PROTOKOLL.md` | Auftrag 3: Entscheidungsprotokoll zum AI-Einsatz |
 | `Auftrag2_PhaseA_Statische_Analyse.md` | statische Analyse vor dem ersten Start |
@@ -37,10 +38,14 @@ Dokumentation:
 | Service Clock | `127.0.0.1:8083` | eigene Anwendung, Auftrag 3 |
 | AI-Relay | `172.31.240.1:8899` | nur aus dem Dashboard-Netz, nicht vom Host-Loopback |
 
-Alles bewusst auf Loopback gebunden. Zugriff von einem anderen Rechner laeuft
-ueber einen SSH-Tunnel, nicht ueber eine Netzfreigabe:
+Alle Anwendungen sind auf Loopback gebunden. Fuer den Zugriff von einem anderen
+Rechner gibt es zwei Wege:
 
 ```bash
+# A: Nginx-Freigabe nach Kapitel 3 des Arbeitsblatts, siehe EXPOSE.md
+sudo bash expose-lab.sh "<ubuntu-ip>" "<kali-ip>" 8081 8082 8083
+
+# B: SSH-Tunnel, ohne Aenderung an der Bindung
 ssh -N -L 127.0.0.1:8082:127.0.0.1:8082 \
        -L 127.0.0.1:8083:127.0.0.1:8083 vmadmin@<ubuntu-ip>
 ```
