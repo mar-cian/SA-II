@@ -189,15 +189,53 @@ Test/Beleg: T6.
 | ID | Soll | Handlung | Tatsächliches Ist und Zeitpunkt | Beleg | Schlussfolgerung |
 | --- | --- | --- | --- | --- | --- |
 | T1 | Zwei Übungen; Start, Pause und Auswahl funktionieren | Im Browser auf dem Kali: Start, Umschalten auf Tritt, Pause, erneut Start | **[messen]** | S01, Live-Vorfuehrung | **[messen]** |
-| T2 | Laufzeit steigt; Prüfzeitpunkt aktualisiert | H4, dazu `/api/info` zweimal im Abstand von 10 s | **[messen]** | S02, Terminalwerte unten | **[messen]** |
+| T2 | Laufzeit steigt; Prüfzeitpunkt aktualisiert | H4, dazu `/api/info` zweimal im Abstand von 10 s | **[messen]** | S02 und Werte unten | **[messen]** |
 | T3 | Ausfall nach etwa 15 Sekunden; alte Werte gekennzeichnet | H5 bei offener Seite auf dem Kali | **[messen]** | S03 | **[messen]** |
-| T4 | Wieder erreichbar; Laufzeit beginnt neu | H2 bzw. H6, Seite weiterhin offen | **[messen]** | S03 | **[messen]** |
-| T5 | Neue Container-ID; App funktioniert | H7 | **[messen]** | Terminalwerte unten | **[messen]** |
-| T6 | Non-root und read-only bestätigt | H8 | **[messen]** | S04, Terminalwerte unten | **[messen]** |
+| T4 | Wieder erreichbar; Laufzeit beginnt neu | H2 bzw. H6, Seite weiterhin offen | **[messen]** | S04 | **[messen]** |
+| T5 | Neue Container-ID; App funktioniert | H7 | **[messen]** | S05 und Werte unten | **[messen]** |
+| T6 | Non-root und read-only bestätigt | H8 | **[messen]** | S05 und Werte unten | **[messen]** |
 | T7 | URL auf zweitem zugelassenen Rechner öffnen | `http://192.168.110.61:8084/` im Firefox auf dem Kali (192.168.110.70) | **[messen]** | S01 | **[messen]** |
 
-Terminalwerte vorher und nachher: **[messen]**, werden vom Sammelskript nach
-`belege/lb1/` geschrieben, siehe Abschnitt 7.
+### Vorher und nachher, als Text
+
+Diese Werte gehoeren zusaetzlich zu den Bildern hierher, weil man aus einem
+Screenshot nichts kopieren kann. Sie stehen alle in den Dateien unter
+`belege/lb1/`.
+
+**T2, Laufzeit steigt** aus `t2_02_abfrage_zweimal.log`:
+
+```
+erste Abfrage   [messen]  uptime_seconds = [messen]
+zweite Abfrage  [messen]  uptime_seconds = [messen]
+```
+
+**T3 und T4, Zeitpunkte** von der Stoppuhr beim Versuch:
+
+```
+docker compose stop um          [messen]
+"nicht erreichbar" erschien um  [messen]   Differenz: [messen] s
+docker compose start um         [messen]
+wieder "erreichbar" um          [messen]   neue Laufzeit: [messen] s
+```
+
+**T5, Container-Neuerstellung** aus `t5_01_vorher.log` und `t5_05_nachher.log`:
+
+```
+Container-ID vorher   [messen]
+Container-ID nachher  [messen]
+Image-ID vorher       [messen]
+Image-ID nachher      [messen]
+Antwort waehrend des Abbaus: HTTP 000, der Dienst war wirklich weg
+```
+
+**T6, Rechte** aus `t6_01_benutzer.log` bis `t6_03_inspect.log`:
+
+```
+id im Container       [messen]   erwartet uid=10001
+touch /beweis         [messen]   erwartet Read-only file system
+touch /tmp/beweis     [messen]   erwartet erfolgreich
+docker inspect        [messen]   erwartet User=10001:10001 ReadOnly=true Policy=unless-stopped
+```
 
 Der Ausfall in T3 wird spaetestens nach einem Abfrageintervall erkannt. Bei
 gestopptem Server lehnt das Betriebssystem die Verbindung sofort ab, also nach
@@ -206,16 +244,89 @@ hoechstens 5 s. Haengt der Server, kommt das Zeitlimit von 5 s dazu, zusammen
 
 ## 5 Belege
 
-| S-ID | Handlung | Aussage des Bildes |
-| --- | --- | --- |
-| S01 | Browser auf dem Kali, URL sichtbar, Roboter in Bewegung, Uebung Tritt gewaehlt | Deckt T1 und T7: App vom zweiten Rechner erreichbar, Bedienung funktioniert |
-| S02 | Dieselbe Seite, Dashboard mit Laufzeit und Pruefzeitpunkt, daneben das Terminal mit zwei `/api/info`-Aufrufen | Deckt T2: Serverdaten werden wirklich aktualisiert |
-| S03 | Seite nach `docker compose stop`, "nicht erreichbar", Werte durchgestrichen, Hinweis mit Uhrzeit der letzten Antwort | Deckt T3 und, nach dem Wiederstart, T4 |
-| S04 | Terminal mit `id`, dem gescheiterten `touch /beweis` und `docker inspect` | Deckt T6: non-root und read-only |
+Fuenf Bilder statt der vier aus dem Richtwert, weil T3 und T4 zwei
+verschiedene Zustaende sind und nicht in ein Bild passen. Wer bei vier bleiben
+will, schneidet S03 und S04 nebeneinander in ein Bild und beschriftet die
+beiden Haelften mit "nach stop" und "nach start".
 
-Relative Pfade, zum Beispiel `![S01 Roboter vom Kali](screenshots/S01_kali_roboter.png)`.
-Die Animation wird zusaetzlich live vorgefuehrt, weil ein Einzelbild keine
-Bewegung beweist.
+Alle Bilder nach `04_Karate/screenshots/` legen, Dateinamen wie unten.
+
+### S01 Roboter und Dashboard vom Kali
+
+Deckt **T1** und **T7**.
+
+Sichtbar sein muss: die Adresszeile mit `http://192.168.110.61:8084/`, der
+Roboter mit erkennbar ausgefuehrter Uebung, der gedrueckte Zustand der
+Bedienknoepfe, und im Dashboard "erreichbar" mit Laufzeit und Pruefzeitpunkt.
+Aufnehmen auf dem **Kali**, nicht auf der VM, sonst belegt es T7 nicht.
+
+![S01 Roboter und Dashboard vom Kali](screenshots/S01_kali_roboter.png)
+
+**[messen]** Uhrzeit der Aufnahme und welche Uebung gewaehlt war:
+
+### S02 Zwei Abfragen von /api/info im Abstand
+
+Deckt **T2**.
+
+Sichtbar sein muss: beide Aufrufe mit ihren Zeitstempeln und beide Werte von
+`uptime_seconds`, der zweite hoeher als der erste. Entweder ein Screenshot des
+Terminals nach `./scripts/belege-lb1.sh t2` oder ein Bild der Datei
+`belege/lb1/t2_02_abfrage_zweimal.log`.
+
+![S02 Laufzeit steigt](screenshots/S02_laufzeit_steigt.png)
+
+**[messen]** Die beiden Werte zusaetzlich oben im Abschnitt 4 eintragen.
+
+### S03 Ausfall erkannt, alte Werte gekennzeichnet
+
+Deckt **T3**. Das ist der wichtigste Beleg der ganzen Abgabe.
+
+Sichtbar sein muss: "nicht erreichbar", die durchgestrichenen Serverwerte, der
+Hinweis mit der Uhrzeit der letzten Antwort, und der Roboter, der sich weiter
+bewegt. Aufnehmen auf dem **Kali** bei geoeffneter Seite, waehrend auf der VM
+der Container gestoppt ist. Die Seite nicht neu laden, das wuerde den Beleg
+zerstoeren.
+
+![S03 Ausfall erkannt](screenshots/S03_ausfall.png)
+
+**[messen]** Uhrzeit des Stopps und Uhrzeit der Meldung, Differenz in Sekunden:
+
+### S04 Wiederanlauf, Laufzeit beginnt neu
+
+Deckt **T4**.
+
+Sichtbar sein muss: wieder "erreichbar", keine Durchstreichung mehr, und eine
+kleine Server-Laufzeit, also deutlich niedriger als in S01. Dieselbe
+Browsersitzung wie S03, ohne Neuladen.
+
+![S04 Wiederanlauf](screenshots/S04_wiederanlauf.png)
+
+**[messen]** Laufzeit vor dem Stopp und nach dem Start:
+
+### S05 Container-IDs, Benutzer und read-only
+
+Deckt **T5** und **T6**.
+
+Sichtbar sein muss: die Container-ID vor und nach `docker compose down` und
+`up -d --build`, dazu `id` mit `uid=10001`, das gescheiterte `touch /beweis`
+mit "Read-only file system" und die Ausgabe von `docker inspect` mit
+`ReadOnly=true`. Ein Terminalfenster genuegt, alles steht in den Dateien
+`t5_05_nachher.log`, `t6_01_benutzer.log` bis `t6_03_inspect.log`.
+
+![S05 Container-IDs und Rechte](screenshots/S05_ids_und_rechte.png)
+
+**[messen]** Die IDs zusaetzlich oben im Abschnitt 4 eintragen.
+
+### Hinweise
+
+Relative Pfade verwenden, wie oben. Die Bilder sind Teil der Abgabe, also
+mit dem Projektordner zusammen abgeben.
+
+Die Animation wird zusaetzlich **live vorgefuehrt**, weil ein Einzelbild keine
+Bewegung beweist. Laut 6.3 ist das ausdruecklich vorgesehen.
+
+Keine Zusatzbilder nur fuer die Verstaendnisfragen K und R. Dort ist die
+richtige Erklaerung selbst der Nachweis.
 
 ## 6 Reflexion
 
@@ -270,7 +381,7 @@ wird nicht erfunden.
 | `compose.yaml` | Projektname, Portveroeffentlichung, Rechte, Healthcheck, Restart Policy |
 | `.dockerignore` | haelt Test- und Dokumentationsdateien aus dem Image |
 | `scripts/belege-lb1.sh` | sammelt die Terminalbelege zu T2, T5 und T6 |
-| `screenshots/` | S01 bis S04 |
+| `screenshots/` | S01 bis S05 |
 | `README.md` | diese Abgabe |
 
 Ausserhalb des Projektordners, weil es den Host betrifft:
