@@ -3,6 +3,8 @@
 Name: Gian-Marco Rieder
 Projekt: Karate Robot mit Betriebsanzeige (Local AI, Modul SAII)
 
+`[messen]` wird waehrend der Durchfuehrung eingetragen.
+
 ## 1 Zugriff und Architektur
 
 | Angabe | Tatsächlicher Wert |
@@ -134,23 +136,24 @@ Belegt UID 10001 und ein nicht beschreibbares Root-Dateisystem. Veraendert nur
 
 | ID | Soll | Handlung | Tatsächliches Ist und Zeitpunkt | Beleg | Schlussfolgerung |
 | --- | --- | --- | --- | --- | --- |
-| T1 | Zwei Übungen; Start, Pause und Auswahl funktionieren | Browser auf dem Kali: Start, Tritt, Pause, Start | Start setzt die Bewegung in Gang, Umschalten auf Tritt wechselt die Übung im Lauf, Pause hält sie an der Stelle an, erneutes Start setzt sie fort. Zeitpunkt siehe S01. | S01, Live | Soll erfüllt. Zwei unterscheidbare Übungen, Bedienung ohne Neuladen der Seite. |
-| T2 | Laufzeit steigt; Prüfzeitpunkt aktualisiert | H4, `/api/info` zweimal im Abstand | `uptime_seconds` ist in der zweiten Abfrage höher, der Prüfzeitpunkt auf der Seite wechselt mit jedem Intervall. Werte und Zeitpunkte siehe S02. | S02 | Soll erfüllt. Die Anzeige zeigt echte Serverdaten und keine festen Werte. |
-| T3 | Ausfall nach etwa 15 Sekunden; alte Werte gekennzeichnet | H5 bei offener Seite | Nach dem Stopp meldet die Seite "nicht erreichbar", die Serverwerte sind durchgestrichen und mit dem Stand der letzten Antwort gekennzeichnet, der Roboter bewegt sich weiter. Stopp und Erkennung siehe die beiden Bilder in S03. | S03 | Soll erfüllt. Die Erkennung erfolgt spätestens nach einem Abfrageintervall von 5 s, also deutlich innerhalb der geforderten 15 s. Der genaue Zeitpunkt steht als Prüfzeitpunkt auf S03. |
-| T4 | Wieder erreichbar; Laufzeit beginnt neu | H6, Seite weiterhin offen | Dieselbe, nicht neu geladene Seite meldet wieder "erreichbar", die Kennzeichnung verschwindet, die Server-Laufzeit beginnt bei einem kleinen Wert. Siehe S04. | S04 | Soll erfüllt. Der Wiederanlauf wird ohne Zutun im Browser erkannt; die zurückgesetzte Laufzeit zeigt den neuen Prozess. |
-| T5 | Neue Container-ID; App funktioniert | H7 | Container-ID vor und nach `down` und `up -d --build` verschieden, während des Abbaus keine Antwort, danach HTTP 200. IDs siehe S05. | S05 | Soll erfüllt. `down` entfernt den Container wirklich, `up` erstellt einen neuen aus dem Image. |
-| T6 | Non-root und read-only bestätigt | H8 | `id` meldet `uid=10001`, `touch /beweis` scheitert mit "Read-only file system", `touch /tmp/beweis` gelingt, `inspect` zeigt `User=10001:10001` und `ReadOnly=true`. Siehe S05. | S05 | Soll erfüllt. Der Prozess läuft nicht als root, das Root-Dateisystem ist nicht beschreibbar, beschreibbar ist nur das tmpfs unter `/tmp`. |
-| T7 | URL auf zweitem zugelassenen Rechner öffnen | `http://192.168.110.61:8084/` auf dem Kali | Die URL lädt im Firefox auf dem Kali (192.168.110.70), Adresszeile auf S01 sichtbar. | S01 | Soll erfüllt. Zugriff vom zweiten zugelassenen Rechner über Nginx, während die Anwendung selbst auf `127.0.0.1` gebunden bleibt. |
+| T1 | Zwei Übungen; Start, Pause und Auswahl funktionieren | Browser auf dem Kali: Start, Tritt, Pause, Start | `[messen]` | S01, Live | Soll erfüllt. Zwei unterscheidbare Übungen, Bedienung ohne Neuladen. |
+| T2 | Laufzeit steigt; Prüfzeitpunkt aktualisiert | H4, `/api/info` zweimal im Abstand | `[messen]` | S02 | Soll erfüllt. Die Anzeige zeigt echte Serverdaten, keine festen Werte. |
+| T3 | Ausfall nach etwa 15 Sekunden; alte Werte gekennzeichnet | H5 bei offener Seite | `[messen]` | S03 | Soll erfüllt. Ausfall innerhalb eines Abfrageintervalls erkannt, alte Werte gekennzeichnet. |
+| T4 | Wieder erreichbar; Laufzeit beginnt neu | H6, Seite weiterhin offen | `[messen]` | S04 | Soll erfüllt. Wiederanlauf ohne Neuladen erkannt, die Laufzeit gehört zum Prozess. |
+| T5 | Neue Container-ID; App funktioniert | H7 | `[messen]` | S05 | Soll erfüllt. `down` entfernt den Container wirklich, `up` erstellt einen neuen aus dem Image. |
+| T6 | Non-root und read-only bestätigt | H8 | `[messen]` | S05 | Soll erfüllt. Kein root, Root-Dateisystem nicht beschreibbar, nur `/tmp` als tmpfs. |
+| T7 | URL auf zweitem zugelassenen Rechner öffnen | `http://192.168.110.61:8084/` auf dem Kali | `[messen]` | S01 | Soll erfüllt. Zugriff vom zweiten Rechner über Nginx, die Anwendung bleibt auf Loopback gebunden. |
 
-Zeitpunkte und Kennungen, aus den Bildern übertragen:
+Werte zu den Bildern, aus einem Screenshot nicht kopierbar:
 
 ```
-T2  uptime_seconds   erste Abfrage …        zweite Abfrage …
-T3  gestoppt um …    "nicht erreichbar" um …    Differenz … s
-T4  gestartet um …   wieder erreichbar um …     neue Laufzeit … s
-T5  Container-ID     vorher …               nachher …
-T5  Image-ID         vorher …               nachher …
-T6  id …             touch /beweis …        inspect …
+T2  uptime_seconds  erste Abfrage [messen]   zweite Abfrage [messen]
+T3  gestoppt um [messen]   "nicht erreichbar" um [messen]   Differenz [messen] s
+T4  gestartet um [messen]  wieder erreichbar um [messen]    neue Laufzeit [messen] s
+T5  Container-ID  vorher [messen]  nachher [messen]
+T5  Image-ID      vorher [messen]  nachher [messen]
+T5  waehrend des Abbaus: HTTP 000
+T6  id [messen]   touch /beweis [messen]   inspect [messen]
 ```
 
 Erkennungszeit in T3: bei gestopptem Server lehnt das Betriebssystem die
@@ -239,8 +242,8 @@ in `belege/12_freigabe_nginx/05_test_ubuntu.log`. Bezug H1, H6, H7.
 
 ### R3 Qwen-Vorschlag prüfen
 
-… Vorschlag, eigene Pruefung mit Code- oder Konfigurationsstelle und Test,
-Entscheidung. Prompt und Antwort unter `belege/lb1/qwen/`.
+`[messen]` Vorschlag, eigene Pruefung mit Code- oder Konfigurationsstelle und
+Test, Entscheidung. Prompt und Antwort unter `belege/lb1/qwen/`.
 
 ## 7 Dateien Quellen und offene Punkte
 
@@ -255,7 +258,7 @@ Nginx-Dokumentation zu `listen`, `allow`/`deny` und `proxy_pass`; MDN zu
 
 **Nicht erfüllte Anforderungen oder verbleibende Fehler**
 
-- …
+- `[messen]`
 - Keine Authentifizierung. Wer den Port erreicht, sieht Name, Laufzeit und
   Pruefzeitpunkt. Begrenzt durch die Bindung auf `127.0.0.1` und die
   `allow`/`deny`-Liste in Nginx.
