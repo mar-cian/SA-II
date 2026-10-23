@@ -16,7 +16,7 @@ services:
     #   DASHBOARD_BIND=0.0.0.0       sudo -E docker compose up -d   # alle Schnittstellen
     # Eine Portaenderung verlangt Containerneuerstellung (up -d), ein restart
     # uebernimmt geaenderte Compose-Variablen nicht.
-    ports: ["${DASHBOARD_BIND:-127.0.0.1}:8090:8000"]
+    ports: ["${DASHBOARD_BIND:-127.0.0.1}:8082:8000"]
     environment:
       SNAPSHOT_PATH: /data/collector/snapshot.json
       # Muss zu HFC_MAX_AGE des Collectors passen. Der Snapshot bringt den Wert

@@ -7,8 +7,8 @@ services:
     build: .
     image: service-clock:1.0.0
     # Eigener Port. 8080 (Ollama), 3000 (Open WebUI), 8081 (Laborumgebung) und
-    # 8090 (Dashboard aus Auftrag 2) bleiben frei.
-    ports: ["127.0.0.1:8095:8000"]
+    # 8082 (Dashboard aus Auftrag 2) bleiben frei.
+    ports: ["127.0.0.1:8083:8000"]
     environment:
       SERVICE_NAME: ${SERVICE_NAME:-Service Clock}
       CLOCK_TZ: ${CLOCK_TZ:-Europe/Zurich}

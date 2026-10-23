@@ -13,7 +13,7 @@ set -uo pipefail
 
 SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 COMPOSE_DIR="$(cd "${SRC_DIR}/.." && pwd)"
-DASHBOARD_URL="${DASHBOARD_URL:-http://127.0.0.1:8090}"
+DASHBOARD_URL="${DASHBOARD_URL:-http://127.0.0.1:8082}"
 DEAD_PORT="${DEAD_PORT:-9}"          # unbenutzter lokaler Port
 PROTOCOL="${PROTOCOL:-$PWD/nachweis_ai_ausfall_$(date -u +%Y%m%dT%H%M%SZ).log}"
 

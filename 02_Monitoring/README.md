@@ -5,7 +5,7 @@ Eigene Ueberwachung der vorgegebenen Laborumgebung mit AI-Analyse. Drei Teile:
 | Teil | Wo laeuft er | Aufgabe |
 |---|---|---|
 | `collector/` | Ubuntu-Host, systemd-Dienst | liest Docker nur lesend, schreibt `snapshot.json` |
-| `dashboard/` | Container, Port 127.0.0.1:8090 | liest die Datei read-only, zeigt sie an, eigener `/health`, AI-Analyse |
+| `dashboard/` | Container, Port 127.0.0.1:8082 | liest die Datei read-only, zeigt sie an, eigener `/health`, AI-Analyse |
 | `ai-relay/` | Ubuntu-Host, systemd-Dienst | enger Zugang vom Dashboard-Netz zum lokal gebundenen Ollama |
 
 Die Startumgebung in `01_Startumgebung` bleibt unveraendert.
@@ -74,14 +74,14 @@ Die vollstaendige Reihenfolge mit Pruefpunkten steht in `DEPLOY.md`.
 Im Browser **auf der Ubuntu-VM**:
 
 ```
-http://127.0.0.1:8090
+http://127.0.0.1:8082
 ```
 
 Auf der Kommandozeile:
 
 ```bash
-curl -fsS http://127.0.0.1:8090/health   | python3 -m json.tool
-curl -fsS http://127.0.0.1:8090/api/state | python3 -m json.tool
+curl -fsS http://127.0.0.1:8082/health   | python3 -m json.tool
+curl -fsS http://127.0.0.1:8082/api/state | python3 -m json.tool
 ```
 
 Die Vorgabe `127.0.0.1` ist Absicht: der Port ist nur auf der VM selbst
@@ -100,10 +100,10 @@ sudo apt install -y openssh-server && sudo systemctl enable --now ssh
 hostname -I
 
 # auf dem anderen Rechner, Terminal offen lassen
-ssh -N -L 8090:127.0.0.1:8090 <benutzer>@<ubuntu-ip>
+ssh -N -L 8082:127.0.0.1:8082 <benutzer>@<ubuntu-ip>
 ```
 
-Danach dort `http://127.0.0.1:8090`. Der Port bleibt auf der VM loopback-only,
+Danach dort `http://127.0.0.1:8082`. Der Port bleibt auf der VM loopback-only,
 der Zugriff ist authentifiziert und verschluesselt.
 
 **2. Freigabe nur im isolierten Host-only-Netz**
@@ -113,7 +113,7 @@ cd ~/workspace/sa-ii/02_Monitoring
 DASHBOARD_BIND=192.168.56.10 sudo -E docker compose up -d   # IP der VM einsetzen
 ```
 
-Erreichbar unter `http://192.168.56.10:8090`, aber nur auf dieser einen
+Erreichbar unter `http://192.168.56.10:8082`, aber nur auf dieser einen
 Schnittstelle. Das ist der brauchbare Mittelweg, wenn kein SSH laufen soll.
 
 **3. Freigabe auf allen Schnittstellen**
@@ -190,7 +190,7 @@ weiterlaeuft. Logs der Laborcontainer bleiben an deren Lebensdauer gebunden.
 ./collector/scripts/check-snapshot.sh
 
 # Fehlerfall "Datenerfassung gestoert" mit Protokoll (Phase E, Versuch 3)
-sudo DASHBOARD_URL=http://127.0.0.1:8090/health ./collector/scripts/faultcase-collector.sh
+sudo DASHBOARD_URL=http://127.0.0.1:8082/health ./collector/scripts/faultcase-collector.sh
 ```
 
 Erwartung dabei: Solange der Collector steht, altert der Snapshot. Ueberschreitet

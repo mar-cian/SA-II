@@ -191,12 +191,12 @@ beschreibbar ist.
 sudo docker compose exec clock id                      # uid=10001, nicht 0
 sudo docker compose exec clock sh -c 'touch /tmp/x && echo "tmpfs beschreibbar"'
 sudo docker compose exec clock sh -c 'touch /app/x 2>&1 || echo "Rootfs ist read-only"'
-curl -s -o /dev/null -w 'Anwendung antwortet trotzdem: HTTP %{http_code}\n' http://127.0.0.1:8095/health
+curl -s -o /dev/null -w 'Anwendung antwortet trotzdem: HTTP %{http_code}\n' http://127.0.0.1:8083/health
 ```
 
 ## c) Unnoetige Portfreigabe (`prompts/05_portfreigabe.txt`)
 
-**Fakt:** `ports: ["8095:8000"]` ohne Adresse bindet auf `0.0.0.0`, also auf
+**Fakt:** `ports: ["8083:8000"]` ohne Adresse bindet auf `0.0.0.0`, also auf
 allen Schnittstellen. Die Anwendung hat keine Authentifizierung, damit sieht
 jeder im Netz Name, Zeit und Zaehler. `EXPOSE` im Dockerfile ist dabei keine
 Schutzmassnahme, sondern nur Dokumentation. Die engere Loesung ist die Bindung
@@ -206,7 +206,7 @@ auf Loopback plus ein SSH-Tunnel.
 
 ```bash
 sudo docker compose port clock 8000        # zeigt die wirksame Bindung
-ss -ltn | grep 8095                        # 127.0.0.1 oder 0.0.0.0
+ss -ltn | grep 8083                        # 127.0.0.1 oder 0.0.0.0
 ```
 
 ## Weitere haeufige Fehlvorschlaege, falls du eine Reserve brauchst

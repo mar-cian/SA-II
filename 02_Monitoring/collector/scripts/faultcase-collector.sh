@@ -5,7 +5,7 @@
 #
 # Aufruf:
 #   sudo ./scripts/faultcase-collector.sh
-#   sudo DASHBOARD_URL=http://127.0.0.1:8090/health ./scripts/faultcase-collector.sh
+#   sudo DASHBOARD_URL=http://127.0.0.1:8082/health ./scripts/faultcase-collector.sh
 #
 # Das Protokoll wird zusaetzlich in eine Datei geschrieben (Beleg fuer die Abgabe).
 set -uo pipefail
@@ -13,7 +13,7 @@ set -uo pipefail
 SERVICE_NAME="hf-ops-collector"
 SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SNAPSHOT="${HFC_OUT_DIR:-/var/lib/hf-ops-collector/state}/${HFC_OUT_FILE:-snapshot.json}"
-DASHBOARD_URL="${DASHBOARD_URL:-http://127.0.0.1:8090/health}"
+DASHBOARD_URL="${DASHBOARD_URL:-http://127.0.0.1:8082/health}"
 WAIT_SECONDS="${WAIT_SECONDS:-35}"
 PROTOCOL="${PROTOCOL:-$PWD/nachweis_collector_ausfall_$(date -u +%Y%m%dT%H%M%SZ).log}"
 

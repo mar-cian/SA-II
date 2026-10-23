@@ -164,7 +164,7 @@ Belege: `f4_dashboard_ohne_socket.log`, `f5_haertung_collector.log`,
 Mit `network_mode: host` entfaellt der eigene Netz-Namespace. Drei Folgen:
 
 1. **`ports:` wirkt nicht mehr.** Der Prozess bindet direkt auf dem Host. Die
-   bewusste Bindung auf `127.0.0.1:8090` waere damit Sache des Anwendungscodes,
+   bewusste Bindung auf `127.0.0.1:8082` waere damit Sache des Anwendungscodes,
    nicht mehr der Compose-Datei.
 2. **Alles auf dem Loopback des Hosts wird erreichbar.** Genau darauf verlassen
    sich Dienste, die bewusst nur lokal gebunden sind.
@@ -201,7 +201,7 @@ Beleg: `f6_hostnetz_waere_erreichbar.log`
 
 **a) Externe Freigaben**
 
-- Dashboard an `127.0.0.1:8090` gebunden. Die Variable `DASHBOARD_BIND` macht
+- Dashboard an `127.0.0.1:8082` gebunden. Die Variable `DASHBOARD_BIND` macht
   eine Oeffnung zu einem sichtbaren, dokumentierten Einzelschritt statt zu einer
   stillen Voreinstellung.
 - Relay lauscht nur auf dem Gateway des Dashboard-Netzes (`172.31.240.1:8899`),

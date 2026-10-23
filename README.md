@@ -26,6 +26,29 @@ Dokumentation:
 | `03_ServiceClock/QWEN_PROTOKOLL.md` | Auftrag 3: Entscheidungsprotokoll zum AI-Einsatz |
 | `Auftrag2_PhaseA_Statische_Analyse.md` | statische Analyse vor dem ersten Start |
 
+## Ports
+
+| Komponente | Adresse auf Ubuntu | Aufgabe |
+|---|---|---|
+| Ollama | `127.0.0.1:8080` | lokale KI-API, bleibt ohne LAN-Freigabe |
+| Open WebUI | `127.0.0.1:3000` | Oberflaeche zu Ollama, vorgegeben |
+| Web | `127.0.0.1:8081` | Oberflaeche der Startumgebung |
+| Dashboard | `127.0.0.1:8082` | Status und KI-Diagnose, Auftrag 2 |
+| Service Clock | `127.0.0.1:8083` | eigene Anwendung, Auftrag 3 |
+| AI-Relay | `172.31.240.1:8899` | nur aus dem Dashboard-Netz, nicht vom Host-Loopback |
+
+Alles bewusst auf Loopback gebunden. Zugriff von einem anderen Rechner laeuft
+ueber einen SSH-Tunnel, nicht ueber eine Netzfreigabe:
+
+```bash
+ssh -N -L 127.0.0.1:8082:127.0.0.1:8082 \
+       -L 127.0.0.1:8083:127.0.0.1:8083 vmadmin@<ubuntu-ip>
+```
+
+Das AI-Relay steht bewusst nicht in dieser Liste: es lauscht auf dem Gateway des
+Dashboard-Netzes und ist damit nur aus diesem Netz erreichbar, nicht vom Host
+und nicht aus dem LAN.
+
 ## Architektur
 
 ```
@@ -53,7 +76,7 @@ cd .. && sudo docker compose up -d --build
 cd ai-relay && sudo ./scripts/install-relay.sh && ./scripts/check-relay.sh --probe
 ```
 
-Dashboard danach im Browser **auf der VM**: `http://127.0.0.1:8090`
+Dashboard danach im Browser **auf der VM**: `http://127.0.0.1:8082`
 
 ## Verbindliche Regeln der Loesung
 
@@ -87,4 +110,4 @@ Eingriff, Beobachtung, Beleg, Wiederherstellung.
   Worker-Fehler wird nicht repariert, sondern belegt.
 - Keine Secrets, Modellgewichte oder Build-Caches im Repo, siehe `.gitignore`.
 - Ports 8080 (Ollama) und 3000 (Open WebUI) bleiben unangetastet, 8081 gehoert
-  der Laborumgebung. Das Dashboard verwendet 8090.
+  der Laborumgebung. Das Dashboard verwendet 8082.

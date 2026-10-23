@@ -74,7 +74,7 @@ sudo docker compose up -d                         # Dashboard starten/neu erstel
 sudo ./collector/scripts/faultcase-collector.sh   # Fehlerfall mit Protokoll
 ```
 
-Erreichbar unter `http://<ubuntu-ip>:8090`.
+Erreichbar unter `http://<ubuntu-ip>:8082`.
 
 | Route | Inhalt |
 |---|---|

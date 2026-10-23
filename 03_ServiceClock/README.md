@@ -28,20 +28,20 @@ Alle Befehle unten werden aus `03_ServiceClock/` ausgefuehrt.
 - Docker mit Compose-Plugin, auf dieser VM ueber `sudo` angesprochen
 - Netzzugang beim Build, weil das Image `tzdata` nachinstalliert
 - `python3` auf dem Host nur fuer die Testskripte, nicht fuer die Anwendung
-- Ports 8080, 3000, 8081 und 8090 bleiben unangetastet
+- Ports 8080, 3000, 8081 und 8082 bleiben unangetastet
 
 ## Ports
 
 | Wo | Adresse | Zweck |
 |---|---|---|
-| Host | `127.0.0.1:8095` | Zugriff, bewusst nur lokal gebunden |
+| Host | `127.0.0.1:8083` | Zugriff, bewusst nur lokal gebunden |
 | Container | `8000` | Anwendung |
 
 Vom Mac oder Kali aus geht der Zugriff ueber einen SSH-Tunnel, nicht ueber eine
 Netzfreigabe:
 
 ```bash
-ssh -N -L 127.0.0.1:8095:127.0.0.1:8095 vmadmin@<ubuntu-ip>
+ssh -N -L 127.0.0.1:8083:127.0.0.1:8083 vmadmin@<ubuntu-ip>
 ```
 
 ## Start
@@ -56,15 +56,15 @@ Etwa 10 Sekunden warten. In der Startphase meldet die Anwendung `starting` mit
 HTTP 503, danach `healthy` mit HTTP 200. Der Healthcheck hat dafuer ein
 `start_period` von 10 s.
 
-Aufrufen, im Browser auf der VM: `http://127.0.0.1:8095`
+Aufrufen, im Browser auf der VM: `http://127.0.0.1:8083`
 
 ## Tests
 
 ```bash
-curl -fsS http://127.0.0.1:8095/health | python3 -m json.tool
-curl -fsS http://127.0.0.1:8095/api/clock | python3 -m json.tool
-curl -s -o /dev/null -w 'unbekannte Route: HTTP %{http_code}\n' http://127.0.0.1:8095/gibtsnicht
-curl -s -o /dev/null -w 'POST: HTTP %{http_code}\n' -X POST http://127.0.0.1:8095/
+curl -fsS http://127.0.0.1:8083/health | python3 -m json.tool
+curl -fsS http://127.0.0.1:8083/api/clock | python3 -m json.tool
+curl -s -o /dev/null -w 'unbekannte Route: HTTP %{http_code}\n' http://127.0.0.1:8083/gibtsnicht
+curl -s -o /dev/null -w 'POST: HTTP %{http_code}\n' -X POST http://127.0.0.1:8083/
 sudo docker compose logs --tail 20 clock
 sudo docker compose exec clock id        # muss uid=10001 zeigen, nicht root
 ```
@@ -81,11 +81,11 @@ Konfiguration ausprobieren, ohne Dateien zu aendern:
 ```bash
 # Anzeigename, wird sicher in HTML ausgegeben
 sudo SERVICE_NAME='<script>alert(1)</script>' docker compose up -d
-curl -fsS http://127.0.0.1:8095/ | grep -o '&lt;script&gt;[^<]*'
+curl -fsS http://127.0.0.1:8083/ | grep -o '&lt;script&gt;[^<]*'
 
 # ungueltige Zeitzone: Prozess laeuft weiter, Health meldet degraded
 sudo CLOCK_TZ=Nirgendwo/Nirgends docker compose up -d
-sleep 8 && curl -s -o /dev/null -w 'HTTP %{http_code}\n' http://127.0.0.1:8095/health
+sleep 8 && curl -s -o /dev/null -w 'HTTP %{http_code}\n' http://127.0.0.1:8083/health
 sudo docker compose ps                    # Container wird unhealthy
 
 # zurueck auf die Vorgabe

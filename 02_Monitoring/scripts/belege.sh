@@ -18,7 +18,7 @@ MON="$(cd "${SELF}/.." && pwd)"
 ROOT="$(cd "${MON}/.." && pwd)"
 LAB="${ROOT}/01_Startumgebung"
 BELEGE="${ROOT}/belege"
-DASHBOARD="${DASHBOARD_URL:-http://127.0.0.1:8090}"
+DASHBOARD="${DASHBOARD_URL:-http://127.0.0.1:8082}"
 
 # Adressen aus den installierten Konfigurationen uebernehmen, sonst Vorgabe.
 SNAPSHOT="${HFC_OUT_DIR:-/var/lib/hf-ops-collector/state}/${HFC_OUT_FILE:-snapshot.json}"
@@ -152,8 +152,17 @@ cmd_phase_b() {
       "cd '${LAB}' && sudo docker inspect --format '{{json .State.Health}}' \
          \"\$(sudo docker compose ps -q ${s})\" | python3 -m json.tool"
   done
-  cap logs_worker_vor_reparatur.log "Worker-Logs VOR jeder Reparatur, mit Zeitstempel" -- bash -c \
-    "cd '${LAB}' && sudo docker compose logs --timestamps --tail 60 worker"
+  # Diese Datei ist nicht wiederherstellbar: nach einer Reparatur des Workers
+  # existieren die alten Logzeilen nicht mehr. Deshalb wird sie nie ueberschrieben.
+  if [ -s "${DIR}/logs_worker_vor_reparatur.log" ]; then
+    note "uebersprungen: logs_worker_vor_reparatur.log existiert bereits"
+    note "              (alte Logzeilen sind nicht wiederherstellbar, bleibt erhalten)"
+    cap logs_worker_aktuell.log "Worker-Logs zum jetzigen Zeitpunkt" -- bash -c \
+      "cd '${LAB}' && sudo docker compose logs --timestamps --tail 60 worker"
+  else
+    cap logs_worker_vor_reparatur.log "Worker-Logs VOR jeder Reparatur, mit Zeitstempel" -- bash -c \
+      "cd '${LAB}' && sudo docker compose logs --timestamps --tail 60 worker"
+  fi
   cap logs_api.log "API-Logs" -- bash -c "cd '${LAB}' && sudo docker compose logs --timestamps --tail 20 api"
   cap logs_web.log "Web-Logs" -- bash -c "cd '${LAB}' && sudo docker compose logs --timestamps --tail 20 web"
   cap curl_web_health.log "Health der Laborumgebung ueber den veroeffentlichten Port" -- bash -c \
@@ -194,7 +203,7 @@ cmd_phase_d() {
     "curl -s --max-time 180 -X POST '${DASHBOARD}/api/analyze' | python3 -m json.tool"
   cap ai_analyse_lesbar.log "Die vier geforderten Elemente" -- analyse_lesbar
   cap netzgrenze.log "Nachweis: Relay nur aus dem Dashboard-Netz erreichbar" -- bash -c \
-    "echo '--- Lauschadressen ---'; ss -ltn | grep -E '8899|8080|8090' || echo 'nichts gefunden'; \
+    "echo '--- Lauschadressen ---'; ss -ltn | grep -E '8899|8080|8082' || echo 'nichts gefunden'; \
      echo '--- Subnetz des Dashboard-Netzes ---'; \
      sudo docker network inspect hf-ops-dashboard --format '{{json .IPAM.Config}}' 2>/dev/null | python3 -m json.tool"
   cap allowlist_gegenprobe.log "Nicht freigegebenes Modell wird abgelehnt" -- bash -c \
@@ -263,7 +272,7 @@ cmd_phase_f() {
     "echo '--- Dashboard ---'; cd '${MON}' && sudo docker compose port dashboard 8000; \
      echo '--- Laborumgebung ---'; cd '${LAB}' && sudo docker compose port web 8000; \
      echo '--- alle Lauscher auf den beteiligten Ports ---'; \
-     ss -ltn | grep -E '8080|8081|8090|8899|3000' || echo 'keine'"
+     ss -ltn | grep -E '8080|8081|8082|8899|3000' || echo 'keine'"
 
   cap f8_keine_geheimnisse_in_logs.log \
       "Das Relay protokolliert Groesse und Dauer, keine Promptinhalte" -- bash -c \

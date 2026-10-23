@@ -75,11 +75,11 @@ Tabelle steht `worker fehlerhaft`.
 cd ~/workspace/sa-ii/02_Monitoring
 sudo docker compose up -d --build
 sudo docker compose ps
-curl -fsS http://127.0.0.1:8090/health | python3 -m json.tool
+curl -fsS http://127.0.0.1:8082/health | python3 -m json.tool
 ```
 
 Pruefpunkt: Container healthy, `/health` liefert `"status": "healthy"` und
-`"data_status": "fresh"`. Im Browser auf der VM: `http://127.0.0.1:8090`.
+`"data_status": "fresh"`. Im Browser auf der VM: `http://127.0.0.1:8082`.
 
 Dieser Schritt legt das Netz `hf-ops-dashboard` mit dem Gateway
 `172.31.240.1` an. Darauf lauscht im naechsten Schritt das Relay.
@@ -100,8 +100,8 @@ nicht freigegebenen Modell muss HTTP 403 ergeben.
 ## 6. Gesamtprobe
 
 ```bash
-curl -fsS http://127.0.0.1:8090/api/ai | python3 -m json.tool | head -12
-curl -s -X POST http://127.0.0.1:8090/api/analyze | python3 -m json.tool | head -20
+curl -fsS http://127.0.0.1:8082/api/ai | python3 -m json.tool | head -12
+curl -s -X POST http://127.0.0.1:8082/api/analyze | python3 -m json.tool | head -20
 ```
 
 Pruefpunkt: `/api/ai` meldet `"status": "available"`. Die Analyse liefert
@@ -124,10 +124,10 @@ hostname -I
 Auf dem Kali, Terminal offen lassen:
 
 ```bash
-ssh -N -L 8090:127.0.0.1:8090 vmadmin@<ubuntu-ip>
+ssh -N -L 8082:127.0.0.1:8082 vmadmin@<ubuntu-ip>
 ```
 
-Pruefpunkt: Im Kali-Browser `http://127.0.0.1:8090`. Die Alternative mit
+Pruefpunkt: Im Kali-Browser `http://127.0.0.1:8082`. Die Alternative mit
 `DASHBOARD_BIND` ist in `README.md` beschrieben; sie oeffnet den Port im Netz
 und gehoert dann als Abweichung ins Protokoll.
 
@@ -183,5 +183,5 @@ Keine fremden Container loeschen, Ollama und Open WebUI nicht anfassen.
 | AI "Modell nicht vorhanden" | `ollama list`, danach `AI_MODEL` in `compose.yaml` und `AIR_ALLOWED_MODELS` anpassen |
 | Analyse bricht mit `relay_busy` ab | es laeuft bereits eine Anfrage, kurz warten |
 | Analyse abgelehnt, `data_not_fresh` | das ist gewollt: zuerst den Collector in Ordnung bringen |
-| Port 8090 belegt | `ss -ltnp \| grep 8090`, Port in `compose.yaml` aendern |
+| Port 8082 belegt | `ss -ltnp \| grep 8082`, Port in `compose.yaml` aendern |
 | Container erreicht Relay nicht | `sudo ufw status`; falls aktiv: `sudo ufw allow from 172.31.240.0/24 to 172.31.240.1 port 8899 proto tcp` |

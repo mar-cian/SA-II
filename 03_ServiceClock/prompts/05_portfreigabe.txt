@@ -1,11 +1,11 @@
 In meiner compose.yaml steht:
 
-    ports: ["127.0.0.1:8095:8000"]
+    ports: ["127.0.0.1:8083:8000"]
 
 Ich moechte die Anwendung von einem anderen Rechner im selben Netz aufrufen und
 ueberlege, stattdessen
 
-    ports: ["8095:8000"]
+    ports: ["8083:8000"]
 
 zu schreiben. Was aendert sich dadurch genau? Gibt es Nachteile, und welche
 Alternativen gaebe es, wenn die Anwendung keine Authentifizierung hat?

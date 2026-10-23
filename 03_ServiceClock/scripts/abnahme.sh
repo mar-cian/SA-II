@@ -11,7 +11,7 @@ set -uo pipefail
 SELF="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 APP="$(cd "${SELF}/.." && pwd)"
 DIR="${APP}/belege/abnahme"
-URL="${CLOCK_URL:-http://127.0.0.1:8095}"
+URL="${CLOCK_URL:-http://127.0.0.1:8083}"
 
 [ "$(id -u)" -eq 0 ] || { printf 'FEHLER: bitte mit sudo ausfuehren: sudo %s\n' "$0" >&2; exit 1; }
 mkdir -p "${DIR}"

@@ -105,7 +105,7 @@ belege/02_phaseB_erster_start/
 ```
 
 Belegt unter anderem, dass der Dashboard-Container keinen Docker-Socket hat.
-Mach zusaetzlich einen Screenshot von `http://127.0.0.1:8090` und lege ihn als
+Mach zusaetzlich einen Screenshot von `http://127.0.0.1:8082` und lege ihn als
 `belege/03_phaseC_eigenes_monitoring/dashboard_screenshot.png` ab.
 
 ## Schritt 5: Phase D
