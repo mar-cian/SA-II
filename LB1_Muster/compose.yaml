@@ -1,0 +1,39 @@
+# Muster, keine Abgabe. Eigener Projektname, damit Docker dies nicht mit der
+# Service Clock oder dem Dashboard verwechselt und dort Container ersetzt.
+name: lb1-muster
+
+services:
+  app:
+    build: .
+    image: lb1-muster:1.0.0
+    # Hostport frei waehlbar, damit derselbe Stand auch auf dem Pruefungsport
+    # laeuft:  HOSTPORT=8084 sudo docker compose up -d --build
+    ports: ["127.0.0.1:${HOSTPORT:-8084}:8000"]
+    environment:
+      APP_NAME: ${APP_NAME:-HF Karate Robot}
+      # Im Container ist 0.0.0.0 richtig. Die Begrenzung kommt aus der
+      # Portveroeffentlichung 127.0.0.1:<hostport> oben, nicht aus der Bindung
+      # hier drinnen. Mit 127.0.0.1 waere die Anwendung nur innerhalb des
+      # Containers erreichbar und docker-proxy kaeme nicht an sie heran.
+      BIND: "0.0.0.0"
+      PORT: "8000"
+      # Vorgabe aus 5.2: etwa alle 5 s abfragen, maximal 5 s je Anfrage warten.
+      POLL_MS: "5000"
+      TIMEOUT_MS: "5000"
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    user: "10001:10001"
+    tmpfs: ["/tmp:size=8m,mode=1777"]
+    logging:
+      driver: json-file
+      options: {max-size: "2m", max-file: "2"}
+    healthcheck:
+      # Das Image enthaelt kein curl, deshalb Probe mit der Standardbibliothek.
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 5s

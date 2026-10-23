@@ -28,18 +28,66 @@ Die Policy aufzuweichen waere der falsche Weg. Hier wird genau dieses eine
 Skript ueber ein Nonce je Antwort erlaubt, dazu `connect-src 'self'` fuer
 `fetch`. Siehe `_send()` in `app.py`.
 
-## Ausprobieren
+## Ausprobieren: im Container
+
+Das ist der Weg, der dem Pruefungsaufbau entspricht. Non-root, read-only,
+Healthcheck und Restart Policy sind dieselben wie in der Service Clock, damit
+A5 und T6 abgedeckt sind.
 
 ```bash
 cd ~/workspace/AI-Docker-Lab/LB1_Muster
-python3 app.py
+
+# Falls noch ein Prozess ohne Container auf demselben Port laeuft, erst beenden:
+pgrep -af 'LB1_Muster/app.py'      # kill <PID>
+
+HOSTPORT=8084 sudo docker compose up -d --build
+sleep 12
+sudo docker compose ps             # muss healthy zeigen
+curl -sS -o /dev/null -w 'lokal HTTP %{http_code}\n' http://127.0.0.1:8084/
 ```
 
-Dann `http://127.0.0.1:8099` im Browser auf der VM. In einem zweiten Fenster
-den Server mit Strg-C beenden, die Seite offen lassen: nach hoechstens 5 s
-steht dort "nicht erreichbar", die Serverwerte sind durchgestrichen und der
-Hinweis nennt den Stand der letzten Antwort. Der Roboter bewegt sich weiter.
-Danach wieder starten, die Laufzeit beginnt neu.
+Rechte nachweisen, das ist T6 und H8:
+
+```bash
+sudo docker compose exec app id                                  # uid=10001
+sudo docker compose exec app touch /beweis 2>&1 | head -1        # read-only
+sudo docker compose exec app touch /tmp/beweis && echo '/tmp beschreibbar'
+sudo docker inspect --format \
+  'ReadOnly={{.HostConfig.ReadonlyRootfs}} User={{.Config.User}} Policy={{.HostConfig.RestartPolicy.Name}}' \
+  "$(sudo docker compose ps -q app)"
+```
+
+Beenden und wieder starten:
+
+```bash
+sudo docker compose down           # fuer den T3-Test: Seite offen lassen
+sudo docker compose up -d          # T4, Laufzeit beginnt neu
+```
+
+### Warum `BIND: "0.0.0.0"` im Container richtig ist
+
+Auf dem Host laeuft dieses Programm absichtlich auf `127.0.0.1`. Im Container
+dagegen muss es auf `0.0.0.0` hoeren, sonst ist es nur innerhalb des Containers
+erreichbar und `docker-proxy` kommt nicht an es heran. Die Begrenzung auf den
+lokalen Zugriff kommt an dieser Stelle nicht aus der Bindung im Programm,
+sondern aus der Portveroeffentlichung `127.0.0.1:8084:8000` in der
+`compose.yaml`. Das ist genau die Unterscheidung, die B5 und K7 pruefen: zwei
+verschiedene Grenzen, eine im Container und eine auf dem Host.
+
+## Ausprobieren: ohne Container
+
+Schneller beim Entwickeln, weil kein Rebuild je Aenderung noetig ist. Fuer die
+Abgabe reicht es nicht, dort sind Healthcheck und Restart Policy gefordert.
+
+```bash
+cd ~/workspace/AI-Docker-Lab/LB1_Muster
+PORT=8099 python3 app.py
+```
+
+Dann `http://127.0.0.1:8099` im Browser auf der VM. Mit Strg-C beenden, die Seite offen
+lassen: nach hoechstens 5 s steht dort "nicht erreichbar", die Serverwerte sind
+durchgestrichen und der Hinweis nennt den Stand der letzten Antwort. Der
+Roboter bewegt sich weiter. Danach wieder starten, die Laufzeit beginnt neu.
 
 ## Nachgewiesen
 
