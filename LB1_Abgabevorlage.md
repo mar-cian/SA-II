@@ -3,47 +3,37 @@
 Name: Gian-Marco Rieder
 Projekt: Karate Robot mit Betriebsanzeige (Local AI, Modul SAII)
 
-> Vorbereiteter Stand. Alles, was mit **[messen]** markiert ist, wird erst
-> waehrend der Durchfuehrung eingetragen. Nicht ausgefuehrte Tests bleiben als
-> "nicht durchgefuehrt" stehen.
+`[messen]` wird waehrend der Durchfuehrung eingetragen.
 
 ## 1 Zugriff und Architektur
 
 | Angabe | Tatsächlicher Wert |
 | --- | --- |
-| Hostname und IP von vmls1 | `vmls1`, 192.168.110.61 **[messen]** mit `hostname -f; ip -br -4 address` bestaetigen |
+| Hostname und IP von vmls1 | `li264-vmLS1`, 192.168.110.61 |
 | Vollständige Browser-URL | `http://192.168.110.61:8084/` |
 | SSH-Befehl und Benutzerkonto | `ssh vmadmin@192.168.110.61`, Konto `vmadmin`, Port 22. Zugangsdaten separat. |
 | Absoluter Projektpfad | `/home/vmadmin/workspace/AI-Docker-Lab/04_Karate` |
 | Hostport und Containerport | Host `127.0.0.1:8084`, Container `8000` |
 
-Der Hostport ist bewusst nur auf das Loopback gebunden. Ins Netz freigegeben
-wird er von Nginx, nicht von Docker.
-
 ```
-Kali, Firefox  192.168.110.70
-      |  HTTP GET /  und  GET /api/info
+Kali, Firefox  192.168.110.70        <- Animation laeuft hier
+      |  GET /  und alle 5 s GET /api/info
       v
-Nginx          192.168.110.61:8084        allow 192.168.110.70; deny all
+Nginx          192.168.110.61:8084   allow 192.168.110.70; deny all
       |  proxy_pass http://127.0.0.1:8084
       v
-Host-Loopback  127.0.0.1:8084             docker-proxy
+Host-Loopback  127.0.0.1:8084        docker-proxy
       |
       v
-Container      karate:8000                app.py, hoert auf 0.0.0.0
+Container      8000                  app.py, hoert auf 0.0.0.0
 ```
 
-**Wo was laeuft.** Die Animation laeuft ausschliesslich im Browser: CSS-Keyframes
-und ein kleines Skript, kein Serveranteil. Die Statusabfrage dagegen geht alle
-5 Sekunden ueber die ganze Kette oben bis zu `/api/info` im Container. Darum
-bewegt sich der Roboter weiter, wenn der Server ausfaellt, und nur das
-Dashboard meldet den Ausfall.
+Die Animation laeuft im Browser, ohne Serveranteil. Nur die Statusabfrage geht
+ueber die ganze Kette bis `/api/info`.
 
-Zwei verschiedene Grenzen, die nicht verwechselt werden duerfen: im Container
-hoert die Anwendung auf `0.0.0.0`, weil `docker-proxy` sie sonst nicht
-erreichen wuerde. Die Begrenzung auf lokalen Zugriff kommt aus der
-Veroeffentlichung `127.0.0.1:8084:8000` in der `compose.yaml`, die Begrenzung
-auf den Kali aus der `allow`/`deny`-Liste in Nginx.
+Zwei Grenzen: `127.0.0.1:8084:8000` in der `compose.yaml` begrenzt auf lokalen
+Zugriff, die `allow`/`deny`-Liste in Nginx auf den Kali. Im Container hoert die
+Anwendung auf `0.0.0.0`, sonst erreicht `docker-proxy` sie nicht.
 
 ## 2 How-to und Verständnis der Handlungen
 
@@ -51,355 +41,226 @@ Alle Befehle aus `/home/vmadmin/workspace/AI-Docker-Lab/04_Karate`.
 
 ### H1 Image bauen
 
-Befehl mit Arbeitsverzeichnis:
 ```bash
-cd ~/workspace/AI-Docker-Lab/04_Karate
-sudo docker compose build
-sudo docker images karate-robot
+sudo docker compose build && sudo docker images karate-robot
 ```
-Zweck, Veränderung und unveränderter Zustand: Baut aus `Dockerfile` und
-`app.py` ein neues Image. Neu ist die Image-ID. Unveraendert bleiben der
-laufende Container, die `compose.yaml` und die anderen Umgebungen auf dieser
-VM, weil der Build nur ein Image erzeugt und nichts austauscht.
-Test/Beleg: T5, Image-ID vorher und nachher.
+Baut aus `Dockerfile` und `app.py` ein neues Image. Neu: Image-ID. Unveraendert:
+laufender Container, `compose.yaml`. Beleg: T5.
 
 ### H2 Container starten
 
-Befehl mit Arbeitsverzeichnis:
 ```bash
-cd ~/workspace/AI-Docker-Lab/04_Karate
-sudo docker compose up -d
-sudo docker compose ps
+sudo docker compose up -d && sudo docker compose ps
 ```
-Zweck, Veränderung und unveränderter Zustand: Erstellt aus dem vorhandenen
-Image einen Container und veroeffentlicht `127.0.0.1:8084`. Neu sind
-Container-ID, Laufzeit und Anfragezaehler. Unveraendert bleiben Image,
-Nginx-Konfiguration und der Quellstand.
-Test/Beleg: T2, T7.
+Erstellt den Container aus dem Image und veroeffentlicht `127.0.0.1:8084`. Neu:
+Container-ID, Laufzeit. Unveraendert: Image, Nginx. Beleg: T2, T7.
 
-### H3 Container dem bereitgestellten Zugangsport zuordnen
+### H3 Zugangsport zuordnen
 
-Befehl mit Arbeitsverzeichnis:
 ```bash
-cd ~/workspace/AI-Docker-Lab/04_Karate
-grep ports: compose.yaml                 # 127.0.0.1:8084:8000
-sudo docker compose up -d
-curl -sS -o /dev/null -w 'lokal    HTTP %{http_code}\n' http://127.0.0.1:8084/
+grep ports: compose.yaml
+curl -sS -o /dev/null -w 'lokal     HTTP %{http_code}\n' http://127.0.0.1:8084/
 curl -sS -o /dev/null -w 'ueber LAN HTTP %{http_code}\n' http://192.168.110.61:8084/
 ```
-Zweck, Veränderung und unveränderter Zustand: Ordnet den Containerport 8000 dem
-bereitgestellten Hostport 8084 zu. Veraendert wird nur die Veroeffentlichung,
-nicht die Anwendung: im Container hoert sie unveraendert auf Port 8000. Die
-Freigabe ins Netz leistet Nginx und ist bereitgestellte Infrastruktur.
-Test/Beleg: T7. Die beiden `curl`-Aufrufe trennen die Verantwortung: 200 lokal
-und kein 200 ueber die LAN-Adresse heisst, die Zuordnung stimmt und die
-Freigabe fehlt.
+Ordnet Containerport 8000 dem Hostport 8084 zu. Veraendert nur die
+Veroeffentlichung, nicht die Anwendung. Die Netzfreigabe leistet Nginx.
+Beleg: T7. 200 lokal ohne 200 ueber LAN hiesse: Zuordnung stimmt, Freigabe fehlt.
 
 ### H4 Status und Logs prüfen
 
-Befehl mit Arbeitsverzeichnis:
 ```bash
-cd ~/workspace/AI-Docker-Lab/04_Karate
 sudo docker compose ps
 sudo docker compose logs --tail 30 app
 sudo docker inspect --format 'Health={{.State.Health.Status}} Running={{.State.Running}} RestartCount={{.RestartCount}}' \
   "$(sudo docker compose ps -q app)"
 ```
-Zweck, Veränderung und unveränderter Zustand: Trennt Prozesszustand und
-Health-Status. Veraendert nichts, es wird nur gelesen.
-Test/Beleg: T2, T6. `Running=true` allein ist kein Nachweis fuer eine
-funktionierende Anwendung, deshalb der Health-Status daneben.
+Trennt Prozesszustand und Health. Veraendert nichts. `Running=true` allein ist
+kein Nachweis fuer eine funktionierende Anwendung. Beleg: T2, T6.
 
 ### H5 Stoppen
 
-Befehl mit Arbeitsverzeichnis:
 ```bash
-cd ~/workspace/AI-Docker-Lab/04_Karate
 sudo docker compose stop
 ```
-Zweck, Veränderung und unveränderter Zustand: Beendet den Prozess, der
-Container bleibt bestehen. Neu ist der Zustand `exited`. Unveraendert bleiben
-Container-ID, Image und Nginx-Konfiguration. Die Restart Policy greift hier
-bewusst nicht: `unless-stopped` behandelt einen absichtlichen Stopp nicht als
-Absturz.
-Test/Beleg: T3.
+Beendet den Prozess, Container bleibt bestehen. Neu: Zustand `exited`.
+Unveraendert: Container-ID, Image. `unless-stopped` behandelt einen bewussten
+Stopp nicht als Absturz, die Policy greift also nicht. Beleg: T3.
 
 ### H6 Neustarten
 
-Befehl mit Arbeitsverzeichnis:
 ```bash
-cd ~/workspace/AI-Docker-Lab/04_Karate
-sudo docker compose start        # nach stop
-sudo docker compose restart app  # im laufenden Betrieb
+sudo docker compose start          # nach stop
+sudo docker compose restart app    # im laufenden Betrieb
 ```
-Zweck, Veränderung und unveränderter Zustand: Startet den Prozess im selben
-Container aus demselben Image neu. Neu sind Laufzeit und Anfragezaehler.
-Unveraendert bleiben Container-ID, Image-ID und `RestartCount`. Eine
-Codeaenderung wird dabei **nicht** wirksam.
-Test/Beleg: T4, R2.
+Startet den Prozess im selben Container aus demselben Image. Neu: Laufzeit.
+Unveraendert: Container-ID, Image-ID, `RestartCount`. Eine Codeaenderung wird
+dabei **nicht** wirksam. Beleg: T4, R2.
 
 ### H7 Container entfernen und neu erstellen
 
-Befehl mit Arbeitsverzeichnis:
 ```bash
-cd ~/workspace/AI-Docker-Lab/04_Karate
-sudo docker compose ps -q app        # Container-ID vorher
+sudo docker compose ps -q app      # ID vorher
 sudo docker compose down
 sudo docker compose up -d --build
-sudo docker compose ps -q app        # Container-ID nachher
+sudo docker compose ps -q app      # ID nachher
 ```
-Zweck, Veränderung und unveränderter Zustand: Entfernt Container und Netz und
-erstellt beides neu, mit `--build` zusaetzlich aus einem neu gebauten Image.
-Neu sind Image-ID und Container-ID, `RestartCount` beginnt wieder bei 0.
-Unveraendert bleiben `compose.yaml`, Hostport und Nginx-Konfiguration, deshalb
-gilt dieselbe URL weiter.
-Test/Beleg: T5, R2.
+Entfernt Container und Netz und erstellt beides neu. Neu: Image-ID,
+Container-ID, `RestartCount` wieder 0. Unveraendert: `compose.yaml`, Hostport,
+Nginx, also gilt dieselbe URL. Beleg: T5, R2.
 
-### H8 Benutzer und read-only Einstellung prüfen
+### H8 Benutzer und read-only prüfen
 
-Befehl mit Arbeitsverzeichnis:
 ```bash
-cd ~/workspace/AI-Docker-Lab/04_Karate
 sudo docker compose exec app id
-sudo docker compose exec app touch /beweis          # muss scheitern
-sudo docker compose exec app touch /tmp/beweis      # muss gelingen
+sudo docker compose exec app touch /beweis       # muss scheitern
+sudo docker compose exec app touch /tmp/beweis   # muss gelingen
 sudo docker inspect --format 'User={{.Config.User}} ReadOnly={{.HostConfig.ReadonlyRootfs}} Policy={{.HostConfig.RestartPolicy.Name}}' \
   "$(sudo docker compose ps -q app)"
 ```
-Zweck, Veränderung und unveränderter Zustand: Belegt, dass der Prozess als UID
-10001 laeuft und das Root-Dateisystem nicht beschreibbar ist. Veraendert wird
-nur `/tmp/beweis`, und das liegt in einem tmpfs und verschwindet mit dem
-Container.
-Test/Beleg: T6.
+Belegt UID 10001 und ein nicht beschreibbares Root-Dateisystem. Veraendert nur
+`/tmp/beweis` im tmpfs. Beleg: T6.
 
 ## 3 Verständnis der Komponenten
 
 | ID | Komponente | Aufgabe, Zusammenarbeit und Auswirkung eines Ausfalls | Stelle im eigenen Projekt |
 | --- | --- | --- | --- |
-| K1 | Browser/Animation | Rechnet die Animation und fragt den Status ab. Faellt er aus, ist nichts sichtbar, der Server laeuft weiter. | `SCRIPT` und die Keyframes `schlag`/`tritt` in `app.py` |
-| K2 | Backend/Webserver | Liefert Seite und JSON. Faellt er aus, laeuft die Animation weiter, das Dashboard meldet "nicht erreichbar". | `Handler.do_GET` und `ThreadingHTTPServer` in `app.py` |
-| K3 | Dashboard/Status-API | `/api/info` liefert `application`, `status`, `time`, `uptime_seconds`; die Seite fragt alle 5 s. Faellt sie aus, veralten die Werte und werden gekennzeichnet. | `/api/info` in `do_GET`, `pruefen()` und `zeichneStatus()` |
-| K4 | Dockerfile/Image | Legt Grundlage, Code und Benutzer fest. Ein falsch gebautes Image startet nicht oder enthaelt alten Code. | `Dockerfile`, Zeilen `COPY app.py` und `USER 10001:10001` |
-| K5 | Compose/Container | Legt Projektname, Portveroeffentlichung, Rechte und Restart Policy fest. Fehlt sie, ist der Container nicht erreichbar. | `compose.yaml` |
-| K6 | Healthcheck | Fragt `/health` alle 5 s. Er sagt nur, ob die Anwendung antwortet, nicht ob sie richtig rechnet. Schlaegt er fehl, gilt der Container als `unhealthy` und laeuft trotzdem weiter. | `healthcheck:` in `compose.yaml` |
-| K7 | Ports/Nginx | Bildet die Kette LAN-Adresse zu Loopback zu Containerport. Faellt Nginx aus, bleibt die App lokal erreichbar, vom Kali nicht. | `ports:` in `compose.yaml` und `/etc/nginx/conf.d/lb1-8084.conf` |
+| K1 | Browser/Animation | Rechnet die Animation, fragt den Status ab. Faellt er aus: nichts sichtbar, Server laeuft weiter. | `SCRIPT` und Keyframes `schlag`/`tritt` in `app.py` |
+| K2 | Backend/Webserver | Liefert Seite und JSON. Faellt er aus: Animation laeuft weiter, Dashboard meldet "nicht erreichbar". | `Handler.do_GET` in `app.py` |
+| K3 | Dashboard/Status-API | `/api/info` liefert `application`, `status`, `time`, `uptime_seconds`, Abfrage alle 5 s. Faellt sie aus: Werte veralten und werden gekennzeichnet. | `/api/info`, `pruefen()`, `zeichneStatus()` |
+| K4 | Dockerfile/Image | Legt Grundlage, Code und Benutzer fest. Falsch gebaut: alter Code im Container. | `COPY app.py`, `USER 10001:10001` |
+| K5 | Compose/Container | Projektname, Portveroeffentlichung, Rechte, Restart Policy. Fehlt sie: nicht erreichbar. | `compose.yaml` |
+| K6 | Healthcheck | Fragt `/health` alle 5 s. Sagt nur, ob die Anwendung antwortet, nicht ob sie richtig rechnet. Schlaegt er fehl: `unhealthy`, laeuft aber weiter. | `healthcheck:` in `compose.yaml` |
+| K7 | Ports/Nginx | LAN-Adresse zu Loopback zu Containerport. Faellt Nginx aus: lokal erreichbar, vom Kali nicht. | `ports:` und `/etc/nginx/conf.d/lb1-8084.conf` |
 
 ## 4 Testprotokoll
 
 | ID | Soll | Handlung | Tatsächliches Ist und Zeitpunkt | Beleg | Schlussfolgerung |
 | --- | --- | --- | --- | --- | --- |
-| T1 | Zwei Übungen; Start, Pause und Auswahl funktionieren | Im Browser auf dem Kali: Start, Umschalten auf Tritt, Pause, erneut Start | **[messen]** | S01, Live-Vorfuehrung | **[messen]** |
-| T2 | Laufzeit steigt; Prüfzeitpunkt aktualisiert | H4, dazu `/api/info` zweimal im Abstand von 10 s | **[messen]** | S02 und Werte unten | **[messen]** |
-| T3 | Ausfall nach etwa 15 Sekunden; alte Werte gekennzeichnet | H5 bei offener Seite auf dem Kali | **[messen]** | S03 | **[messen]** |
-| T4 | Wieder erreichbar; Laufzeit beginnt neu | H2 bzw. H6, Seite weiterhin offen | **[messen]** | S04 | **[messen]** |
-| T5 | Neue Container-ID; App funktioniert | H7 | **[messen]** | S05 und Werte unten | **[messen]** |
-| T6 | Non-root und read-only bestätigt | H8 | **[messen]** | S05 und Werte unten | **[messen]** |
-| T7 | URL auf zweitem zugelassenen Rechner öffnen | `http://192.168.110.61:8084/` im Firefox auf dem Kali (192.168.110.70) | **[messen]** | S01 | **[messen]** |
+| T1 | Zwei Übungen; Start, Pause und Auswahl funktionieren | Browser auf dem Kali: Start, Tritt, Pause, Start | `[messen]` | S01, Live | `[messen]` |
+| T2 | Laufzeit steigt; Prüfzeitpunkt aktualisiert | H4, `/api/info` zweimal im Abstand | `[messen]` | S02 | `[messen]` |
+| T3 | Ausfall nach etwa 15 Sekunden; alte Werte gekennzeichnet | H5 bei offener Seite | `[messen]` | S03 | `[messen]` |
+| T4 | Wieder erreichbar; Laufzeit beginnt neu | H6, Seite weiterhin offen | `[messen]` | S04 | `[messen]` |
+| T5 | Neue Container-ID; App funktioniert | H7 | `[messen]` | S05 | `[messen]` |
+| T6 | Non-root und read-only bestätigt | H8 | `[messen]` | S05 | `[messen]` |
+| T7 | URL auf zweitem zugelassenen Rechner öffnen | `http://192.168.110.61:8084/` auf dem Kali | `[messen]` | S01 | `[messen]` |
 
-### Vorher und nachher, als Text
-
-Diese Werte gehoeren zusaetzlich zu den Bildern hierher, weil man aus einem
-Screenshot nichts kopieren kann. Sie stehen alle in den Dateien unter
-`belege/lb1/`.
-
-**T2, Laufzeit steigt** aus `t2_02_abfrage_zweimal.log`:
+Werte zu den Bildern, aus einem Screenshot nicht kopierbar:
 
 ```
-erste Abfrage   [messen]  uptime_seconds = [messen]
-zweite Abfrage  [messen]  uptime_seconds = [messen]
+T2  uptime_seconds  erste Abfrage [messen]   zweite Abfrage [messen]
+T3  gestoppt um [messen]   "nicht erreichbar" um [messen]   Differenz [messen] s
+T4  gestartet um [messen]  wieder erreichbar um [messen]    neue Laufzeit [messen] s
+T5  Container-ID  vorher [messen]  nachher [messen]
+T5  Image-ID      vorher [messen]  nachher [messen]
+T5  waehrend des Abbaus: HTTP 000
+T6  id [messen]   touch /beweis [messen]   inspect [messen]
 ```
 
-**T3 und T4, Zeitpunkte** von der Stoppuhr beim Versuch:
-
-```
-docker compose stop um          [messen]
-"nicht erreichbar" erschien um  [messen]   Differenz: [messen] s
-docker compose start um         [messen]
-wieder "erreichbar" um          [messen]   neue Laufzeit: [messen] s
-```
-
-**T5, Container-Neuerstellung** aus `t5_01_vorher.log` und `t5_05_nachher.log`:
-
-```
-Container-ID vorher   [messen]
-Container-ID nachher  [messen]
-Image-ID vorher       [messen]
-Image-ID nachher      [messen]
-Antwort waehrend des Abbaus: HTTP 000, der Dienst war wirklich weg
-```
-
-**T6, Rechte** aus `t6_01_benutzer.log` bis `t6_03_inspect.log`:
-
-```
-id im Container       [messen]   erwartet uid=10001
-touch /beweis         [messen]   erwartet Read-only file system
-touch /tmp/beweis     [messen]   erwartet erfolgreich
-docker inspect        [messen]   erwartet User=10001:10001 ReadOnly=true Policy=unless-stopped
-```
-
-Der Ausfall in T3 wird spaetestens nach einem Abfrageintervall erkannt. Bei
-gestopptem Server lehnt das Betriebssystem die Verbindung sofort ab, also nach
-hoechstens 5 s. Haengt der Server, kommt das Zeitlimit von 5 s dazu, zusammen
-10 s. Beides liegt unter den geforderten etwa 15 s.
+Erkennungszeit in T3: bei gestopptem Server lehnt das Betriebssystem die
+Verbindung sofort ab, also hoechstens ein Intervall, 5 s. Haengt der Server,
+kommen 5 s Zeitlimit dazu, zusammen 10 s. Beides unter den geforderten 15 s.
 
 ## 5 Belege
-
-Fuenf Bilder statt der vier aus dem Richtwert, weil T3 und T4 zwei
-verschiedene Zustaende sind und nicht in ein Bild passen. Wer bei vier bleiben
-will, schneidet S03 und S04 nebeneinander in ein Bild und beschriftet die
-beiden Haelften mit "nach stop" und "nach start".
-
-Alle Bilder nach `04_Karate/screenshots/` legen, Dateinamen wie unten.
 
 ### S01 Roboter und Dashboard vom Kali
 
 Deckt **T1** und **T7**.
 
-Sichtbar sein muss: die Adresszeile mit `http://192.168.110.61:8084/`, der
-Roboter mit erkennbar ausgefuehrter Uebung, der gedrueckte Zustand der
-Bedienknoepfe, und im Dashboard "erreichbar" mit Laufzeit und Pruefzeitpunkt.
-Aufnehmen auf dem **Kali**, nicht auf der VM, sonst belegt es T7 nicht.
+Roboter via Kali (Ports exposed)
 
-![S01 Roboter und Dashboard vom Kali](screenshots/S01_kali_roboter.png)
-
-**[messen]** Uhrzeit der Aufnahme und welche Uebung gewaehlt war:
+![alt text](image-1.png)
 
 ### S02 Zwei Abfragen von /api/info im Abstand
 
 Deckt **T2**.
 
-Sichtbar sein muss: beide Aufrufe mit ihren Zeitstempeln und beide Werte von
-`uptime_seconds`, der zweite hoeher als der erste. Entweder ein Screenshot des
-Terminals nach `./scripts/belege-lb1.sh t2` oder ein Bild der Datei
-`belege/lb1/t2_02_abfrage_zweimal.log`.
+Servicecloack updates
 
-![S02 Laufzeit steigt](screenshots/S02_laufzeit_steigt.png)
-
-**[messen]** Die beiden Werte zusaetzlich oben im Abschnitt 4 eintragen.
+![alt text](image-2.png) ![alt text](image-3.png)
 
 ### S03 Ausfall erkannt, alte Werte gekennzeichnet
 
-Deckt **T3**. Das ist der wichtigste Beleg der ganzen Abgabe.
+Deckt **T3**.
 
-Sichtbar sein muss: "nicht erreichbar", die durchgestrichenen Serverwerte, der
-Hinweis mit der Uhrzeit der letzten Antwort, und der Roboter, der sich weiter
-bewegt. Aufnehmen auf dem **Kali** bei geoeffneter Seite, waehrend auf der VM
-der Container gestoppt ist. Die Seite nicht neu laden, das wuerde den Beleg
-zerstoeren.
+Vor dem stoppen:
 
-![S03 Ausfall erkannt](screenshots/S03_ausfall.png)
+![alt text](image-5.png)
 
-**[messen]** Uhrzeit des Stopps und Uhrzeit der Meldung, Differenz in Sekunden:
+Nach dem stoppen:
+
+![alt text](image-7.png)
 
 ### S04 Wiederanlauf, Laufzeit beginnt neu
 
 Deckt **T4**.
 
-Sichtbar sein muss: wieder "erreichbar", keine Durchstreichung mehr, und eine
-kleine Server-Laufzeit, also deutlich niedriger als in S01. Dieselbe
-Browsersitzung wie S03, ohne Neuladen.
+Wieder online:
 
-![S04 Wiederanlauf](screenshots/S04_wiederanlauf.png)
-
-**[messen]** Laufzeit vor dem Stopp und nach dem Start:
+![alt text](image-8.png)
 
 ### S05 Container-IDs, Benutzer und read-only
 
 Deckt **T5** und **T6**.
 
-Sichtbar sein muss: die Container-ID vor und nach `docker compose down` und
-`up -d --build`, dazu `id` mit `uid=10001`, das gescheiterte `touch /beweis`
-mit "Read-only file system" und die Ausgabe von `docker inspect` mit
-`ReadOnly=true`. Ein Terminalfenster genuegt, alles steht in den Dateien
-`t5_05_nachher.log`, `t6_01_benutzer.log` bis `t6_03_inspect.log`.
+Neue Container-ID:
 
-![S05 Container-IDs und Rechte](screenshots/S05_ids_und_rechte.png)
+![alt text](image-9.png)
 
-**[messen]** Die IDs zusaetzlich oben im Abschnitt 4 eintragen.
+Nach rebuild:
 
-### Hinweise
+![alt text](image-10.png)
 
-Relative Pfade verwenden, wie oben. Die Bilder sind Teil der Abgabe, also
-mit dem Projektordner zusammen abgeben.
-
-Die Animation wird zusaetzlich **live vorgefuehrt**, weil ein Einzelbild keine
-Bewegung beweist. Laut 6.3 ist das ausdruecklich vorgesehen.
-
-Keine Zusatzbilder nur fuer die Verstaendnisfragen K und R. Dort ist die
-richtige Erklaerung selbst der Nachweis.
+Die Animation wird zusaetzlich live vorgefuehrt, weil ein Einzelbild keine
+Bewegung beweist.
 
 ## 6 Reflexion
 
 ### R1 Browser und Serverausfall
 
-Die Animation besteht aus CSS-Keyframes, die der Browser selbst rechnet; vom
-Server kommt dafuer nichts. Nur das Dashboard braucht den Server, es fragt alle
-5 Sekunden `/api/info` ab. Faellt der Server aus, laeuft die Bewegung also
-unveraendert weiter. Erkannt wird der Ausfall an der fehlgeschlagenen Abfrage,
-nicht an einer Meldung des Servers: schon der erste Fehlversuch setzt die
-Anzeige auf "nicht erreichbar". Dabei bleiben "Letzte Pruefung" und die
-Serverwerte bewusst getrennt. Der Pruefzeitpunkt wird bei jedem Versuch neu
-gesetzt, auch beim gescheiterten, die Serverwerte bleiben auf dem letzten
-Erfolg stehen und werden als veraltet gekennzeichnet. Ein Zeitstempel, der
-weiterlaeuft, waehrend die Werte alt sind, ist genau der Unterschied zwischen
-geprueft und gueltig. Bezug K1 bis K3 und T3.
+Die Animation sind CSS-Keyframes, die der Browser selbst rechnet. Vom Server
+kommt dafuer nichts, nur das Dashboard fragt ihn alle 5 s ueber `/api/info`.
+Darum laeuft die Bewegung beim Ausfall unveraendert weiter. Erkannt wird der
+Ausfall an der gescheiterten Abfrage, nicht an einer Meldung des Servers: schon
+der erste Fehlversuch setzt die Anzeige auf "nicht erreichbar". Pruefzeitpunkt
+und Serverwerte bleiben getrennt. Der Pruefzeitpunkt wird bei jedem Versuch neu
+gesetzt, auch beim gescheiterten, die Serverwerte bleiben auf dem letzten Erfolg
+stehen und werden als veraltet gekennzeichnet. Bezug K1 bis K3, T3.
 
 ### R2 Codeänderung
 
-Der Code liegt per `COPY app.py` im Image. Nach einer Aenderung ist deshalb
-`sudo docker compose up -d --build` noetig, also H1 und H7 zusammen.
-`restart` genuegt nicht, weil es denselben Prozess aus demselben Image neu
-startet, und dieses Image enthaelt den alten Stand. Der Container hat keine
-Verbindung zur Quelldatei auf dem Host; die bestuende nur bei einem Bind Mount,
-den dieses Projekt bewusst nicht hat.
+Der Code liegt per `COPY app.py` im Image, also ist nach einer Aenderung
+`up -d --build` noetig, H1 und H7 zusammen. `restart` genuegt nicht, weil es
+denselben Prozess aus demselben Image startet, und dieses Image enthaelt den
+alten Stand. Eine Verbindung zur Quelldatei auf dem Host bestuende nur bei einem
+Bind Mount, den dieses Projekt nicht hat.
 
-Dafuer gibt es in diesem Projekt einen echten Beleg und keinen konstruierten:
-In Auftrag 3 war der Endpunkt `/api/info` im Quellcode vorhanden, nach einem
-`git pull` mit anschliessendem `docker compose up -d` ohne `--build` antwortete
-die laufende Anwendung aber weiter mit HTTP 404 und nannte nur drei gueltige
-Routen. Weil das Tag `service-clock:1.0.0` bereits existierte, hat Docker das
-alte Image weiterverwendet. Erst `up -d --build` hat es behoben. Festgehalten
-in `belege/12_freigabe_nginx/05_test_ubuntu.log`. Bezug H1, H6 und H7.
+Belegt erlebt: In Auftrag 3 war `/api/info` im Quellcode vorhanden, nach
+`git pull` und `up -d` ohne `--build` antwortete die Anwendung weiter mit
+HTTP 404. Das Tag `service-clock:1.0.0` existierte bereits, deshalb hat Docker
+das alte Image weiterverwendet. Erst `up -d --build` hat es behoben. Festgehalten
+in `belege/12_freigabe_nginx/05_test_ubuntu.log`. Bezug H1, H6, H7.
 
 ### R3 Qwen-Vorschlag prüfen
 
-**[messen]** Hier gehoert ein Austausch aus dieser Pruefung hinein, mit drei
-Teilen: der konkrete Vorschlag von Qwen, wie ich ihn geprueft habe mit Nennung
-der Code- oder Konfigurationsstelle und des Tests, und meine Entscheidung,
-uebernommen oder korrigiert. Prompt und Antwort werden unter
-`belege/lb1/qwen/` abgelegt. Ein bestaetigter Vorschlag genuegt, ein Fehler
-wird nicht erfunden.
+`[messen]` Vorschlag, eigene Pruefung mit Code- oder Konfigurationsstelle und
+Test, Entscheidung. Prompt und Antwort unter `belege/lb1/qwen/`.
 
 ## 7 Dateien Quellen und offene Punkte
 
-**Projektdateien** unter `04_Karate/`:
+**Projektdateien** unter `04_Karate/`: `app.py`, `Dockerfile`, `compose.yaml`,
+`.dockerignore`, `scripts/`, `screenshots/`, `README.md`. Ausserhalb, weil es
+den Host betrifft: `/etc/nginx/conf.d/lb1-8084.conf`, Kopie unter `belege/lb1/`.
 
-| Datei | Inhalt |
-| --- | --- |
-| `app.py` | Anwendung, nur Standardbibliothek: Seite, Animation, `/api/info`, `/health` |
-| `Dockerfile` | Image, nicht privilegierter Benutzer 10001 |
-| `compose.yaml` | Projektname, Portveroeffentlichung, Rechte, Healthcheck, Restart Policy |
-| `.dockerignore` | haelt Test- und Dokumentationsdateien aus dem Image |
-| `scripts/belege-lb1.sh` | sammelt die Terminalbelege zu T2, T5 und T6 |
-| `screenshots/` | S01 bis S05 |
-| `README.md` | diese Abgabe |
-
-Ausserhalb des Projektordners, weil es den Host betrifft:
-`/etc/nginx/conf.d/lb1-8084.conf`, als Kopie unter `belege/lb1/` abgelegt.
-
-**Fachquellen**
-
-- Arbeitsblatt 4, Kapitel 3 bis 5, und das Unterrichtspaket `expose-lab.sh`
-- Docker-Dokumentation zu Compose, Restart Policy und Healthcheck
-- Nginx-Dokumentation zu `listen`, `allow`/`deny` und `proxy_pass`
-- MDN zu `AbortController` und `fetch`
-- Qwen 3 lokal ueber Ollama, Protokoll unter `belege/lb1/qwen/`
+**Fachquellen**: Arbeitsblatt 4 Kapitel 3 bis 5 und `expose-lab.sh`;
+Docker-Dokumentation zu Compose, Restart Policy und Healthcheck;
+Nginx-Dokumentation zu `listen`, `allow`/`deny` und `proxy_pass`; MDN zu
+`AbortController` und `fetch`; Qwen 3 lokal ueber Ollama.
 
 **Nicht erfüllte Anforderungen oder verbleibende Fehler**
 
-- **[messen]** nach der Durchfuehrung ehrlich eintragen.
-- Bekannt und bewusst: Die Anwendung hat keine Authentifizierung. Wer den Port
-  erreicht, sieht Name, Laufzeit und Pruefzeitpunkt. Begrenzt wird der Zugriff
-  durch die Bindung auf `127.0.0.1` und die `allow`/`deny`-Liste in Nginx.
-- Bereitgestellte Infrastruktur, also `expose-lab.sh` und die Freigabe des
-  Pruefungsports, ist verwendet und erklaert, aber nicht selbst entwickelt.
+- `[messen]`
+- Keine Authentifizierung. Wer den Port erreicht, sieht Name, Laufzeit und
+  Pruefzeitpunkt. Begrenzt durch die Bindung auf `127.0.0.1` und die
+  `allow`/`deny`-Liste in Nginx.
+- `expose-lab.sh` und die Freigabe des Pruefungsports sind bereitgestellte
+  Infrastruktur, verwendet und erklaert, nicht selbst entwickelt.
