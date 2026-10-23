@@ -472,6 +472,181 @@ cmd_neustart() {
   note "ok    zusammenfassung.log"
 }
 
+# --- Netzfreigabe ueber Nginx ----------------------------------------------
+# Belegt die Einrichtung aus Kapitel 3 des Arbeitsblatts 4. Das Skript
+# expose-lab.sh stammt aus dem Unterrichtspaket und wird nur verwendet, nicht
+# veraendert; belegt werden also die richtige Verwendung und die Wirkung.
+
+FG_SCRIPT=""; FG_UBUNTU=""; FG_KALI=""; FG_PORTS=""; FG_DIR=""
+FG_CONF=/etc/nginx/conf.d/hf-lab-expose.conf
+
+fg_vorbereiten() {
+  FG_SCRIPT="${ROOT}/expose-lab.sh"
+  FG_UBUNTU="${UBUNTU_IP:-}"
+  FG_KALI="${KALI_IP:-}"
+  FG_PORTS="${FREIGABE_PORTS:-8081 8082 8083}"
+  if [ -z "${FG_UBUNTU}" ] || [ -z "${FG_KALI}" ]; then
+    note "FEHLER: UBUNTU_IP und KALI_IP muessen gesetzt sein."
+    note "Aufruf: UBUNTU_IP=192.168.x.x KALI_IP=192.168.x.y ./scripts/belege.sh freigabe"
+    return 1
+  fi
+  [ -f "${FG_SCRIPT}" ] || { note "FEHLER: ${FG_SCRIPT} fehlt."; return 1; }
+  return 0
+}
+
+cmd_freigabe() {
+  fg_vorbereiten || return 1
+  setdir "12_freigabe_nginx"
+  FG_DIR="${DIR}"
+  say "Netzfreigabe ueber Nginx belegen"
+  note "Die Anwendungen bleiben auf 127.0.0.1, nur Nginx lauscht im LAN."
+
+  {
+    printf '# Verwendete Angaben\n# Zeitpunkt (UTC): %s\n# ---\n' "$(ts)"
+    printf 'Ubuntu-IP : %s\n' "${FG_UBUNTU}"
+    printf 'Kali-IP   : %s\n' "${FG_KALI}"
+    printf 'Ports     : %s\n' "${FG_PORTS}"
+    printf 'Skript    : %s (unveraendert aus dem Unterrichtspaket)\n' "${FG_SCRIPT}"
+    printf 'Zieldatei : %s\n' "${FG_CONF}"
+  } > "${DIR}/00_eingabe.log"
+  note "ok    00_eingabe.log"
+
+  # Erneuter Aufruf ist unschaedlich: dieselben Angaben erzeugen dieselbe Datei.
+  cap 01_skript_lauf.log "Einrichtung mit expose-lab.sh, Ausgabe vollstaendig" -- \
+    sudo bash "${FG_SCRIPT}" "${FG_UBUNTU}" "${FG_KALI}" ${FG_PORTS}
+
+  cap 02_konfiguration.conf "Erzeugte Nginx-Konfiguration" -- \
+    sudo cat "${FG_CONF}"
+
+  cap 03_nginx_aktiv.log "Konfiguration ist syntaktisch gueltig und wirklich aktiv" -- bash -c \
+    "sudo nginx -t; echo; systemctl is-active nginx; echo; \
+     echo '--- Auszug aus der aktiven Konfiguration (nginx -T) ---'; \
+     sudo nginx -T 2>/dev/null | grep -A14 'hf-lab-expose'"
+
+  cap 04_listener.log "Wer lauscht wo: Nginx im LAN, die Anwendungen nur lokal" -- bash -c \
+    "sudo ss -ltnp 2>/dev/null | grep -E ':(8081|8082|8083)' || ss -ltn | grep -E ':(8081|8082|8083)'"
+
+  cap 05_test_ubuntu.log "Zugriff vom Ubuntu, erst lokal, dann ueber die LAN-Adresse" -- bash -c \
+    "for p in ${FG_PORTS}; do
+       curl -sS -o /dev/null -w \"127.0.0.1:\$p  HTTP %{http_code}\n\" --max-time 10 \"http://127.0.0.1:\$p/\"
+       curl -sS -o /dev/null -w \"${FG_UBUNTU}:\$p  HTTP %{http_code}\n\" --max-time 10 \"http://${FG_UBUNTU}:\$p/\"
+     done
+     echo
+     echo 'Inhaltliche Gegenprobe ueber die LAN-Adresse:'
+     curl -sS --max-time 10 \"http://${FG_UBUNTU}:8083/api/info\"; echo
+     curl -sS --max-time 10 \"http://${FG_UBUNTU}:8082/api/state\" | head -c 200; echo"
+
+  cap 06_zugriffslog.log "Nginx-Zugriffsprotokoll zu den freigegebenen Ports" -- bash -c \
+    "sudo tail -n 40 /var/log/nginx/access.log 2>/dev/null | grep -E ' (200|403) ' || \
+     sudo tail -n 40 /var/log/nginx/access.log 2>/dev/null || echo 'kein Zugriffsprotokoll vorhanden'"
+
+  {
+    printf '# Portkette und Begruendung\n# Zeitpunkt (UTC): %s\n# ---\n' "$(ts)"
+    printf 'Browser auf Kali (%s)\n' "${FG_KALI}"
+    printf '  --> Nginx  %s:<port>        (listen auf der LAN-Adresse, allow/deny)\n' "${FG_UBUNTU}"
+    printf '  --> proxy_pass 127.0.0.1:<port>  (die Anwendung bleibt auf Loopback)\n'
+    printf '  --> Container-Port 8000\n'
+    printf '  --> app.py\n\n'
+    printf 'Freigegeben: %s\n' "${FG_PORTS}"
+    printf '  8081 Oberflaeche der vorgegebenen Laborumgebung\n'
+    printf '  8082 Dashboard aus Auftrag 2\n'
+    printf '  8083 Service Clock aus Auftrag 3\n\n'
+    printf 'Nicht freigegeben und bewusst nicht: 8080 (Ollama), 3000 (Open WebUI),\n'
+    printf '172.31.240.1:8899 (AI-Relay, nur aus dem Dashboard-Netz erreichbar).\n\n'
+    printf 'Warum die Anwendungen trotz Freigabe auf 127.0.0.1 gebunden bleiben:\n'
+    printf 'Nur Nginx ist im Netz erreichbar. Damit gilt die allow/deny-Liste fuer\n'
+    printf 'jeden Zugriff; eine Bindung der Container auf 0.0.0.0 waere an dieser\n'
+    printf 'Pruefung vorbei. Siehe 04_listener.log.\n'
+  } > "${DIR}/07_portkette.log"
+  note "ok    07_portkette.log"
+
+  {
+    printf '# Was von Hand dazugehoert\n# Zeitpunkt (UTC): %s\n# ---\n' "$(ts)"
+    printf 'Dieser Ordner belegt alles, was auf dem Ubuntu messbar ist. Von Hand\n'
+    printf 'fehlen noch:\n\n'
+    printf '1. Zugriff vom Kali. Auf dem Kali ausfuehren und die Datei hierher legen:\n\n'
+    printf '   UBUNTU_IP=%s\n' "${FG_UBUNTU}"
+    printf '   { date -u +%%Y-%%m-%%dT%%H:%%M:%%SZ\n'
+    printf '     for p in %s; do\n' "${FG_PORTS}"
+    printf '       curl -sS -o /dev/null -w "$UBUNTU_IP:$p HTTP %%{http_code}\\n" \\\n'
+    printf '         --connect-timeout 5 --max-time 10 "http://$UBUNTU_IP:$p/"\n'
+    printf '     done\n'
+    printf '     curl -sS --max-time 10 "http://$UBUNTU_IP:8083/api/info"\n'
+    printf '   } | tee 08_test_kali.log\n\n'
+    printf '   scp 08_test_kali.log <benutzer>@%s:~/workspace/AI-Docker-Lab/belege/12_freigabe_nginx/\n\n' "${FG_UBUNTU}"
+    printf '2. Bildschirmaufnahme des Browsers auf dem Kali mit sichtbarer URL\n'
+    printf '   http://%s:8082 und http://%s:8083, hier ablegen als\n' "${FG_UBUNTU}" "${FG_UBUNTU}"
+    printf '   09_browser_kali_dashboard.png und 09_browser_kali_clock.png\n\n'
+    printf '3. Negativtest: ./scripts/belege.sh freigabe-negativ (siehe dort)\n\n'
+    printf '# Bekannte Abweichung, gehoert benannt statt verschwiegen\n'
+    printf 'Das Arbeitsblatt nennt als Negativtest eine POST-Anfrage ohne den Header\n'
+    printf 'X-Lab-Request mit erwartetem HTTP 403 und "missing lab header". Das gilt\n'
+    printf 'fuer das Referenz-Dashboard der Lehrperson, das /api/analyse anbietet und\n'
+    printf 'diesen Header verlangt. Dieses Dashboard hat /api/analyze und prueft den\n'
+    printf 'Header nicht; die Anfrage wird angenommen. Nginx gibt den Header per\n'
+    printf 'proxy_set_header weiter, er wird nur nicht ausgewertet. Begrenzt wird der\n'
+    printf 'Zugriff hier durch die allow/deny-Liste und die Loopback-Bindung, belegt\n'
+    printf 'in 02_konfiguration.conf, 04_listener.log und 10_negativtest.log.\n'
+  } > "${DIR}/08_offene_punkte.log"
+  note "ok    08_offene_punkte.log"
+  note "Lies ${DIR}/08_offene_punkte.log, dort stehen die drei Handschritte."
+}
+
+# Stellt die echte Freigabe wieder her. Laeuft auch bei Abbruch.
+fg_zurueck() {
+  trap - EXIT INT TERM
+  printf '\n   Freigabe auf die echte Kali-Adresse zurueckstellen\n'
+  sudo bash "${FG_SCRIPT}" "${FG_UBUNTU}" "${FG_KALI}" ${FG_PORTS} \
+    > "${FG_DIR}/11_wiederherstellung.log" 2>&1
+  local rc=$?
+  printf '# Exit-Code: %s\n' "${rc}" >> "${FG_DIR}/11_wiederherstellung.log"
+  if [ "${rc}" -eq 0 ]; then
+    note "ok    11_wiederherstellung.log  (Kali ist wieder freigegeben)"
+  else
+    note "rc=${rc} 11_wiederherstellung.log  ACHTUNG: Freigabe von Hand pruefen:"
+    note "sudo bash ${FG_SCRIPT} ${FG_UBUNTU} ${FG_KALI} ${FG_PORTS}"
+  fi
+}
+
+cmd_freigabe_negativ() {
+  fg_vorbereiten || return 1
+  setdir "12_freigabe_nginx"
+  FG_DIR="${DIR}"
+  # TEST-NET-3 nach RFC 5737, kommt in keinem echten Netz vor.
+  local sperr="${SPERR_IP:-203.0.113.1}"
+  say "Negativtest: Zugriff von einer nicht freigegebenen Adresse"
+  note "Die Freigabe wird kurz auf ${sperr} umgestellt, danach automatisch zurueck."
+  note "Der Kali ist in dieser Zeit ausgesperrt. Genau das ist der Nachweis."
+
+  trap 'fg_zurueck' EXIT INT TERM
+
+  cap 10_negativtest.log "Freigabe ohne die Kali-Adresse einrichten" -- \
+    sudo bash "${FG_SCRIPT}" "${FG_UBUNTU}" "${sperr}" ${FG_PORTS}
+  {
+    printf '\n# --- Aktive allow/deny-Liste waehrend des Tests ---\n'
+    sudo grep -E 'listen|allow|deny' "${FG_CONF}" 2>&1
+    printf '\n# --- Jetzt auf dem Kali ausfuehren, erwartet wird HTTP 403 ---\n'
+    printf '#   curl -sS -o /dev/null -w "HTTP %%{http_code}\\n" \\\n'
+    printf '#     --connect-timeout 5 --max-time 10 http://%s:8082/\n' "${FG_UBUNTU}"
+    printf '# Ergebnis vom Kali hier eintragen:\n'
+    printf '#   HTTP ____   (erwartet 403, weil die Quelladresse nicht in allow steht)\n'
+  } >> "${DIR}/10_negativtest.log"
+
+  printf '\n'
+  note "Jetzt auf dem Kali:"
+  note "  curl -sS -o /dev/null -w 'HTTP %{http_code}\\n' --connect-timeout 5 --max-time 10 http://${FG_UBUNTU}:8082/"
+  note "Erwartet: HTTP 403. Dann die Zahl in 10_negativtest.log eintragen."
+  if [ -t 0 ]; then
+    read -r -p '   Enter druecken, sobald der Kali-Test gelaufen ist: ' _
+  else
+    note "Kein Terminal erkannt, es wird 120 s gewartet."
+    sleep 120
+  fi
+  # Im Normalfall hier, bei Abbruch ueber den Trap. fg_zurueck loescht den Trap
+  # selbst, es laeuft also nie zweimal.
+  fg_zurueck
+}
+
 cmd_index() {
   pruefe_umgebung
   say "Inhaltsverzeichnis schreiben"
@@ -533,6 +708,12 @@ Mit Eingriff, jeweils mit Wiederherstellung:
   test5          fehlender Container, Gegenprobe gestoppt
   neustart       reproduzierbarer Start der eigenen Komponenten
 
+Netzfreigabe (Arbeitsblatt 4, Kapitel 3), braucht UBUNTU_IP und KALI_IP:
+  freigabe           Einrichtung, Konfiguration, Listener, Tests, Portkette
+  freigabe-negativ   Kali kurz aussperren, 403 belegen, danach zurueckstellen
+
+  UBUNTU_IP=192.168.x.x KALI_IP=192.168.x.y ./scripts/belege.sh freigabe
+
 Sammelbefehle:
   alles-ohne-eingriff   rahmen, phase-a bis phase-d, test1
   index                 Inhaltsverzeichnis belege/README.md schreiben
@@ -555,6 +736,8 @@ case "${1:-hilfe}" in
   test4-nachher) pruefe_umgebung; cmd_test4_nachher;;
   test5)         pruefe_umgebung; cmd_test5;;
   neustart)      pruefe_umgebung; cmd_neustart;;
+  freigabe)         pruefe_umgebung; cmd_freigabe;;
+  freigabe-negativ) pruefe_umgebung; cmd_freigabe_negativ;;
   alles-ohne-eingriff)
     pruefe_umgebung
     cmd_rahmen; cmd_phase_a; cmd_phase_b; cmd_phase_c; cmd_phase_d; cmd_phase_f; cmd_test1; cmd_index

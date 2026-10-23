@@ -180,16 +180,82 @@ Sicherungen einer vorherigen eigenen Konfiguration legt das Skript unter
 | Lokal erreichbar, von Kali nicht | Kali-IP in der `allow`-Liste, UFW, VM-Netzwerk |
 | `Abbruch: ... enthaelt eine fremde Konfiguration` | vorhandene Datei stammt nicht vom Skript, erst sichten |
 
-## 10. Fuer die Abgabe
+## 10. Belege sammeln
 
-Diese Einrichtung belegt C1 und T7 der Leistungsbeurteilung. Festhalten solltest
-du: tatsaechliche Ubuntu-IP, die vollstaendige Browser-URL, den SSH-Befehl mit
-dem vereinbarten Konto und die Portkette
+Die Freigabe muss belegt werden. Bereitgestellte Infrastruktur wird laut 7.1
+nicht als eigene Entwicklungsleistung bewertet, geprueft werden ihre **richtige
+Verwendung** und die **Erklaerung** -- und genau das sind die Belege.
+
+Alles, was auf dem Ubuntu messbar ist, sammelt ein eigener Unterbefehl nach
+`belege/12_freigabe_nginx/`:
+
+```bash
+cd ~/workspace/AI-Docker-Lab/02_Monitoring
+UBUNTU_IP='192.168.110.61' KALI_IP='192.168.110.xx' ./scripts/belege.sh freigabe
+```
+
+Nicht mit `sudo` aufrufen, sonst gehoeren die Belegdateien root und lassen sich
+schlecht committen. Das Skript ruft `sudo` dort, wo es noetig ist.
+
+| Datei | Belegt |
+|---|---|
+| `00_eingabe.log` | verwendete Adressen, Ports, Pfad des Skripts |
+| `01_skript_lauf.log` | vollstaendige Ausgabe von `expose-lab.sh` mit Exit-Code |
+| `02_konfiguration.conf` | erzeugte Nginx-Konfiguration mit `allow`/`deny` |
+| `03_nginx_aktiv.log` | `nginx -t`, Dienstzustand, Auszug aus `nginx -T` |
+| `04_listener.log` | Nginx im LAN, die Anwendungen weiterhin auf `127.0.0.1` |
+| `05_test_ubuntu.log` | Zugriff lokal und ueber die LAN-Adresse, mit Inhalt |
+| `06_zugriffslog.log` | Nginx-Zugriffsprotokoll, 200 und 403 nebeneinander |
+| `07_portkette.log` | die Kette und die Begruendung der Loopback-Bindung |
+| `08_offene_punkte.log` | was von Hand fehlt, plus die bekannte Abweichung |
+
+Der Unterbefehl ist wiederholbar: ein zweiter Aufruf mit denselben Angaben
+erzeugt dieselbe Konfiguration.
+
+### Negativtest
+
+Dass `deny all` wirkt, zeigt nur ein Zugriff von einer nicht freigegebenen
+Adresse. Dazu wird die Freigabe kurz auf eine Adresse aus TEST-NET-3
+(`203.0.113.1`, laut RFC 5737 nie in Betrieb) umgestellt, der Kali ist also
+ausgesperrt:
+
+```bash
+UBUNTU_IP='192.168.110.61' KALI_IP='192.168.110.xx' ./scripts/belege.sh freigabe-negativ
+```
+
+Das Skript haelt an und wartet. Jetzt auf dem **Kali**:
+
+```bash
+curl -sS -o /dev/null -w 'HTTP %{http_code}\n' \
+  --connect-timeout 5 --max-time 10 http://192.168.110.61:8082/
+```
+
+Erwartet wird **HTTP 403**. Die Zahl traegst du in `10_negativtest.log` ein.
+Danach Enter druecken, die echte Freigabe wird automatisch wiederhergestellt
+(`11_wiederherstellung.log`). Auch bei Strg-C laeuft die Wiederherstellung.
+
+### Drei Dinge von Hand
+
+Das steht so auch in `08_offene_punkte.log`:
+
+1. **Zugriff vom Kali.** Auf dem Kali ausfuehren, die Datei per `scp` nach
+   `belege/12_freigabe_nginx/08_test_kali.log` legen.
+2. **Bildschirmaufnahmen** vom Browser auf dem Kali, mit sichtbarer URL
+   `http://<ubuntu-ip>:8082` und `:8083`, als `09_browser_kali_*.png`.
+3. **Negativtest** wie oben, HTTP 403 eingetragen.
+
+Zum Schluss das Inhaltsverzeichnis neu schreiben und committen:
+
+```bash
+./scripts/belege.sh index
+cd .. && git add belege EXPOSE.md && git commit -m 'Belege Netzfreigabe' && git push
+```
+
+### Fuer die Abgabevorlage
+
+Festhalten: tatsaechliche Ubuntu-IP, die vollstaendige Browser-URL, den
+SSH-Befehl mit dem vereinbarten Konto und die Portkette
 
 ```
 Browser auf Kali --> Nginx <ubuntu-ip>:<port> --> 127.0.0.1:<port> --> Container:8000 --> app.py
 ```
-
-Bereitgestellte Infrastruktur wird laut 7.1 nicht als eigene
-Entwicklungsleistung bewertet; geprueft werden ihre richtige Verwendung und die
-Erklaerung.
